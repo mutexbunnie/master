@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>star.png</file>
+        <file>Computer.png</file>
+        <file>green_dot.png</file>
+        <file>mouse_pointer.png</file>
+    </qresource>
+</RCC>
