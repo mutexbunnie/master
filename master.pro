@@ -15,11 +15,15 @@ TEMPLATE = app
 SOURCES += main.cpp\
          mainform.cpp \
     entity.cpp \
-    activedialog.cpp
+    activedialog.cpp \
+    entitytype.cpp \
+    entitytypebutton.cpp
 
 HEADERS  +=mainform.h \
     entity.h \
-    activedialog.h
+    activedialog.h \
+    entitytype.h \
+    entitytypebutton.h
 
 FORMS += \
     mainform.ui

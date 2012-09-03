@@ -1,6 +1,7 @@
 #include "mainform.h"
 #include "ui_mainform.h"
 #include <QPainter>
+#include "entitytypebutton.h"
 #define PI 3.14159265
 #include <QDebug>
 
@@ -21,50 +22,31 @@ MainForm::MainForm(QDialog *parent) : QDialog(parent), ui(new Ui::MainForm)
 
     scrollArea2->setWidget(activeDialog2);
     ui->tabWidget->addTab(scrollArea2 ,"Sheet 2");
-    QIcon q(":/icons/star.png");
-
 
     connect(ui->selection, SIGNAL(toggled(bool)), this, SLOT(toggleSelectionState(bool)));
-    this->entities = new QVector<QPushButton*>();
+    this->entities = new QVector<EntityTypeButton*>();
+
+    EntityType* starEntityType =new EntityType(":/icons/star.png");
+
+    EntityType* compEntityType =new EntityType(":/icons/Computer.png");
 
     for (int i=0;i<2 ;i++)
     {
-
-    QPushButton* tmp_entity =new QPushButton(ui->entityBoxContent);
-    ui->verticalLayout->addWidget(tmp_entity);
-    tmp_entity->setMaximumSize(50,50);
-    tmp_entity->setMinimumSize(50,50);
-    QSize s(50,50);
-    tmp_entity->setIconSize(s);
-    tmp_entity->setCheckable(true);
-    tmp_entity->setIcon(q);
-    tmp_entity->setAutoExclusive(true);
-    connect(tmp_entity , SIGNAL(toggled(bool)), this, SLOT(toggleEntity(bool)));
-    this->entities->append(tmp_entity);
+      EntityTypeButton* tmp_entity =new EntityTypeButton(ui->entityBoxContent,starEntityType);
+      ui->verticalLayout->addWidget(tmp_entity);
+      connect(tmp_entity , SIGNAL(toggled(bool)), this, SLOT(toggleEntity(bool)));
+      this->entities->append(tmp_entity);
     }
-
-    QIcon q2(":/icons/Computer.png");
-
 
     for (int i=0;i<2 ;i++)
     {
-
-    QPushButton* tmp_entity =new QPushButton(ui->entityBoxContent);
-    ui->verticalLayout->addWidget(tmp_entity);
-    tmp_entity->setMaximumSize(50,50);
-    tmp_entity->setMinimumSize(50,50);
-    QSize s(50,50);
-    tmp_entity->setIconSize(s);
-    tmp_entity->setCheckable(true);
-    tmp_entity->setIcon(q2);
-    tmp_entity->setAutoExclusive(true);
-    connect(tmp_entity , SIGNAL(toggled(bool)), this, SLOT(toggleEntity(bool)));
-    this->entities->append(tmp_entity);
+      EntityTypeButton* tmp_entity =new EntityTypeButton(ui->entityBoxContent,compEntityType);
+      ui->verticalLayout->addWidget(tmp_entity);
+      connect(tmp_entity , SIGNAL(toggled(bool)), this, SLOT(toggleEntity(bool)));
+      this->entities->append(tmp_entity);
     }
 
-
-
-   }
+ }
 
 
 
@@ -83,7 +65,7 @@ void MainForm::toggleEntity(bool selection)
             {
                 if ((*entities)[i]->isChecked())
                 {
-                   activeDialog->newEntity=(*entities)[i]->icon().pixmap(50,50);
+                   activeDialog->newEntityType=(*entities)[i]->entityType;
                    break;
                 }
             }

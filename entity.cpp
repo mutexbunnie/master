@@ -3,18 +3,16 @@
 #include <QDebug>
 #include <QIcon>
 
-Entity::Entity(QWidget *parent): QLabel(parent)
+Entity::Entity(QWidget *parent,EntityType *entityType): QLabel(parent)
 {
         this->setObjectName("label");
         int x=qrand() % 1024;
         int y=qrand() % 1024;
-        this->setGeometry(QRect(x, y, 64, 64));
-        this->setPixmap(QPixmap(QString::fromUtf8(":/icons/star.png")));
+        this->setGeometry(QRect(x, y, 25, 25));
+        this->setPixmap(*(entityType->normalPixmap));
         this->setScaledContents(true);
         this->setMouseTracking(true);
         entityActive=false;
-        moveable=false;
-        moved=false;
         this->show();
         dx=0;
         dy=0;
@@ -24,12 +22,8 @@ Entity::Entity(QWidget *parent): QLabel(parent)
         action_del=new QAction("Delete",this);
         menu->addAction(action_del);
         connect(action_del, SIGNAL(triggered()), this, SLOT(del()));
-
-        normalPixmap= new QPixmap(*this->pixmap());
-
-        QIcon icon;
-        icon.addPixmap(*normalPixmap);
-        selectedPixmap= new QPixmap( icon.pixmap(this->width(),this->height(),QIcon::Selected,QIcon::On));
+        moveable=false;
+        this->entityType=entityType;
 
 }
 
@@ -59,7 +53,6 @@ void Entity:: addConnection(Entity* entity)
 void Entity::mousePressEvent ( QMouseEvent * event )
 {
     moveable=true;
-    moved=true;
 
     if  (((ActiveDialog*)(this->parent()))->selectionActive)
     {
@@ -78,10 +71,16 @@ void Entity::mousePressEvent ( QMouseEvent * event )
                 qDebug()<<"Selected";
                  ((ActiveDialog*)(this->parent()))->activeEntity=this;
                  this->entityActive=true;
-                 this->setPixmap(*selectedPixmap);
+                 this->setPixmap(*(entityType->selectedPixmap));
                }
             }
-
+            else
+            {
+                qDebug()<<"Deselected";
+                this->entityActive=false;
+                ((ActiveDialog*)(this->parent()))->activeEntity=0;
+                this->setPixmap(*(entityType->normalPixmap));
+             }
      }
 }
 
@@ -92,9 +91,7 @@ void Entity::mouseMoveEvent (QMouseEvent * event)
         this->parentWidget()->update();
          if (moveable)
         {
-             qDebug()<<"Moved!";
-           moved=false;
-           this->setGeometry(this->x()+event->x() -this->size().width()/2  , this->y()+event->y() -this->size().height()/2 ,this->size().width(),this->size().height());
+            this->setGeometry(this->x()+event->x() -this->size().width()/2  , this->y()+event->y() -this->size().height()/2 ,this->size().width(),this->size().height());
 
         }
     }
@@ -118,13 +115,6 @@ void  Entity::mouseReleaseEvent ( QMouseEvent * event )
 
      moveable=false;
 
-    if (!moved)
-    {
-       qDebug()<<"Deselected";
-       this->entityActive=false;
-       //((ActiveDialog*)(this->parent()))->activeEntity=0;
-       this->setPixmap(*normalPixmap);
-    }
 
 }
 

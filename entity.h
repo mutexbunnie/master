@@ -8,13 +8,14 @@
 #include <QMouseEvent>
 #include <QVector>
 #include <QMenu>
+#include <entitytype.h>
 
 class Entity : public QLabel
 {
     Q_OBJECT
 
 public:
-    Entity(QWidget *parent);
+    Entity(QWidget *parent,EntityType* entityType);
     ~Entity();
     virtual void  mouseMoveEvent    ( QMouseEvent * event );
     virtual void  mousePressEvent   ( QMouseEvent * event );
@@ -23,14 +24,12 @@ public:
     void updatePos();
     bool entityActive;
     bool moveable;
-    bool moved;
     float dx,dy;
     QVector<Entity*> * connection;
     Entity* eParent;
     QMenu* menu;
     QAction* action_del;
-    QPixmap* selectedPixmap;
-    QPixmap* normalPixmap;
+    EntityType* entityType;
 
 
 private slots:

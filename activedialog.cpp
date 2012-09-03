@@ -27,9 +27,9 @@ ActiveDialog::ActiveDialog(QWidget *parent) :
     forceX= new  QVector<QVector <float>* >;
     forceY= new  QVector<QVector <float>* >;
 
-    for( int i=0; i<nr; i++)
+    /*for( int i=0; i<nr; i++)
     {
-        entity->append(new Entity(this));
+        entity->append(new Entity(this,));
         forceX->append( new QVector <float>);
 
         for( int k=0; k<nr; k++)
@@ -45,7 +45,7 @@ ActiveDialog::ActiveDialog(QWidget *parent) :
             (*forceY)[i]->append(0);
         }
 
-    }
+    }*/
 
      timer = new QTimer(this);
      connect (timer, SIGNAL(timeout()), this, SLOT(velocityUpdate()));
@@ -98,8 +98,9 @@ void ActiveDialog::mousePressEvent ( QMouseEvent * event )
    {
         qDebug()<<event->x()<<event->y();
 
-        Entity* tmpEntity=new Entity(this);
-        tmpEntity->setPixmap(newEntity);
+
+        Entity* tmpEntity=new Entity(this,newEntityType);
+
         entity->append(tmpEntity);
 
          forceX->append( new QVector <float>);

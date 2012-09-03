@@ -3,6 +3,7 @@
 #include "activedialog.h"
 #include <QDialog>
 #include <QScrollArea>
+#include "entitytypebutton.h"
 
 namespace Ui {
 class MainForm;
@@ -21,7 +22,7 @@ public:
     QScrollArea* scrollArea2;
     ActiveDialog* activeDialog2;
 
-    QVector<QPushButton *>* entities;
+    QVector<EntityTypeButton *>* entities;
 
     bool selectionState;
 

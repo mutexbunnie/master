@@ -22,7 +22,7 @@ public:
     void  mouseMoveEvent(QMouseEvent *event);
     void  mouseReleaseEvent(QMouseEvent *event);
     bool selectionActive;
-    QPixmap newEntity;
+    EntityType* newEntityType;
 
     Entity* activeEntity;
 
