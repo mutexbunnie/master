@@ -21,8 +21,9 @@ public:
     virtual void  mousePressEvent   ( QMouseEvent * event );
     virtual void  mouseReleaseEvent ( QMouseEvent * event );
     void addConnection(Entity*);
+    void setSelected(bool selected);
     void updatePos();
-    bool entityActive;
+
     bool moveable;
     float dx,dy;
     QVector<Entity*> * connection;
@@ -31,6 +32,9 @@ public:
     QAction* action_del;
     EntityType* entityType;
 
+
+private:
+        bool entityActive;
 
 private slots:
     void del();

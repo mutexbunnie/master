@@ -50,6 +50,26 @@ void Entity:: addConnection(Entity* entity)
 }
 
 
+void Entity::setSelected(bool selected)
+{
+
+    if (selected)
+    {
+     qDebug()<<"Selected";
+     this->entityActive=true;
+     this->setPixmap(*(entityType->selectedPixmap));
+
+    }
+
+     else
+     {
+         qDebug()<<"Deselected";
+         this->entityActive=false;
+         this->setPixmap(*(entityType->normalPixmap));
+      }
+
+}
+
 void Entity::mousePressEvent ( QMouseEvent * event )
 {
     moveable=true;
@@ -68,18 +88,15 @@ void Entity::mousePressEvent ( QMouseEvent * event )
                }
               else
               {
-                qDebug()<<"Selected";
+                 this->setSelected(true);
                  ((ActiveDialog*)(this->parent()))->activeEntity=this;
-                 this->entityActive=true;
-                 this->setPixmap(*(entityType->selectedPixmap));
                }
             }
             else
             {
-                qDebug()<<"Deselected";
-                this->entityActive=false;
+                 this->setSelected(false);
                 ((ActiveDialog*)(this->parent()))->activeEntity=0;
-                this->setPixmap(*(entityType->normalPixmap));
+
              }
      }
 }

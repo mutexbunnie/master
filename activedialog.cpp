@@ -68,7 +68,13 @@ ActiveDialog::ActiveDialog(QWidget *parent) :
 
            for( int i=0; i<entity->size(); i++)
            {
-               if (rubberBand->geometry().intersects((*entity)[i]->geometry()))    qDebug()<<i<<" has been selected" << rubberBand->geometry() <<  (*entity)[i]->geometry();
+               if (rubberBand->geometry().intersects((*entity)[i]->geometry()))
+
+               {
+                   qDebug()<<i<<" has been selected" << rubberBand->geometry() <<  (*entity)[i]->geometry();
+
+                   (*entity)[i]-> setSelected(true);
+               }
            }
                  // determine selection, for example using QRect::intersects() and QRect::contains().
        }
@@ -227,7 +233,7 @@ void ActiveDialog::velocityUpdate()
 
         for( int i=0; i<entity->size(); i++)
         {
-         ((*entity)[i])->updatePos();
+        // ((*entity)[i])->updatePos();
         }
         update();
 
