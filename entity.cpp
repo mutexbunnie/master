@@ -8,10 +8,10 @@ Entity::Entity(QWidget *parent,EntityType *entityType): QLabel(parent)
         this->setObjectName("label");
         int x=qrand() % 1024;
         int y=qrand() % 1024;
-        this->setGeometry(QRect(x, y, 25, 25));
+        this->setGeometry(QRect(x, y, 50, 50));
         this->setPixmap(*(entityType->normalPixmap));
         this->setScaledContents(true);
-        this->setMouseTracking(true);
+        //this->setMouseTracking(true);
         entityActive=false;
         this->show();
         dx=0;
@@ -24,6 +24,7 @@ Entity::Entity(QWidget *parent,EntityType *entityType): QLabel(parent)
         connect(action_del, SIGNAL(triggered()), this, SLOT(del()));
         moveable=false;
         this->entityType=entityType;
+
 
 }
 
@@ -72,66 +73,19 @@ void Entity::setSelected(bool selected)
 
 void Entity::mousePressEvent ( QMouseEvent * event )
 {
-    moveable=true;
 
-    if  (((ActiveDialog*)(this->parent()))->selectionActive)
-    {
-            if (entityActive==false)
-            {
-               if (((ActiveDialog*)(this->parent()))->activeEntity!=0)
-               {
-                   addConnection(((ActiveDialog*)(this->parent()))->activeEntity);
-                   ((ActiveDialog*)(this->parent()))->activeEntity->addConnection(this);
+       ((ActiveDialog*)(this->parent()))->clickWidget=true;
+       ((ActiveDialog*)(this->parent()))->setActiveEntity(this);
 
-                   if (this->eParent==0) this->eParent=((ActiveDialog*)(this->parent()))->activeEntity;
-                   ((ActiveDialog*)(this->parent()))->activeEntity=0;
-               }
-              else
-              {
-                 this->setSelected(true);
-                 ((ActiveDialog*)(this->parent()))->activeEntity=this;
-               }
-            }
-            else
-            {
-                 this->setSelected(false);
-                ((ActiveDialog*)(this->parent()))->activeEntity=0;
-
-             }
-     }
-}
-
-void Entity::mouseMoveEvent (QMouseEvent * event)
-{
-   if (((ActiveDialog*)(this->parent()))->selectionActive)
-    {
-        this->parentWidget()->update();
-         if (moveable)
-        {
-            this->setGeometry(this->x()+event->x() -this->size().width()/2  , this->y()+event->y() -this->size().height()/2 ,this->size().width(),this->size().height());
-
-        }
-    }
+       event->ignore();
 }
 
 
 
-void  Entity::mouseReleaseEvent ( QMouseEvent * event )
+
+void  Entity::showMenu()
 {
-    if (((ActiveDialog*)(this->parent()))->selectionActive)
-
-    {
-
-
-         if (event->button()==Qt::RightButton)
-         {
-            menu->exec(event->globalPos());
-
-         }
-    }
-
-     moveable=false;
-
+    menu->exec(((ActiveDialog*)(this->parent()))->mapToGlobal(this->pos()));
 
 }
 

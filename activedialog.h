@@ -22,9 +22,14 @@ public:
     void  mouseMoveEvent(QMouseEvent *event);
     void  mouseReleaseEvent(QMouseEvent *event);
     bool selectionActive;
+    bool mousePressed;
+    bool clickWidget;
+    bool entityMoved;
+    void setActiveEntity(Entity*);
+
     EntityType* newEntityType;
 
-    Entity* activeEntity;
+
 
 
     ~ActiveDialog();
@@ -38,7 +43,11 @@ private:
         QVector<QVector <float>*  > * forceY;
         QTimer* timer;
         QPoint origin;
+        QPoint mouseMoveStart;
         QRubberBand* rubberBand;
+        Entity* prevActiveEntity;
+        Entity* activeEntity;
+
 
 
 

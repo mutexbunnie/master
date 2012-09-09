@@ -17,11 +17,13 @@ class Entity : public QLabel
 public:
     Entity(QWidget *parent,EntityType* entityType);
     ~Entity();
-    virtual void  mouseMoveEvent    ( QMouseEvent * event );
-    virtual void  mousePressEvent   ( QMouseEvent * event );
-    virtual void  mouseReleaseEvent ( QMouseEvent * event );
+     virtual void  mousePressEvent   ( QMouseEvent * event );
+    /*virtual void  mouseMoveEvent    ( QMouseEvent * event );
+     virtual void  mouseReleaseEvent ( QMouseEvent * event );*/
+     void showMenu();
     void addConnection(Entity*);
     void setSelected(bool selected);
+
     void updatePos();
 
     bool moveable;
@@ -31,10 +33,11 @@ public:
     QMenu* menu;
     QAction* action_del;
     EntityType* entityType;
+    bool entityActive;
+
+//private:
 
 
-private:
-        bool entityActive;
 
 private slots:
     void del();

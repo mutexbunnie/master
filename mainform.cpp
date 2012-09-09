@@ -30,21 +30,27 @@ MainForm::MainForm(QDialog *parent) : QDialog(parent), ui(new Ui::MainForm)
 
     EntityType* compEntityType =new EntityType(":/icons/Computer.png");
 
+    ui->entityBoxLayout->setAlignment(Qt::AlignTop);
+
+
+
     for (int i=0;i<2 ;i++)
     {
       EntityTypeButton* tmp_entity =new EntityTypeButton(ui->entityBoxContent,starEntityType);
-      ui->verticalLayout->addWidget(tmp_entity);
+      ui->entityBoxLayout->addWidget(tmp_entity);
       connect(tmp_entity , SIGNAL(toggled(bool)), this, SLOT(toggleEntity(bool)));
       this->entities->append(tmp_entity);
     }
 
-    for (int i=0;i<2 ;i++)
+    for (int i=0;i<8 ;i++)
     {
       EntityTypeButton* tmp_entity =new EntityTypeButton(ui->entityBoxContent,compEntityType);
-      ui->verticalLayout->addWidget(tmp_entity);
+      ui->entityBoxLayout->addWidget(tmp_entity);
       connect(tmp_entity , SIGNAL(toggled(bool)), this, SLOT(toggleEntity(bool)));
       this->entities->append(tmp_entity);
     }
+    QSpacerItem* verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    ui->entityBoxLayout->addItem(verticalSpacer);
 
  }
 

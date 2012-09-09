@@ -23,25 +23,75 @@
    <string>Form</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_2">
-   <item alignment="Qt::AlignHCenter">
+   <item>
     <widget class="QDockWidget" name="entityBox">
      <property name="minimumSize">
       <size>
-       <width>100</width>
-       <height>80</height>
+       <width>80</width>
+       <height>98</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>80</width>
+       <height>524287</height>
       </size>
      </property>
      <property name="floating">
       <bool>false</bool>
      </property>
-     <widget class="QWidget" name="entityBoxContent">
-      <property name="maximumSize">
-       <size>
-        <width>100</width>
-        <height>16777215</height>
-       </size>
+     <widget class="QScrollArea" name="scrollArea_2">
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout"/>
+      <property name="frameShadow">
+       <enum>QFrame::Plain</enum>
+      </property>
+      <property name="verticalScrollBarPolicy">
+       <enum>Qt::ScrollBarAsNeeded</enum>
+      </property>
+      <property name="horizontalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOff</enum>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      </property>
+      <widget class="QWidget" name="entityBoxContent">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>80</width>
+         <height>653</height>
+        </rect>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <layout class="QVBoxLayout" name="entityBoxLayout">
+        <property name="spacing">
+         <number>30</number>
+        </property>
+        <property name="leftMargin">
+         <number>5</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>5</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+       </layout>
+      </widget>
      </widget>
     </widget>
    </item>
@@ -156,7 +206,7 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>884</width>
+               <width>904</width>
                <height>561</height>
               </rect>
              </property>

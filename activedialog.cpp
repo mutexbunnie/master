@@ -10,8 +10,11 @@ ActiveDialog::ActiveDialog(QWidget *parent) :
     //this->setAutoFillBackground(true);
     rubberBand=0;
 
+    clickWidget=false;
     selectionActive=true;
-
+    mousePressed=false;
+    prevActiveEntity=0;
+    activeEntity=0;
     nr=1;
     cConstant=100000;
     hConstant=0.1;
@@ -53,92 +56,206 @@ ActiveDialog::ActiveDialog(QWidget *parent) :
  }
 
 
+void ActiveDialog::setActiveEntity(Entity* e)
+{
+  prevActiveEntity=activeEntity;
+  activeEntity=e;
+}
+
+void ActiveDialog::mousePressEvent ( QMouseEvent * event )
+{
+  if (event->button()==Qt::LeftButton)
+  {
+         mousePressed=true;
+         mouseMoveStart= event->pos();
+         if (selectionActive)
+         {
+
+              if (!clickWidget)
+              {
+
+                   origin = event->pos();
+                   if (rubberBand==0)
+                   {
+                       rubberBand = new QRubberBand(QRubberBand::Rectangle, this);
+                       qDebug()<< rubberBand->style();
+                   }
+                   rubberBand->setWindowOpacity(0.0);
+
+                   rubberBand->setGeometry(QRect(origin, QSize()));
+                   rubberBand->show();
+              }
+              else
+              {
+                                if  (activeEntity->entityActive==false)
+                                 {
+
+
+                                    if (prevActiveEntity!=0)
+                                    {
+                                        activeEntity->addConnection(prevActiveEntity);
+                                        prevActiveEntity->addConnection(activeEntity);
+
+                                        if (activeEntity->eParent==0) activeEntity->eParent=prevActiveEntity;
+
+                                        activeEntity=0;
+                                        prevActiveEntity=0;
+                                          qDebug() << "Linked";
+                                    }
+                                    else
+                                    {
+                                          qDebug() << "Clicked1";
+                                          activeEntity->setSelected(true);
+
+                                    }
+
+                              }
+                                else
+                               {
+                                    int sum=0;
+                                    for( int i=0; i<entity->size(); i++)
+                                     {
+                                         if  ((*entity)[i]->entityActive) sum++;
+                                         if (sum>2) break;
+                                     }
+
+                                    if (sum<2)
+                                    {
+                                        activeEntity->setSelected(false);
+                                        activeEntity=0;
+                                    }
+
+                                }
+              }
+
+
+         }
+         else
+         {
+                     Entity* tmpEntity=new Entity(this,newEntityType);
+                     entity->append(tmpEntity);
+
+                     forceX->append( new QVector <float>);
+
+                     for( int k=0; k<entity->size(); k++)
+                     {
+                         (*forceX)[forceX->size()-1]->append(0);
+                     }
+
+                     for( int k=0; k<entity->size()-1; k++)
+                     {
+                         (*forceX)[k]->append(0);
+                     }
+
+
+                    forceY->append( new QVector <float>);
+
+                    for( int k=0; k<entity->size(); k++)
+                    {
+                        (*forceY)[forceY->size()-1]->append(0);
+                    }
+
+                    for( int k=0; k<entity->size()-1; k++)
+                    {
+                        (*forceY)[k]->append(0);
+                    }
+
+                    (*entity)[entity->size()-1]->move(event->x(),event->y());
+                    update();
+         }
+  }
+}
+
 
  void ActiveDialog::mouseMoveEvent(QMouseEvent *event)
  {
-     if (rubberBand && selectionActive) rubberBand->setGeometry(QRect(origin, event->pos()).normalized());
+   if (event->button()==Qt::LeftButton)
+   {
+         if (mousePressed)
+         {
+              if (selectionActive)
+              {
+                  if (!clickWidget)
+                  {
+                     if (rubberBand) rubberBand->setGeometry(QRect(origin, event->pos()).normalized());
+                  }
+                  else
+                  {
+                       for( int i=0; i<entity->size(); i++)
+                        {
+                            if ((*entity)[i]->entityActive)
+                            {
+                                        (*entity)[i]->setGeometry(
+                                       (*entity)[i]->x()+((event->pos()).x() - mouseMoveStart.x()),
+                                       (*entity)[i]->y()+((event->pos()).y() - mouseMoveStart.y()),
+                                       (*entity)[i]->width(),
+                                       (*entity)[i]->height()
+                                       );
+                             qDebug() <<  "Xdiff:" <<(event->pos()).x() - mouseMoveStart.x() << " Ydiff:" << (event->pos()).y() - mouseMoveStart.y() ;
+                            }
+                        }
+                        update();
+                        mouseMoveStart= event->pos();
+                        entityMoved=true;
+                }
+              }
 
+         }
+   }
  }
 
  void ActiveDialog::mouseReleaseEvent(QMouseEvent *event)
  {
-     if (selectionActive)
-     {
-         if (rubberBand) rubberBand->hide();
+    if (selectionActive)
+    {
+            if (event->button()==Qt::LeftButton)
+             {
+                if (!clickWidget)
+                {
+                    if (rubberBand)
+                    {
+                         rubberBand->hide();
+                         for( int i=0; i<entity->size(); i++)
+                         {
+                          (*entity)[i]-> setSelected(false);
+                         }
 
-           for( int i=0; i<entity->size(); i++)
+                         for( int i=0; i<entity->size(); i++)
+                         {
+                           if (rubberBand->geometry().intersects((*entity)[i]->geometry()))
+
+                           {
+                               qDebug()<<i<<" has been selected" << rubberBand->geometry() <<  (*entity)[i]->geometry();
+
+                               (*entity)[i]-> setSelected(true);
+                           }
+                         }
+                    }
+                }
+                else
+                {
+                  if (entityMoved)
+                  {
+                           activeEntity=0;
+                           prevActiveEntity=0;
+                  }
+                }
+                 clickWidget=false;
+                 mousePressed=false;
+                 entityMoved=false;
+            }
+
+           else  if (event->button()==Qt::RightButton)
            {
-               if (rubberBand->geometry().intersects((*entity)[i]->geometry()))
-
-               {
-                   qDebug()<<i<<" has been selected" << rubberBand->geometry() <<  (*entity)[i]->geometry();
-
-                   (*entity)[i]-> setSelected(true);
-               }
+              if (activeEntity!=0)
+              {
+                      activeEntity->showMenu();
+              }
            }
-                 // determine selection, for example using QRect::intersects() and QRect::contains().
-       }
+    }
+
  }
 
-
-
-void ActiveDialog::mousePressEvent ( QMouseEvent * event )
-{
-
-   if (selectionActive)
-    {
-       origin = event->pos();
-        if (!rubberBand)
-        {
-
-            rubberBand = new QRubberBand(QRubberBand::Rectangle, this);
-
-            qDebug()<< rubberBand->style();
-        }
-        rubberBand->setWindowOpacity(0.0);
-
-        rubberBand->setGeometry(QRect(origin, QSize()));
-        rubberBand->show();
-   }
-   else
-   {
-        qDebug()<<event->x()<<event->y();
-
-
-        Entity* tmpEntity=new Entity(this,newEntityType);
-
-        entity->append(tmpEntity);
-
-         forceX->append( new QVector <float>);
-
-         for( int k=0; k<entity->size(); k++)
-         {
-             (*forceX)[forceX->size()-1]->append(0);
-         }
-
-         for( int k=0; k<entity->size()-1; k++)
-         {
-             (*forceX)[k]->append(0);
-         }
-
-
-        forceY->append( new QVector <float>);
-
-        for( int k=0; k<entity->size(); k++)
-        {
-            (*forceY)[forceY->size()-1]->append(0);
-        }
-
-        for( int k=0; k<entity->size()-1; k++)
-        {
-            (*forceY)[k]->append(0);
-        }
-
-        (*entity)[entity->size()-1]->move(event->x(),event->y());
-        update();
-   }
-
-}
 
 void ActiveDialog::paintEvent(QPaintEvent * event)
 {
@@ -152,6 +269,12 @@ void ActiveDialog::paintEvent(QPaintEvent * event)
                           (*((*entity)[i])->connection)[k]->x()+(*((*entity)[i])->connection)[k]->width()/2,
                           (*((*entity)[i])->connection)[k]->y() +(*((*entity)[i])->connection)[k]->height()/2
                          );
+
+	   painter.setRenderHint(QPainter::Antialiasing, true);
+
+             QPen p;
+            p.setWidth(2);
+             painter.setPen(p);
              painter.drawLine(line);
         }
 
@@ -279,3 +402,21 @@ ActiveDialog::~ActiveDialog()
 //               qDebug()<<i<< k <<forceX[i][k]<< forceY[i][k];
 
 //        }*/
+
+
+/*if (((ActiveDialog*)(this->parent()))->selectionActive)
+ {
+     this->parentWidget()->update();
+      if (moveable)
+     {
+
+         this->setGeometry(this->x()+event->x() -this->size().width()/2  , this->y()+event->y() -this->size().height()/2 ,this->size().width(),this->size().height());
+         this->setGeometry(
+
+                             this->x()+event->x() -this->size().width()/2,
+                             this->y()+event->y() -this->size().height()/2,
+                             this->size().width(),
+                             this->size().height()
+                          );
+     }
+ }*/
