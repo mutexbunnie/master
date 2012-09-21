@@ -26,6 +26,7 @@ public:
     bool clickWidget;
     bool entityMoved;
     void setActiveEntity(Entity*);
+    void addEntity(Entity*,int,int);
 
     EntityType* newEntityType;
 

@@ -3,14 +3,20 @@
 
 #include <QString>
 #include <QPixmap>
+#include "fieldmap.h"
 
 class EntityType
 {
 public:
-    EntityType(QString iconPath);
+    EntityType();
+    void addIcon(QString iconPath);
+    void setFieldNum(int fieldNum);
+
+
     QString iconPath;
     QPixmap* selectedPixmap;
     QPixmap* normalPixmap;
+    FieldMap*  fieldMap;
 
 };
 

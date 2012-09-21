@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
+QT += sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -17,13 +18,16 @@ SOURCES += main.cpp\
     entity.cpp \
     activedialog.cpp \
     entitytype.cpp \
-    entitytypebutton.cpp
+    entitytypebutton.cpp \
+    fieldmap.cpp
 
 HEADERS  +=mainform.h \
     entity.h \
     activedialog.h \
     entitytype.h \
-    entitytypebutton.h
+    entitytypebutton.h \
+    fielddescription.h \
+    fieldmap.h
 
 FORMS += \
     mainform.ui

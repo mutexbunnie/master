@@ -5,6 +5,11 @@
 
 Entity::Entity(QWidget *parent,EntityType *entityType): QLabel(parent)
 {
+
+        this->entityType=entityType;
+        stringFields=new QString[entityType->fieldMap->getStringFields()];
+        intFields= new int[entityType->fieldMap->getintFields()];
+
         this->setObjectName("label");
         int x=qrand() % 1024;
         int y=qrand() % 1024;
@@ -23,9 +28,6 @@ Entity::Entity(QWidget *parent,EntityType *entityType): QLabel(parent)
         menu->addAction(action_del);
         connect(action_del, SIGNAL(triggered()), this, SLOT(del()));
         moveable=false;
-        this->entityType=entityType;
-
-
 }
 
 
@@ -87,6 +89,18 @@ void  Entity::showMenu()
 {
     menu->exec(((ActiveDialog*)(this->parent()))->mapToGlobal(this->pos()));
 
+}
+
+
+
+void Entity::addStringField(QString fieldValue,QString fieldName)
+{
+    stringFields[entityType->fieldMap->getArrPos(fieldName)]=fieldValue;
+}
+
+void Entity::addIntField(int fieldValue,QString fieldName)
+{
+        intFields[entityType->fieldMap->getArrPos(fieldName)]=fieldValue;
 }
 
 Entity::~Entity()

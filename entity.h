@@ -35,8 +35,12 @@ public:
     EntityType* entityType;
     bool entityActive;
 
-//private:
+    void addStringField(QString fieldValue,QString fieldName);
+    void addIntField(int fieldValue,QString fieldName);
 
+private:
+    QString* stringFields;
+    int* intFields;
 
 
 private slots:

@@ -30,27 +30,7 @@ ActiveDialog::ActiveDialog(QWidget *parent) :
     forceX= new  QVector<QVector <float>* >;
     forceY= new  QVector<QVector <float>* >;
 
-    /*for( int i=0; i<nr; i++)
-    {
-        entity->append(new Entity(this,));
-        forceX->append( new QVector <float>);
-
-        for( int k=0; k<nr; k++)
-        {
-            (*forceX)[i]->append(0);
-        }
-
-
-        forceY->append( new QVector <float>);
-
-        for( int k=0; k<nr; k++)
-        {
-            (*forceY)[i]->append(0);
-        }
-
-    }*/
-
-     timer = new QTimer(this);
+         timer = new QTimer(this);
      connect (timer, SIGNAL(timeout()), this, SLOT(velocityUpdate()));
      timer->start(100);
  }
@@ -64,6 +44,7 @@ void ActiveDialog::setActiveEntity(Entity* e)
 
 void ActiveDialog::mousePressEvent ( QMouseEvent * event )
 {
+
   if (event->button()==Qt::LeftButton)
   {
          mousePressed=true;
@@ -133,35 +114,7 @@ void ActiveDialog::mousePressEvent ( QMouseEvent * event )
          else
          {
                      Entity* tmpEntity=new Entity(this,newEntityType);
-                     entity->append(tmpEntity);
-
-                     forceX->append( new QVector <float>);
-
-                     for( int k=0; k<entity->size(); k++)
-                     {
-                         (*forceX)[forceX->size()-1]->append(0);
-                     }
-
-                     for( int k=0; k<entity->size()-1; k++)
-                     {
-                         (*forceX)[k]->append(0);
-                     }
-
-
-                    forceY->append( new QVector <float>);
-
-                    for( int k=0; k<entity->size(); k++)
-                    {
-                        (*forceY)[forceY->size()-1]->append(0);
-                    }
-
-                    for( int k=0; k<entity->size()-1; k++)
-                    {
-                        (*forceY)[k]->append(0);
-                    }
-
-                    (*entity)[entity->size()-1]->move(event->x(),event->y());
-                    update();
+                     addEntity(tmpEntity,event->x(),event->y());
          }
   }
 }
@@ -169,8 +122,6 @@ void ActiveDialog::mousePressEvent ( QMouseEvent * event )
 
  void ActiveDialog::mouseMoveEvent(QMouseEvent *event)
  {
-   if (event->button()==Qt::LeftButton)
-   {
          if (mousePressed)
          {
               if (selectionActive)
@@ -202,7 +153,7 @@ void ActiveDialog::mousePressEvent ( QMouseEvent * event )
 
          }
    }
- }
+
 
  void ActiveDialog::mouseReleaseEvent(QMouseEvent *event)
  {
@@ -370,6 +321,41 @@ ActiveDialog::~ActiveDialog()
       }
 
       delete[] entity;*/
+}
+
+void ActiveDialog:: addEntity(Entity* newEntity,int x,int y)
+{
+
+    entity->append(newEntity);
+
+    forceX->append( new QVector <float>);
+
+    for( int k=0; k<entity->size(); k++)
+    {
+        (*forceX)[forceX->size()-1]->append(0);
+    }
+
+    for( int k=0; k<entity->size()-1; k++)
+    {
+        (*forceX)[k]->append(0);
+    }
+
+
+    forceY->append( new QVector <float>);
+
+    for( int k=0; k<entity->size(); k++)
+    {
+       (*forceY)[forceY->size()-1]->append(0);
+    }
+
+    for( int k=0; k<entity->size()-1; k++)
+    {
+       (*forceY)[k]->append(0);
+    }
+
+    (*entity)[entity->size()-1]->move(x,y);
+    update();
+
 }
 
 

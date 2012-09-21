@@ -7,10 +7,10 @@
 
 
 
-MainForm::MainForm(QDialog *parent) : QDialog(parent), ui(new Ui::MainForm)
+MainForm::MainForm(QVector<EntityType*>* entityTypes, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainForm)
 {
     ui->setupUi(this);
-    ui->selection->setChecked(true);
+    ui->actionSelection->setChecked(true);
     scrollArea = new QScrollArea(0);
     activeDialog= new ActiveDialog(0);
     scrollArea->setWidget(activeDialog);
@@ -23,32 +23,21 @@ MainForm::MainForm(QDialog *parent) : QDialog(parent), ui(new Ui::MainForm)
     scrollArea2->setWidget(activeDialog2);
     ui->tabWidget->addTab(scrollArea2 ,"Sheet 2");
 
-    connect(ui->selection, SIGNAL(toggled(bool)), this, SLOT(toggleSelectionState(bool)));
-    this->entities = new QVector<EntityTypeButton*>();
+    connect(ui->actionSelection, SIGNAL(toggled(bool)), this, SLOT(toggleSelectionState(bool)));
+    this->entityTypeButtons = new QVector<EntityTypeButton*>();
 
-    EntityType* starEntityType =new EntityType(":/icons/star.png");
-
-    EntityType* compEntityType =new EntityType(":/icons/Computer.png");
 
     ui->entityBoxLayout->setAlignment(Qt::AlignTop);
 
 
-
-    for (int i=0;i<2 ;i++)
+    for (int i=0;i<entityTypes->size() ;i++)
     {
-      EntityTypeButton* tmp_entity =new EntityTypeButton(ui->entityBoxContent,starEntityType);
+      EntityTypeButton* tmp_entity =new EntityTypeButton(ui->entityBoxContent,(*entityTypes)[i]);
       ui->entityBoxLayout->addWidget(tmp_entity);
       connect(tmp_entity , SIGNAL(toggled(bool)), this, SLOT(toggleEntity(bool)));
-      this->entities->append(tmp_entity);
+      this->entityTypeButtons->append(tmp_entity);
     }
 
-    for (int i=0;i<8 ;i++)
-    {
-      EntityTypeButton* tmp_entity =new EntityTypeButton(ui->entityBoxContent,compEntityType);
-      ui->entityBoxLayout->addWidget(tmp_entity);
-      connect(tmp_entity , SIGNAL(toggled(bool)), this, SLOT(toggleEntity(bool)));
-      this->entities->append(tmp_entity);
-    }
     QSpacerItem* verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
     ui->entityBoxLayout->addItem(verticalSpacer);
 
@@ -63,15 +52,15 @@ void MainForm::toggleEntity(bool selection)
     {
             if (selectionState)
             {
-              ui->selection->setChecked(false);
+              ui->actionSelection->setChecked(false);
             }
 
 
-            for (int i=0; i<entities->size(); i++)
+            for (int i=0; i<entityTypeButtons->size(); i++)
             {
-                if ((*entities)[i]->isChecked())
+                if ((*entityTypeButtons)[i]->isChecked())
                 {
-                   activeDialog->newEntityType=(*entities)[i]->entityType;
+                   activeDialog->newEntityType=(*entityTypeButtons)[i]->entityType;
                    break;
                 }
             }
@@ -86,18 +75,18 @@ void MainForm::toggleSelectionState(bool selection)
     if (selection)
     {
 
-                for (int i=0; i<entities->size(); i++)
+                for (int i=0; i<entityTypeButtons->size(); i++)
                 {
-                    (*entities)[i]->setAutoExclusive(false);
+                    (*entityTypeButtons)[i]->setAutoExclusive(false);
                 }
-                for (int i=0; i<entities->size(); i++)
+                for (int i=0; i<entityTypeButtons->size(); i++)
                 {
-                    (*entities)[i]->setChecked(false);
+                    (*entityTypeButtons)[i]->setChecked(false);
                 }
 
-                for (int i=0; i<entities->size(); i++)
+                for (int i=0; i<entityTypeButtons->size(); i++)
                 {
-                    (*entities)[i]->setAutoExclusive(true);
+                    (*entityTypeButtons)[i]->setAutoExclusive(true);
                 }
     }
     selectionState=selection;
@@ -111,4 +100,12 @@ void MainForm::toggleSelectionState(bool selection)
 MainForm::~MainForm()
 {
    // delete ui;
+}
+
+void MainForm::on_pushButton_toggled(bool checked)
+{
+    if (checked)  ui->entityBox->show();
+    else ui->entityBox->hide();
+
+
 }
