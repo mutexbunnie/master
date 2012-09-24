@@ -1,0 +1,20 @@
+#ifndef DATASOURCE_H
+#define DATASOURCE_H
+#include <QString>
+#include "stringintturple.h"
+
+class DataSourceDescription
+{
+public:
+    DataSourceDescription(QString _name);
+    virtual QVector<StringIntTurple*>* getFields(QString location)=0;
+
+    QString getName() { return name;}
+private:
+   QString name;
+
+
+
+};
+
+#endif // DATASOURCEDESCRIPTION_H

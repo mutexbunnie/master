@@ -1,0 +1,11 @@
+<project name="Test">
+
+	<datasources>
+		<datesource name="db" type="mysql" host="127.0.0.1" user="root" pass="root" db="test"> </datesource>  
+	</datasources>
+
+	<entitytypes>
+		<entitytype name="person" icon=":icons/star.png" datasource="db" datalocation="person" > </entitytype>
+	</entitytypes>
+
+</project> 

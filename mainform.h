@@ -4,7 +4,7 @@
 #include <QDialog>
 #include <QScrollArea>
 #include  <QVector>
-#include  "entitytype.h"
+#include  "projectstore.h"
 #include "entitytypebutton.h"
 
 namespace Ui {
@@ -16,7 +16,7 @@ class MainForm : public QMainWindow
     Q_OBJECT
     
 public:
-    explicit MainForm(QVector<EntityType *> *entityTypes, QWidget *parent = 0);
+    explicit MainForm(ProjectStore* projectStore, QWidget *parent = 0);
     ~MainForm();
     QScrollArea* scrollArea;
     ActiveDialog* activeDialog;
@@ -25,6 +25,8 @@ public:
     ActiveDialog* activeDialog2;
 
     QVector<EntityTypeButton *>* entityTypeButtons;
+
+
 
     bool selectionState;
 

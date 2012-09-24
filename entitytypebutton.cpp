@@ -3,6 +3,7 @@
 EntityTypeButton::EntityTypeButton(QWidget *parent, EntityType *entityType) :  QPushButton(parent)
 {
     this->entityType=entityType;
+    this->setText(this->entityType->name);
 
     this->setMaximumSize(50,50);
     this->setMinimumSize(50,50);

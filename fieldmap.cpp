@@ -1,28 +1,18 @@
 #include "fieldmap.h"
 
 
-FieldMap::FieldMap(int fieldNum)
+FieldMap::FieldMap()
 {
-
-
-    fieldDiscriptions = new FieldDescription*[fieldNum];
-    for (int i=0;i<fieldNum;i++)
-    {
-        fieldDiscriptions[i]=0;
-    }
-
+    this->fieldDescriptions = new QVector<FieldDescription*>;
     stringFields=0;
     intFields=0;
-    fieldMapSize=0;
-    this->fieldNum=fieldNum;
-
 }
 
 
 
 void FieldMap::addField(QString _fieldName,int _fieldType)
 {
-    if ((fieldMapSize+1)>fieldNum) return;
+
 
     int _fieldPos;
     if (_fieldType==0)
@@ -36,20 +26,18 @@ void FieldMap::addField(QString _fieldName,int _fieldType)
         intFields++;
     }
 
-    fieldDiscriptions[fieldMapSize]=new FieldDescription(_fieldName,_fieldType,_fieldPos);
-    fieldMapSize++;
+    fieldDescriptions->append( new FieldDescription(_fieldName,_fieldType,_fieldPos));
 
 }
 
 
  int FieldMap::getArrPos(QString _fieldName)
  {
-     for (int i=0; i<fieldMapSize ;i++)
-
+     for (int i=0; i<fieldDescriptions->size() ;i++)
      {
-         if (fieldDiscriptions[i]->fieldName==_fieldName)
+         if ((*fieldDescriptions)[i]->fieldName==_fieldName)
          {
-          return fieldDiscriptions[i]->arrayPos;
+          return (*fieldDescriptions)[i]->arrayPos;
          }
      }
       return -1;

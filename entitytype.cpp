@@ -3,10 +3,9 @@
 
 EntityType::EntityType()
 {
-
-    fieldMap =0;
-    normalPixmap=0;
-    selectedPixmap=0;
+   normalPixmap=0;
+   selectedPixmap=0;
+   fieldMap=new FieldMap();
 }
 
 
@@ -19,7 +18,22 @@ void EntityType::addIcon(QString iconPath)
 
 }
 
-void  EntityType::setFieldNum(int fieldNum)
+void EntityType::setName(QString _name)
 {
-    fieldMap=new FieldMap(fieldNum);
+  name= _name;
+}
+
+void EntityType::setDataSourceName(QString _datasourceName)
+{
+ datasourcename=_datasourceName;
+}
+
+void EntityType::setDataSourceLocation(QString _dataSourceLocation)
+{
+ datalocation=_dataSourceLocation;
+}
+
+void EntityType::setDataSource(DataSource* _dataSource)
+{
+  datasource=_dataSource;
 }

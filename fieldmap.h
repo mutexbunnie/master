@@ -2,22 +2,23 @@
 #define FIELDMAP_H
 
 #include "fielddescription.h"
+#include <QVector>
+
 class FieldMap
 {
 public:
-    FieldMap(int fieldNum);
+    FieldMap();
 
-    int fieldMapSize;
-    int fieldNum;
+
     int stringFields;
     int intFields;
 
     int getStringFields() {return stringFields;}
     int getintFields() {return intFields;}
 
-    FieldDescription** fieldDiscriptions;
-    void  addField(QString _fieldName,int _fieldType);
-    int getArrPos(QString _fieldName);
+    QVector<FieldDescription*>* fieldDescriptions;
+    void addField  (QString _fieldName,int _fieldType);
+    int  getArrPos (QString _fieldName);
 
 };
 

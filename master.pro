@@ -6,6 +6,7 @@
 
 QT       += core gui
 QT += sql
+QT += xml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -19,7 +20,11 @@ SOURCES += main.cpp\
     activedialog.cpp \
     entitytype.cpp \
     entitytypebutton.cpp \
-    fieldmap.cpp
+    fieldmap.cpp \
+    projectstore.cpp \
+    stringintturple.cpp \
+    datasource.cpp \
+    mysqldatasource.cpp
 
 HEADERS  +=mainform.h \
     entity.h \
@@ -27,7 +32,11 @@ HEADERS  +=mainform.h \
     entitytype.h \
     entitytypebutton.h \
     fielddescription.h \
-    fieldmap.h
+    fieldmap.h \
+    projectstore.h \
+    stringintturple.h \
+    datasource.h \
+    mysqldatasource.h
 
 FORMS += \
     mainform.ui

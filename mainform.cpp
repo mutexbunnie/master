@@ -7,7 +7,7 @@
 
 
 
-MainForm::MainForm(QVector<EntityType*>* entityTypes, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainForm)
+MainForm::MainForm(ProjectStore* projectStore, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainForm)
 {
     ui->setupUi(this);
     ui->actionSelection->setChecked(true);
@@ -30,16 +30,40 @@ MainForm::MainForm(QVector<EntityType*>* entityTypes, QWidget *parent) : QMainWi
     ui->entityBoxLayout->setAlignment(Qt::AlignTop);
 
 
-    for (int i=0;i<entityTypes->size() ;i++)
+    for (int i=0;i<projectStore->entityTypes->size() ;i++)
     {
-      EntityTypeButton* tmp_entity =new EntityTypeButton(ui->entityBoxContent,(*entityTypes)[i]);
-      ui->entityBoxLayout->addWidget(tmp_entity);
-      connect(tmp_entity , SIGNAL(toggled(bool)), this, SLOT(toggleEntity(bool)));
-      this->entityTypeButtons->append(tmp_entity);
+        qDebug()  << projectStore->entityTypes->at(i)->name;
+
+      EntityTypeButton* tmp_entityButton =new EntityTypeButton(ui->entityBoxContent,(*(projectStore->entityTypes))[i]);
+      ui->entityBoxLayout->addWidget(tmp_entityButton);
+      connect(tmp_entityButton , SIGNAL(toggled(bool)), this, SLOT(toggleEntity(bool)));
+      this->entityTypeButtons->append(tmp_entityButton);
+
+      QString location= (*(projectStore->entityTypes))[i]->datalocation;
+
+
+      QVector<QVector<QVariant>*>*  tmp_fields=((*(projectStore->entityTypes))[i])->datasource->getFields(location," 1=1 ");
+
+
+      for (int k=0; k<tmp_fields->size() ;k++)
+          {
+           Entity* tmp_entity = new Entity(activeDialog,(*(projectStore->entityTypes))[i]);
+
+          for (int j=0; j<(*tmp_fields)[k]->size();j++)
+             {
+                   qDebug() <<((*(*tmp_fields)[k])[j]).toString();
+
+                   //if ((*(*(projectStore->entityTypes))[i]->fieldMap->fieldDescriptions)[j]->fieldType==0)
+
+                   //tmp_entity->ad
+             }
+              activeDialog->addEntity(tmp_entity,0,0);
+          }
     }
 
     QSpacerItem* verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
     ui->entityBoxLayout->addItem(verticalSpacer);
+
 
  }
 

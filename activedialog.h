@@ -30,9 +30,6 @@ public:
 
     EntityType* newEntityType;
 
-
-
-
     ~ActiveDialog();
 
 private:
@@ -48,9 +45,6 @@ private:
         QRubberBand* rubberBand;
         Entity* prevActiveEntity;
         Entity* activeEntity;
-
-
-
 
 public slots:
 
