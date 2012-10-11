@@ -93,12 +93,12 @@ void  Entity::showMenu()
 
 
 
-void Entity::addStringField(QString fieldValue,QString fieldName)
+void Entity::addField(QString fieldValue,QString fieldName)
 {
     stringFields[entityType->fieldMap->getArrPos(fieldName)]=fieldValue;
 }
 
-void Entity::addIntField(int fieldValue,QString fieldName)
+void Entity::addField(int fieldValue,QString fieldName)
 {
         intFields[entityType->fieldMap->getArrPos(fieldName)]=fieldValue;
 }

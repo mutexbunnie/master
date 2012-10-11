@@ -39,7 +39,13 @@ MainForm::MainForm(ProjectStore* projectStore, QWidget *parent) : QMainWindow(pa
       connect(tmp_entityButton , SIGNAL(toggled(bool)), this, SLOT(toggleEntity(bool)));
       this->entityTypeButtons->append(tmp_entityButton);
 
-      QString location= (*(projectStore->entityTypes))[i]->datalocation;
+  for (int k=0; k<10 ;k++)
+     {
+      Entity* tmp_entity = new Entity(activeDialog,(*(projectStore->entityTypes))[i]);
+     activeDialog->addEntity(tmp_entity,qrand() % 1024,qrand() % 1024);
+    }
+
+      /*QString location= (*(projectStore->entityTypes))[i]->datalocation;
 
 
       QVector<QVector<QVariant>*>*  tmp_fields=((*(projectStore->entityTypes))[i])->datasource->getFields(location," 1=1 ");
@@ -48,19 +54,18 @@ MainForm::MainForm(ProjectStore* projectStore, QWidget *parent) : QMainWindow(pa
       for (int k=0; k<tmp_fields->size() ;k++)
           {
            Entity* tmp_entity = new Entity(activeDialog,(*(projectStore->entityTypes))[i]);
-
-          for (int j=0; j<(*tmp_fields)[k]->size();j++)
+            for (int j=0; j<(*tmp_fields)[k]->size();j++)
              {
                    qDebug() <<((*(*tmp_fields)[k])[j]).toString();
 
-                   //if ((*(*(projectStore->entityTypes))[i]->fieldMap->fieldDescriptions)[j]->fieldType==0)
-
-                   //tmp_entity->ad
+                   if ((*(*(projectStore->entityTypes))[i]->fieldMap->fieldDescriptions)[j]->fieldType==0)
+                       tmp_entity->addField(  ((*(*tmp_fields)[k])[j]).toString() ,);
+                   else
+                       tmp_entity->addField( ((*(*tmp_fields)[k])[j]).toInt()  );
              }
-              activeDialog->addEntity(tmp_entity,0,0);
-          }
-    }
 
+          }*/
+    }
     QSpacerItem* verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
     ui->entityBoxLayout->addItem(verticalSpacer);
 
