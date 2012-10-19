@@ -10,7 +10,7 @@
 MainForm::MainForm(ProjectStore* projectStore, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainForm)
 {
     ui->setupUi(this);
-    ui->actionSelection->setChecked(true);
+    /*ui->actionSelection->setChecked(true);
     scrollArea = new QScrollArea(0);
     activeDialog= new ActiveDialog(0);
     scrollArea->setWidget(activeDialog);
@@ -45,7 +45,7 @@ MainForm::MainForm(ProjectStore* projectStore, QWidget *parent) : QMainWindow(pa
      activeDialog->addEntity(tmp_entity,qrand() % 1024,qrand() % 1024);
     }
 
-      /*QString location= (*(projectStore->entityTypes))[i]->datalocation;
+      QString location= (*(projectStore->entityTypes))[i]->datalocation;
 
 
       QVector<QVector<QVariant>*>*  tmp_fields=((*(projectStore->entityTypes))[i])->datasource->getFields(location," 1=1 ");
@@ -64,11 +64,11 @@ MainForm::MainForm(ProjectStore* projectStore, QWidget *parent) : QMainWindow(pa
                        tmp_entity->addField( ((*(*tmp_fields)[k])[j]).toInt()  );
              }
 
-          }*/
+          }
     }
     QSpacerItem* verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
     ui->entityBoxLayout->addItem(verticalSpacer);
-
+*/
 
  }
 
