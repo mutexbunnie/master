@@ -24,7 +24,10 @@ SOURCES += main.cpp\
     projectstore.cpp \
     stringintturple.cpp \
     datasource.cpp \
-    mysqldatasource.cpp
+    mysqldatasource.cpp \
+    graphicsscene.cpp \
+    entityicon.cpp \
+    edge.cpp
 
 HEADERS  +=mainform.h \
     entity.h \
@@ -36,7 +39,10 @@ HEADERS  +=mainform.h \
     projectstore.h \
     stringintturple.h \
     datasource.h \
-    mysqldatasource.h
+    mysqldatasource.h \
+    graphicsscene.h \
+    entityicon.h \
+    edge.h
 
 FORMS += \
     mainform.ui

@@ -13,6 +13,6 @@ EntityTypeButton::EntityTypeButton(QWidget *parent, EntityType *entityType) :  Q
 
     this->setAutoExclusive(true);
 
-    this->setIcon(*(entityType->normalPixmap));
+    this->setIcon((entityType->normal));
 
 }

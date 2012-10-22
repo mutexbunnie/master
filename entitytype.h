@@ -13,9 +13,9 @@ public:
 
 
     QString iconPath;
-    QPixmap* selectedPixmap;
-    QPixmap* normalPixmap;
-    FieldMap*  fieldMap;
+    QPixmap selected;
+    QPixmap normal;
+    //FieldMap*  fieldMap;
 
     QString name;
     QString datasourcename;

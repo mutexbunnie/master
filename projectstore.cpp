@@ -13,7 +13,7 @@ void ProjectStore::loadProject(QString filenname)
     if(parser->parse(new QXmlInputSource(new QFile(filenname))))    std::cout<<"Parsed Successfully!"<< std::endl;
     else std::cout<<"Parsing Failed..."<< std::endl;
 
-    for (int i=0; i<entityTypes->size(); i++)
+   for (int i=0; i<entityTypes->size(); i++)
     {
         for (int k=0; k<dataSources->size(); k++)
         {
@@ -21,15 +21,14 @@ void ProjectStore::loadProject(QString filenname)
             {
                (*entityTypes)[i]->datasource=(*dataSources)[k];
 
-              QVector<StringIntTurple*>* tmpFields= (*dataSources)[k]->getFieldsDesc((*entityTypes)[i]->datalocation);
+             /* QVector<StringIntTurple*>* tmpFields= (*dataSources)[k]->getFieldsDesc((*entityTypes)[i]->datalocation);
 
               for (int j=0; j<tmpFields->size(); j++)
-                  (*entityTypes)[i]->fieldMap->addField((*tmpFields)[j]->getString(),(*tmpFields)[j]->getInt());
+                  (*entityTypes)[i]->fieldMap->addField((*tmpFields)[j]->getString(),(*tmpFields)[j]->getInt());*/
               break;
             }
         }
     }
-
 }
 
 
@@ -57,10 +56,8 @@ bool ProjectStore::startElement(const QString & namespaceURI, const QString & lo
             if (atts.localName(index)=="icon")           {     tmpEntity->addIcon(atts.value(index));           }
             if (atts.localName(index)=="name")           {     tmpEntity->setName(atts.value(index));           }
             if (atts.localName(index)=="datasource")     {     tmpEntity->setDataSourceName(atts.value(index)); }
-            if (atts.localName(index)=="datalocation")  {     tmpEntity->setDataSourceLocation(atts.value(index)); }
+            if (atts.localName(index)=="datalocation")   {     tmpEntity->setDataSourceLocation(atts.value(index)); }
           }
-
-
 
         entityTypes->append(tmpEntity);
 
@@ -88,8 +85,9 @@ bool ProjectStore::startElement(const QString & namespaceURI, const QString & lo
 
         if (type=="mysql")
         {
-            dataSources->append(new  MysqlDataSource(name,host,user,pass,db));
-        }
+
+             dataSources->append(new  MysqlDataSource(name,host,user,pass,db));
+         }
     }
 
     return true;

@@ -1,11 +1,13 @@
 #ifndef MAINFORM_H
 #define MAINFORM_H
-#include "activedialog.h"
-#include <QDialog>
+
+#include <QMainWindow>
 #include <QScrollArea>
 #include  <QVector>
 #include  "projectstore.h"
 #include "entitytypebutton.h"
+#include <QStandardItemModel>
+#include "graphicsscene.h"
 
 namespace Ui {
 class MainForm;
@@ -18,11 +20,14 @@ class MainForm : public QMainWindow
 public:
     explicit MainForm(ProjectStore* projectStore, QWidget *parent = 0);
     ~MainForm();
-    QScrollArea* scrollArea;
-    ActiveDialog* activeDialog;
+   // QScrollArea* scrollArea;
+    //ActiveDialog* activeDialog;
 
-    QScrollArea* scrollArea2;
-    ActiveDialog* activeDialog2;
+    //QScrollArea* scrollArea2;
+    //ActiveDialog* activeDialog2;
+
+    //QStandardItemModel* model;
+    GraphicsScene* scene;
 
     QVector<EntityTypeButton *>* entityTypeButtons;
 

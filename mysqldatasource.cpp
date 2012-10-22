@@ -16,12 +16,17 @@ MysqlDataSource::MysqlDataSource(QString _name,QString _host,QString _user, QStr
     dbConnection.setPassword(pass);
 
     bool ok = dbConnection.open();
+    model = new  QSqlQueryModel();
+    model->setQuery("select distinct username from fwauth",dbConnection);
+
+    //model->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    //model->select();
 }
 
 
 QVector<StringIntTurple*>*  MysqlDataSource::getFieldsDesc(QString location)
 {
-   QVector<StringIntTurple*>* tmpVector=new QVector<StringIntTurple*>() ;
+   /*QVector<StringIntTurple*>* tmpVector=new QVector<StringIntTurple*>() ;
 
    QSqlQuery query;
     query.exec("desc "+ location);
@@ -36,14 +41,15 @@ QVector<StringIntTurple*>*  MysqlDataSource::getFieldsDesc(QString location)
               tmpVector->append( new StringIntTurple(query.value(0).toString(),fieldType));
       }
 
-     return tmpVector;
+     return tmpVector;*/
+     return 0;
 }
 
 
 QVector<QVector<QVariant>*>* MysqlDataSource::getFields(QString location,QString specifier)
 {
 
-    //qDebug()<< location;
+  /*  //qDebug()<< location;
    QSqlQuery query;
     query.exec("select * from "+ location+ " where "+specifier);
 
@@ -62,5 +68,6 @@ QVector<QVector<QVariant>*>* MysqlDataSource::getFields(QString location,QString
            result->append(row);
        }
 
-     return result;
+     return result;*/
+    return 0;
 }

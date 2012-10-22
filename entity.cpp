@@ -7,14 +7,14 @@ Entity::Entity(QWidget *parent,EntityType *entityType): QLabel(parent)
 {
 
         this->entityType=entityType;
-        stringFields=new QString[entityType->fieldMap->getStringFields()];
-        intFields= new int[entityType->fieldMap->getintFields()];
+        //stringFields=new QString[entityType->fieldMap->getStringFields()];
+        //intFields= new int[entityType->fieldMap->getintFields()];
 
         this->setObjectName("label");
         int x=qrand() % 1024;
         int y=qrand() % 1024;
         this->setGeometry(QRect(x, y, 50, 50));
-        this->setPixmap(*(entityType->normalPixmap));
+        this->setPixmap((entityType->normal));
         this->setScaledContents(true);
         //this->setMouseTracking(true);
         entityActive=false;
@@ -60,16 +60,14 @@ void Entity::setSelected(bool selected)
     {
      qDebug()<<"Selected";
      this->entityActive=true;
-     this->setPixmap(*(entityType->selectedPixmap));
-
+     this->setPixmap((entityType->selected));
     }
-
-     else
-     {
+    else
+    {
          qDebug()<<"Deselected";
          this->entityActive=false;
-         this->setPixmap(*(entityType->normalPixmap));
-      }
+         this->setPixmap((entityType->normal));
+    }
 
 }
 
@@ -95,12 +93,12 @@ void  Entity::showMenu()
 
 void Entity::addField(QString fieldValue,QString fieldName)
 {
-    stringFields[entityType->fieldMap->getArrPos(fieldName)]=fieldValue;
+    //stringFields[entityType->fieldMap->getArrPos(fieldName)]=fieldValue;
 }
 
 void Entity::addField(int fieldValue,QString fieldName)
 {
-        intFields[entityType->fieldMap->getArrPos(fieldName)]=fieldValue;
+      //  intFields[entityType->fieldMap->getArrPos(fieldName)]=fieldValue;
 }
 
 Entity::~Entity()
