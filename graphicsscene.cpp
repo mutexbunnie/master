@@ -90,30 +90,31 @@ void GraphicsScene::dataChanged(const QModelIndex& topLeft, const QModelIndex& b
 
 void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    qDebug() <<"GraphicsScene::mousePressEvent1";
- /* //  if (activeIcons>0)
-    //{
-        for (int i=0; i<entityIcons->size(); i++)
+    QList<QGraphicsItem*> prevSelected= this->selectedItems();
+   // qDebug() <<"GraphicsScene::mousePressEvent1";
+    QGraphicsScene::mousePressEvent(event);
+
+    QList<QGraphicsItem*> selectedNow= this->selectedItems();
+
+    for (int i=0; i<prevSelected.size(); i++)
+    {
+        for (int j=0; j<selectedNow.size(); j++)
         {
-          if (((*entityIcons)[i]->isSelected() ) && (*entityIcons)[i]!=lastSelectedIcon)
-          {
-              qDebug() <<"active"<< (*entityIcons)[i]->labelItem->text();
-              Edge* tmpNode = new Edge(lastSelectedIcon,(*entityIcons)[i]);
-              this->addItem(tmpNode);
-             //qDebug() << "Added edge";
-          }
-        }*/
-          QGraphicsScene::mousePressEvent(event);
-
-qDebug() <<"GraphicsScene::mousePressEvent2";
-         //if (lastSelectedIcon!=0)  qDebug()<<"lastactive"<<lastSelectedIcon->labelItem->text();
-     //}
-
+            if  (prevSelected[i]!=selectedNow[j])
+            {
+               qDebug()<<"Adding" << ((EntityIcon*)selectedNow[j])->labelItem->text() << "to "<< ((EntityIcon*)prevSelected[i])->labelItem->text();
+               Edge* tmpEdge = new Edge((EntityIcon*)selectedNow[j],(EntityIcon*)prevSelected[i]);
+               addItem(tmpEdge);
+               update();
+               tmpEdge->update();
+            }
+        }
+    }
 }
 
 void GraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    qDebug() <<"QGraphicsScene::mouseReleaseEvent(event)1";
-      QGraphicsScene::mouseReleaseEvent(event);
-      qDebug() <<"QGraphicsScene::mouseReleaseEvent(event)2";
+    //qDebug() <<"QGraphicsScene::mouseReleaseEvent(event)1";
+    QGraphicsScene::mouseReleaseEvent(event);
+   // qDebug() <<"QGraphicsScene::mouseReleaseEvent(event)2";
 }

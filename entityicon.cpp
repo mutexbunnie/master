@@ -53,7 +53,7 @@ QVariant  EntityIcon::itemChange(GraphicsItemChange change, const QVariant &valu
 
  if (change==QGraphicsItem::ItemSelectedHasChanged)
     {
-     qDebug() <<"EntityIcon::itemChange";
+    // qDebug() <<"EntityIcon::itemChange";
              if(value.toBool())
              {
                  this->setPixmap(this->entityType->selected);
@@ -72,16 +72,16 @@ QVariant  EntityIcon::itemChange(GraphicsItemChange change, const QVariant &valu
 
 void EntityIcon::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    qDebug() <<"EntityIcon::mouseReleaseEvent1";
+  //  qDebug() <<"EntityIcon::mouseReleaseEvent1";
   QGraphicsPixmapItem::mouseReleaseEvent(event);
-  qDebug() <<"EntityIcon::mouseReleaseEvent2";
+ // qDebug() <<"EntityIcon::mouseReleaseEvent2";
 }
 
 void EntityIcon::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    qDebug() <<"EntityIcon::mousePressEvent1";
+    //qDebug() <<"EntityIcon::mousePressEvent1";
      QGraphicsPixmapItem::mousePressEvent(event);
-     qDebug() <<"EntityIcon::mousePressEvent2";
+    // qDebug() <<"EntityIcon::mousePressEvent2";
 }
 
 /*GraphicsScene::mousePressEvent1

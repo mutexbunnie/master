@@ -1,9 +1,13 @@
 #include "edge.h"
+#include <QDebug>
 
 
 Edge::Edge(EntityIcon *_sourceIcon, EntityIcon *_destIcon)
 {
+    sourceIcon=_sourceIcon;
+    destIcon=_destIcon;
 }
+
 
 void Edge::adjust()
 {
@@ -15,14 +19,18 @@ QRectF Edge::boundingRect() const
 
 void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    qDebug()<<sourceIcon->pos().x();
 
-    QLineF line(sourceIcon->pos(), destIcon->pos());
+    //QLineF line(destIcon->pos(), sourceIcon->pos());
+     QLineF line(sourceIcon->pos(), destIcon->pos());
+     //QLineF line(0,0, 101,100);
+
 
  /*   if (qFuzzyCompare(line.length(), qreal(0.)))
         return;*/
 
     painter->setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-    painter->drawLine(line);
+     painter->drawLine(line);
 
    /* double angle = ::acos(line.dx() / line.length());
     if (line.dy() >= 0)
