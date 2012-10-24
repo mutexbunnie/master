@@ -10,7 +10,7 @@ EntityIcon::EntityIcon(QGraphicsItem *parent, QModelIndex index,EntityType *enti
         //this->setPixmap();
 
     this->setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
-    this->setPos((qrand() % 1024),(qrand() % 1024));
+    this->setPos((qrand() % 800)+100,(qrand() % 800)+100);
  //    this->setScale(0.25);
     //this->setSelected();
 
@@ -19,6 +19,10 @@ EntityIcon::EntityIcon(QGraphicsItem *parent, QModelIndex index,EntityType *enti
     setPixmap(entityType->normal);
    this->index=index;
    labelItem = new QGraphicsSimpleTextItem("4", this);
+
+   setFlag(ItemIsMovable);
+   setFlag(ItemSendsGeometryChanges);
+   setCacheMode(QGraphicsItem::NoCache);
 
 }
 
@@ -81,7 +85,13 @@ void EntityIcon::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     //qDebug() <<"EntityIcon::mousePressEvent1";
      QGraphicsPixmapItem::mousePressEvent(event);
-    // qDebug() <<"EntityIcon::mousePressEvent2";
+     // qDebug() <<"EntityIcon::mousePressEvent2";
+}
+
+QRectF EntityIcon::boundingRect()
+{
+
+    return QRectF(0,0,50+labelItem->boundingRect().width(),50+labelItem->boundingRect().height());
 }
 
 /*GraphicsScene::mousePressEvent1

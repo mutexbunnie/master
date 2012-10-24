@@ -4,7 +4,7 @@
 #include "entitytypebutton.h"
 #define PI 3.14159265
 #include <QDebug>
-#include <QGraphicsView>
+#include "graphicsview.h"
 #include <mysqldatasource.h>
 
 
@@ -12,16 +12,14 @@ MainForm::MainForm(ProjectStore* projectStore, QWidget *parent) : QMainWindow(pa
 {
         ui->setupUi(this);
         ui->actionSelection->setChecked(true);
-        QGraphicsView* graphicsView = new QGraphicsView();
+        QGraphicsView* graphicsView = new GraphicsView();
         ui->tabWidget->addTab(graphicsView,"Sheet 1");
         //connect(ui->actionSelection, SIGNAL(toggled(bool)), this, SLOT(toggleSelectionState(bool)));
         this->entityTypeButtons = new QVector<EntityTypeButton*>();
         ui->entityBoxLayout->setAlignment(Qt::AlignTop);
 
-        graphicsView->setRenderHint(QPainter::Antialiasing);
-        graphicsView->setDragMode(QGraphicsView::RubberBandDrag);
 
-
+graphicsView -> setMinimumSize(400, 400);
 
         /*  qDebug()  <<"rowcount" <<model->rowCount();
         for (int row = 0; row < 2000; row++)

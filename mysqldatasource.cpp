@@ -16,8 +16,9 @@ MysqlDataSource::MysqlDataSource(QString _name,QString _host,QString _user, QStr
     dbConnection.setPassword(pass);
 
     bool ok = dbConnection.open();
+    qDebug()<<ok;
     model = new  QSqlQueryModel();
-    model->setQuery("select distinct username from fwauth",dbConnection);
+    model->setQuery("select concat(FirstName,' ',LastName) from Persons limit 100",dbConnection);
 
     //model->setEditStrategy(QSqlTableModel::OnManualSubmit);
     //model->select();

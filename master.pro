@@ -27,7 +27,8 @@ SOURCES += main.cpp\
     mysqldatasource.cpp \
     graphicsscene.cpp \
     entityicon.cpp \
-    edge.cpp
+    edge.cpp \
+    graphicsview.cpp
 
 HEADERS  +=mainform.h \
     entity.h \
@@ -42,7 +43,8 @@ HEADERS  +=mainform.h \
     mysqldatasource.h \
     graphicsscene.h \
     entityicon.h \
-    edge.h
+    edge.h \
+    graphicsview.h
 
 FORMS += \
     mainform.ui

@@ -25,7 +25,7 @@ GraphicsScene::GraphicsScene(QObject *parent,  QSqlQueryModel* model) :QGraphics
     tmpEntity->setName("star");
     /*fix*/
 
-
+    qDebug()<<model->rowCount();
     for ( int i = 0; i <model->rowCount(); ++i )
        {
          QModelIndex item = model->index( i, 0);

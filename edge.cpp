@@ -15,6 +15,10 @@ void Edge::adjust()
 
 QRectF Edge::boundingRect() const
 {
+    return QRectF(sourceIcon->pos(), QSizeF( destIcon->pos().x() - sourceIcon->pos().x(),
+                                             destIcon->pos().y() - sourceIcon->pos().y()))
+        .normalized();
+
 }
 
 void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
