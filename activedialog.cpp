@@ -240,6 +240,17 @@ void ActiveDialog::velocityUpdate()
             ((*entity)[i])->dx=0;
             ((*entity)[i])->dy=0;
 
+
+         /*QPointF vec = mapToItem(node, 0, 0);
+         qreal dx = vec.x();
+         qreal dy = vec.y();
+         double l = 2.0 * (dx * dx + dy * dy);
+         if (l > 0) {
+             xvel += (dx * 150.0) / l;
+             yvel += (dy * 150.0) / l;
+         }
+     }*/
+
             for( int k=0; k<entity->size(); k++)
             {
 
@@ -281,11 +292,6 @@ void ActiveDialog::velocityUpdate()
                        //qDebug()<<forceH;
                     }
 
-
-
-
-
-
                 }
                 else
                 {
@@ -297,13 +303,8 @@ void ActiveDialog::velocityUpdate()
                 ((*entity)[i])->dy+=(*(*forceY)[i])[k];
             }
 
-
-
-
           }
           //  qDebug()<<i<< entity[i]->dx<< entity[i]->dy;
-
-
 
         for( int i=0; i<entity->size(); i++)
         {

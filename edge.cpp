@@ -23,18 +23,27 @@ QRectF Edge::boundingRect() const
 
 void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    qDebug()<<sourceIcon->pos().x();
+
 
     //QLineF line(destIcon->pos(), sourceIcon->pos());
-     QLineF line(sourceIcon->pos(), destIcon->pos());
-     //QLineF line(0,0, 101,100);
+
+
+     QPointF startPoint(sourceIcon->pos().x()+25, sourceIcon->pos().y()+25);
+     QPointF endPoint  (destIcon->pos().x()+25, destIcon->pos().y()+25);
+
+     QLineF line(startPoint,endPoint);
+
+     QPointF startPoint2(startPoint.x()+(line.unitVector().dx()*25), startPoint.y()+(line.unitVector().dy()*25));
+     QPointF endPoint2  (endPoint.x()-(line.unitVector().dx()*25), endPoint.y()-(line.unitVector().dy()*25));
+
+     QLineF line2(startPoint2,endPoint2);
 
 
  /*   if (qFuzzyCompare(line.length(), qreal(0.)))
         return;*/
 
     painter->setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-     painter->drawLine(line);
+     painter->drawLine(line2);
 
    /* double angle = ::acos(line.dx() / line.length());
     if (line.dy() >= 0)
