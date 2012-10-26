@@ -9,15 +9,16 @@ class Edge :public QGraphicsItem
 public:
     Edge(EntityIcon*  _sourceIcon, EntityIcon* _destIcon);
     void adjust();
+    EntityIcon* sourceIcon;
+    EntityIcon* destIcon;
 
 protected:
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
 
-private:
-     EntityIcon* sourceIcon;
-     EntityIcon* destIcon;
+
+
 };
 
 #endif // EDGE_H

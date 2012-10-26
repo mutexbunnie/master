@@ -7,6 +7,7 @@
 #include <QSqlTableModel>
 #include <QGraphicsSceneMouseEvent>
 #include <QVector>
+#include <QTimer>
 
 class GraphicsScene : public QGraphicsScene
 {
@@ -39,11 +40,13 @@ public slots:
 
     void addEntityIcon(QGraphicsItem * parent  , QModelIndex  index, EntityType*  entityType );
 
+    void layoutItems();
 
 private :
        QAbstractItemModel  *model;
        EntityType* tmpEntity;
        QVector<EntityIcon*>* entityIcons;
+       QTimer* timer;
 
 
 

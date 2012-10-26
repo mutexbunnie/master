@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QIcon>
 
+
 Entity::Entity(QWidget *parent,EntityType *entityType): QLabel(parent)
 {
 

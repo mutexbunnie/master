@@ -2,6 +2,7 @@
 #include <QPainter>
 #include <QDebug>
 #include "graphicsscene.h"
+#include "edge.h"
 
 EntityIcon::EntityIcon(QGraphicsItem *parent, QModelIndex index,EntityType *entityType) : QGraphicsPixmapItem(parent)
 {
@@ -24,6 +25,7 @@ EntityIcon::EntityIcon(QGraphicsItem *parent, QModelIndex index,EntityType *enti
    setFlag(ItemSendsGeometryChanges);
    setCacheMode(QGraphicsItem::NoCache);
 
+   connectionList= new QVector<EntityIcon*>() ;
 }
 
 
@@ -92,6 +94,16 @@ QRectF EntityIcon::boundingRect()
 {
 
     return QRectF(0,0,50+labelItem->boundingRect().width(),50+labelItem->boundingRect().height());
+}
+
+void EntityIcon::addConnection(EntityIcon *dest)
+{
+    Edge* tmpEdge = new Edge(this,dest);
+    scene()->addItem(tmpEdge);
+    scene()->update();
+
+    this->connectionList->append(dest);
+
 }
 
 /*GraphicsScene::mousePressEvent1

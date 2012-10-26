@@ -10,6 +10,8 @@
 #include <QMenu>
 #include <entitytype.h>
 
+
+
 class Entity : public QLabel
 {
     Q_OBJECT

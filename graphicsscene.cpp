@@ -3,7 +3,8 @@
 #include <QSqlTableModel>
 #include <QGraphicsSceneMouseEvent>
 #include "edge.h"
-
+#include "cmath"
+#include "math.h"
 
 GraphicsScene::GraphicsScene(QObject *parent,  QSqlQueryModel* model) :QGraphicsScene(parent)
 {
@@ -34,6 +35,10 @@ GraphicsScene::GraphicsScene(QObject *parent,  QSqlQueryModel* model) :QGraphics
        }
     lastSelectedIcon=0;
 
+    timer = new QTimer(this);
+    connect (timer, SIGNAL(timeout()), this, SLOT(layoutItems()));
+    timer->start(100);
+
 }
 
 
@@ -43,6 +48,60 @@ void GraphicsScene::addEntityIcon(QGraphicsItem *parent, QModelIndex index, Enti
     this->addItem(pix);
     this->entityIcons->append(pix);
 }
+
+void GraphicsScene::layoutItems()
+{
+  float forceX,forceY;
+  for( int i=0; i<entityIcons->size(); i++)
+   {
+            forceX=0;
+            forceY=0;
+            for( int k=0; k<entityIcons->size(); k++)
+            {
+                        if (k!=i)
+                        {
+                              float distanceX= ((*entityIcons)[i])->x()- ((*entityIcons)[k])->x();
+                              float distanceY= ((*entityIcons)[i])->y()- ((*entityIcons)[k])->y();
+                              float distance=(distanceX*distanceX)+(distanceY*distanceY);
+
+                              /*if (distance>0)
+                              {
+                                   forceX+= ((100*distanceX)/(distance));
+                                   forceY+= ((100*distanceY)/(distance));
+                              }*/
+
+                              if (((*entityIcons)[i])->connectionList->contains((*entityIcons)[k]))
+                              {
+                                float forceHX=-0.1* std::max((int)(distanceX-100),0);
+                                float forceHY=-0.1* std::max((int)(distanceY-100),0);
+
+                                forceX+= forceHX;
+                                forceY+= forceHY;
+                               }
+
+
+
+                                /*double weight = (edgeList.size() + 1) * 10;
+                                foreach (Edge *edge, edgeList) {
+                                    QPointF vec;
+                                    if (edge->sourceNode() == this)
+                                        vec = mapToItem(edge->destNode(), 0, 0);
+                                    else
+                                        vec = mapToItem(edge->sourceNode(), 0, 0);
+                                    xvel -= vec.x() / weight;
+                                    yvel -= vec.y() / weight;
+                                }
+
+                                if (qAbs(xvel) < 0.1 && qAbs(yvel) < 0.1)
+                                    xvel = yvel = 0;*/
+
+                        }
+
+             }
+             (*entityIcons)[i]->moveBy(forceX,forceY);
+    }
+
+ }
 
 /*! helper function to implement a reset call for a custom view */
 void GraphicsScene::reset()
@@ -103,10 +162,8 @@ void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
             if  (prevSelected[i]!=selectedNow[j])
             {
                qDebug()<<"Adding" << ((EntityIcon*)selectedNow[j])->labelItem->text() << "to "<< ((EntityIcon*)prevSelected[i])->labelItem->text();
-               Edge* tmpEdge = new Edge((EntityIcon*)selectedNow[j],(EntityIcon*)prevSelected[i]);
-               addItem(tmpEdge);
-               update();
-               tmpEdge->update();
+
+               ((EntityIcon*)selectedNow[j])->addConnection(((EntityIcon*)prevSelected[i]));
             }
         }
     }
