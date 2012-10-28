@@ -1,7 +1,7 @@
 <project name="Test">
 
 	<datasources>
-		<datesource name="db" type="mysql" host="127.0.0.1" user="root" pass="root" db="test"> </datesource>  
+		<datesource name="db" type="mysql" host="127.0.0.1" user="root" pass="root" db="logs" > </datesource>  
 	</datasources>
 
 	<entitytypes>

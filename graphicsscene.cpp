@@ -1,4 +1,4 @@
-#include "graphicsscene.h"
+ #include "graphicsscene.h"
 #include <QDebug>
 #include <QSqlTableModel>
 #include <QGraphicsSceneMouseEvent>
@@ -56,27 +56,30 @@ void GraphicsScene::layoutItems()
    {
             forceX=0;
             forceY=0;
+
+
+
             for( int k=0; k<entityIcons->size(); k++)
             {
+
                         if (k!=i)
                         {
                               float distanceX= ((*entityIcons)[i])->x()- ((*entityIcons)[k])->x();
                               float distanceY= ((*entityIcons)[i])->y()- ((*entityIcons)[k])->y();
                               float distance=(distanceX*distanceX)+(distanceY*distanceY);
 
-                              /*if (distance>0)
+                              if (distance>0)
                               {
-                                   forceX+= ((100*distanceX)/(distance));
-                                   forceY+= ((100*distanceY)/(distance));
-                              }*/
+                                   forceX+= (75*distanceX)/distance;
+                                   forceY+= (75*distanceY)/distance;
+                              }
 
-                              if (((*entityIcons)[i])->connectionList->contains((*entityIcons)[k]))
+                               if (((*entityIcons)[i])->connectionList->contains((*entityIcons)[k]))
                               {
-                                float forceHX=-0.1* std::max((int)(distanceX-100),0);
-                                float forceHY=-0.1* std::max((int)(distanceY-100),0);
 
-                                forceX+= forceHX;
-                                forceY+= forceHY;
+
+                                forceX-= distanceX/50;
+                                forceY-= distanceY/50;
                                }
 
 
@@ -164,6 +167,7 @@ void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
                qDebug()<<"Adding" << ((EntityIcon*)selectedNow[j])->labelItem->text() << "to "<< ((EntityIcon*)prevSelected[i])->labelItem->text();
 
                ((EntityIcon*)selectedNow[j])->addConnection(((EntityIcon*)prevSelected[i]));
+               (((EntityIcon*)prevSelected[i]))->addConnection((EntityIcon*)selectedNow[j]);
             }
         }
     }

@@ -11,7 +11,7 @@ EntityIcon::EntityIcon(QGraphicsItem *parent, QModelIndex index,EntityType *enti
         //this->setPixmap();
 
     this->setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
-    this->setPos((qrand() % 800)+100,(qrand() % 800)+100);
+    this->setPos((qrand() % 4024)+100,(qrand() % 4024)+100);
  //    this->setScale(0.25);
     //this->setSelected();
 

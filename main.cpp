@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
     ProjectStore* projectStore= new ProjectStore();
     projectStore->loadProject("projecttest.xml");
 
-    MainForm mainForm(projectStore);
+   MainForm mainForm(projectStore);
 
     mainForm.showMaximized();
 

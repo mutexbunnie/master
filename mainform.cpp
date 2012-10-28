@@ -6,20 +6,26 @@
 #include <QDebug>
 #include "graphicsview.h"
 #include <mysqldatasource.h>
+#include <QTableView>
 
 
 MainForm::MainForm(ProjectStore* projectStore, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainForm)
 {
         ui->setupUi(this);
+
         ui->actionSelection->setChecked(true);
         QGraphicsView* graphicsView = new GraphicsView();
         ui->tabWidget->addTab(graphicsView,"Sheet 1");
+        graphicsView->setFocus();
+        QTableView* tableView = new QTableView();
+
+        ui->tabWidget->addTab(tableView,"Table 1");
+
+       // setCentralWidget( );
         //connect(ui->actionSelection, SIGNAL(toggled(bool)), this, SLOT(toggleSelectionState(bool)));
         this->entityTypeButtons = new QVector<EntityTypeButton*>();
         ui->entityBoxLayout->setAlignment(Qt::AlignTop);
-
-
-graphicsView -> setMinimumSize(400, 400);
+        graphicsView -> setMinimumSize(400, 400);
 
         /*  qDebug()  <<"rowcount" <<model->rowCount();
         for (int row = 0; row < 2000; row++)
@@ -68,6 +74,7 @@ graphicsView -> setMinimumSize(400, 400);
             }*/
             /*fixxxx*/
             scene= new  GraphicsScene(0, ((MysqlDataSource*)(((*(projectStore->entityTypes))[i])->datasource))->model);
+            tableView->setModel( ((MysqlDataSource*)(((*(projectStore->entityTypes))[i])->datasource))->model);
         }
 
         /*scene= new  GraphicsScene(0,model);*/

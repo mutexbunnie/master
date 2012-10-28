@@ -82,12 +82,10 @@ bool ProjectStore::startElement(const QString & namespaceURI, const QString & lo
             if (atts.localName(index)=="db")     {     db=atts.value(index);   }
          }
 
-
         if (type=="mysql")
         {
-
-             dataSources->append(new  MysqlDataSource(name,host,user,pass,db));
-         }
+            dataSources->append(new  MysqlDataSource(name,host,user,pass,db));
+        }
     }
 
     return true;

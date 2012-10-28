@@ -1,4 +1,5 @@
 #include "graphicsview.h"
+#include <QDebug>
 
 GraphicsView::GraphicsView(QWidget *parent) :  QGraphicsView(parent)
 {
@@ -32,4 +33,34 @@ void GraphicsView::zoomIn()
 void GraphicsView::zoomOut()
 {
     scaleView(1 / qreal(1.2));
+}
+
+
+void GraphicsView::keyPressEvent(QKeyEvent *event)
+{
+
+    switch (event->key())
+    {
+
+    /*case Qt::Key_Up:
+        centerNode->moveBy(0, -20);
+        break;
+    case Qt::Key_Down:
+        centerNode->moveBy(0, 20);
+        break;
+    case Qt::Key_Left:
+        centerNode->moveBy(-20, 0);
+        break;
+    case Qt::Key_Right:
+        centerNode->moveBy(20, 0);
+        break;*/
+    case Qt::Key_Plus:
+        zoomIn();
+        break;
+    case Qt::Key_Minus:
+        zoomOut();
+        break;
+    default:
+        QGraphicsView::keyPressEvent(event);
+    }
 }

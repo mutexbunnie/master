@@ -17,6 +17,7 @@ public:
 
     void wheelEvent(QWheelEvent *event);
     void scaleView(qreal scaleFactor);
+    virtual void keyPressEvent(QKeyEvent *event);
 
 signals:
     

@@ -7,7 +7,7 @@ MysqlDataSource::MysqlDataSource(QString _name,QString _host,QString _user, QStr
     host=_host;
     user=_user;
     pass=_pass;
-    db=_db;
+    db="logs";//_db;
 
     dbConnection =  (QSqlDatabase::addDatabase("QMYSQL"));
     dbConnection.setHostName(host);
@@ -18,7 +18,8 @@ MysqlDataSource::MysqlDataSource(QString _name,QString _host,QString _user, QStr
     bool ok = dbConnection.open();
     qDebug()<<ok;
     model = new  QSqlQueryModel();
-    model->setQuery("select concat(FirstName,' ',LastName) from Persons limit 100",dbConnection);
+    //model->setQuery("select concat(FirstName,' ',LastName) from Persons limit 100",dbConnection);
+    model->setQuery("select username,externalip from fwauth limit 400",dbConnection);
 
     //model->setEditStrategy(QSqlTableModel::OnManualSubmit);
     //model->select();
