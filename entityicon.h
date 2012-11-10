@@ -16,7 +16,7 @@ class EntityIcon : public QGraphicsPixmapItem
 {
 
 public:
-    explicit EntityIcon(QGraphicsItem * parent  , QModelIndex  index, EntityType*  entityType );
+    explicit EntityIcon(QGraphicsItem * parent,  QModelIndex  index, EntityType*  entityType );
     virtual void  paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget );
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
     virtual void	mouseReleaseEvent ( QGraphicsSceneMouseEvent * event );
@@ -30,7 +30,7 @@ public:
 
 QGraphicsSimpleTextItem* labelItem;
 
-
+ EntityType* entityType;
 signals:
 
 
@@ -38,12 +38,10 @@ public slots:
 
 private:
         QPersistentModelIndex  index;
-
         QPixmap* normal;
         QPixmap* selected;
-        EntityType* entityType;
 
-    
+
 };
 
 #endif // ENTITYICON_H

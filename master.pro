@@ -16,13 +16,9 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
          mainform.cpp \
-    entity.cpp \
-    activedialog.cpp \
     entitytype.cpp \
     entitytypebutton.cpp \
-    fieldmap.cpp \
     projectstore.cpp \
-    stringintturple.cpp \
     datasource.cpp \
     mysqldatasource.cpp \
     graphicsscene.cpp \
@@ -31,14 +27,9 @@ SOURCES += main.cpp\
     graphicsview.cpp
 
 HEADERS  +=mainform.h \
-    entity.h \
-    activedialog.h \
     entitytype.h \
     entitytypebutton.h \
-    fielddescription.h \
-    fieldmap.h \
     projectstore.h \
-    stringintturple.h \
     datasource.h \
     mysqldatasource.h \
     graphicsscene.h \

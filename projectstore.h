@@ -17,8 +17,6 @@ class ProjectStore :public QXmlDefaultHandler
     void loadProject(QString filenname);
     QVector<EntityType*>* entityTypes;
     QVector<DataSource*>* dataSources;
-
-
 };
 
 

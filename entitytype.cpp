@@ -3,6 +3,7 @@
 #include <QPainter>
 #include <QBrush>
 #include <QPen>
+#include <QDebug>
 
 EntityType::EntityType()
 {
@@ -20,7 +21,7 @@ void EntityType::addIcon(QString iconPath)
     selectedPixmap= new QPixmap( icon.pixmap(64,64,QIcon::Selected,QIcon::On));*/
 
 
-
+    this->iconPath=iconPath;
     normal= QPixmap(iconPath);
     normal=normal.scaled(50,50, Qt::KeepAspectRatio);
 
@@ -28,7 +29,7 @@ void EntityType::addIcon(QString iconPath)
     selected.fill(QColor(0, 0, 255, 50));
     QPainter painter(&selected);
     QBrush brush(QColor(0, 0, 255,100));
-    QPen pen(brush,10);
+    QPen pen(brush,4);
     painter.drawPixmap(0, 0, normal);
     painter.setPen(pen);
     painter.drawRect(normal.rect());

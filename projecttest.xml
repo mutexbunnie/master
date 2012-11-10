@@ -5,6 +5,7 @@
 	</datasources>
 
 	<entitytypes>
+		<entitytype name="Computer" icon=":icons/Computer.png" datasource="db" datalocation="person" > </entitytype>
 		<entitytype name="person" icon=":icons/star.png" datasource="db" datalocation="person" > </entitytype>
 	</entitytypes>
 

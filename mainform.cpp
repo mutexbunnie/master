@@ -1,94 +1,51 @@
 #include "mainform.h"
 #include "ui_mainform.h"
-#include <QPainter>
 #include "entitytypebutton.h"
-#define PI 3.14159265
-#include <QDebug>
 #include "graphicsview.h"
 #include <mysqldatasource.h>
 #include <QTableView>
-
+#include <QDebug>
 
 MainForm::MainForm(ProjectStore* projectStore, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainForm)
 {
         ui->setupUi(this);
-
         ui->actionSelection->setChecked(true);
-        QGraphicsView* graphicsView = new GraphicsView();
-        ui->tabWidget->addTab(graphicsView,"Sheet 1");
-        graphicsView->setFocus();
-        QTableView* tableView = new QTableView();
 
-        ui->tabWidget->addTab(tableView,"Table 1");
-
-       // setCentralWidget( );
         //connect(ui->actionSelection, SIGNAL(toggled(bool)), this, SLOT(toggleSelectionState(bool)));
         this->entityTypeButtons = new QVector<EntityTypeButton*>();
         ui->entityBoxLayout->setAlignment(Qt::AlignTop);
+
+
+        QGraphicsView* graphicsView = new GraphicsView();
+        graphicsView->setFocus();
+        graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+        graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
         graphicsView -> setMinimumSize(400, 400);
-
-        /*  qDebug()  <<"rowcount" <<model->rowCount();
-        for (int row = 0; row < 2000; row++)
-        {
-        model=new QStandardItemModel(0, 1);
-        model->removeRows(0, model->rowCount(QModelIndex()), QModelIndex());
-
-        QStandardItem *item = new QStandardItem();
-        item->setData(QString("row %0").arg(row),Qt::EditRole);
-        ///item->setData(*normal,Qt::DecorationRole);
-        // item->setData(*selected,34);
-        model->setItem(row, 0, item);
-        }
-        qDebug()  <<"rowcount" <<model->rowCount();
-        // for (int i=0; i<5 ;i++)
-        //{// }*/
+        ui->tabWidget->addTab(graphicsView,"Sheet 1");
+        scene= new  GraphicsScene(0);
+        scene->setSceneRect(0,0,1024,1024);
+        graphicsView->setScene(scene);
 
         for (int i=0;i<projectStore->entityTypes->size() ;i++)
         {
-            qDebug()  << projectStore->entityTypes->at(i)->name;
             EntityTypeButton* tmp_entityButton =new EntityTypeButton(ui->entityBoxContent,(*(projectStore->entityTypes))[i]);
             ui->entityBoxLayout->addWidget(tmp_entityButton);
             connect(tmp_entityButton , SIGNAL(toggled(bool)), this, SLOT(toggleEntity(bool)));
             this->entityTypeButtons->append(tmp_entityButton);
 
-            /*for (int k=0; k<10 ;k++)
-            {
-                Entity* tmp_entity = new Entity(activeDialog,(*(projectStore->entityTypes))[i]);
-                activeDialog->addEntity(tmp_entity,qrand() % 1024,qrand() % 1024);
-            }*/
-
-            //QString location= (*(projectStore->entityTypes))[i]->datalocation;
-            /*QVector<QVector<QVariant>*>*  tmp_fields=((*(projectStore->entityTypes))[i])->datasource->getFields(location," 1=1 ");
-
-            for (int k=0; k<tmp_fields->size() ;k++)
-            {
-                Entity* tmp_entity = new Entity(activeDialog,
-                for (int j=0; j<(*tmp_fields)[k]->size();j++)
-                {
-                    qDebug() <<((*(*tmp_fields)[k])[j]).toString();
-                    if ((*(*(projectStore->entityTypes))[i]->fieldMap->fieldDescriptions)[j]->fieldType==0)
-                        tmp_entity->addField(  ((*(*tmp_fields)[k])[j]).toString() ,);
-                    else
-                        tmp_entity->addField( ((*(*tmp_fields)[k])[j]).toInt()  );
-                }
-            }*/
-            /*fixxxx*/
-            scene= new  GraphicsScene(0, ((MysqlDataSource*)(((*(projectStore->entityTypes))[i])->datasource))->model);
+            QTableView* tableView = new QTableView();
+            ui->tabWidget->addTab(tableView, projectStore->entityTypes->at(i)->name);
+            //* FIX MYSQLSOURCE CAST*//
             tableView->setModel( ((MysqlDataSource*)(((*(projectStore->entityTypes))[i])->datasource))->model);
+            scene->addModel(((MysqlDataSource*)(((*(projectStore->entityTypes))[i])->datasource))->model,projectStore->entityTypes->at(i));
         }
-
-        /*scene= new  GraphicsScene(0,model);*/
-        scene->setSceneRect(0,0,900,900);
-        graphicsView->setScene(scene);
         QSpacerItem* verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
         ui->entityBoxLayout->addItem(verticalSpacer);
+
 }
-
-
 
 void MainForm::toggleEntity(bool selection)
 {
-
     /*if (selection)
     {
             if (selectionState)
@@ -110,9 +67,6 @@ void MainForm::toggleEntity(bool selection)
 
 void MainForm::toggleSelectionState(bool selection)
 {
-
-
-
     if (selection)
     {
 
@@ -137,16 +91,14 @@ void MainForm::toggleSelectionState(bool selection)
 
 }
 
+void MainForm::on_pushButton_toggled(bool checked)
+{
+    if (checked)  ui->entityBox->show();
+    else ui->entityBox->hide();
+}
 
 MainForm::~MainForm()
 {
    // delete ui;
 }
 
-void MainForm::on_pushButton_toggled(bool checked)
-{
-    if (checked)  ui->entityBox->show();
-    else ui->entityBox->hide();
-
-
-}

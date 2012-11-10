@@ -4,7 +4,7 @@
 #include "graphicsscene.h"
 #include "edge.h"
 
-EntityIcon::EntityIcon(QGraphicsItem *parent, QModelIndex index,EntityType *entityType) : QGraphicsPixmapItem(parent)
+EntityIcon::EntityIcon(QGraphicsItem *parent, QModelIndex index, EntityType *entityType) : QGraphicsPixmapItem(parent)
 {
     this->entityType=entityType;
 
@@ -17,6 +17,7 @@ EntityIcon::EntityIcon(QGraphicsItem *parent, QModelIndex index,EntityType *enti
 
    /* QPixmap* tmp = new  QPixmap(50,50);
     tmp->fill(Qt::blue);*/
+
     setPixmap(entityType->normal);
    this->index=index;
    labelItem = new QGraphicsSimpleTextItem("4", this);
@@ -24,10 +25,10 @@ EntityIcon::EntityIcon(QGraphicsItem *parent, QModelIndex index,EntityType *enti
    setFlag(ItemIsMovable);
    setFlag(ItemSendsGeometryChanges);
    setCacheMode(QGraphicsItem::NoCache);
-
    connectionList= new QVector<EntityIcon*>() ;
-}
 
+
+}
 
 
 
@@ -43,10 +44,9 @@ void EntityIcon::updateText()
 
 
 
-
 void EntityIcon::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-
+    //qDebug()<<entityType->iconPath;
     updateText();
     QStyleOptionGraphicsItem* style = const_cast<QStyleOptionGraphicsItem*>( option );
     style->state &= ~( QStyle::State_Selected | QStyle::State_HasFocus );
@@ -87,6 +87,8 @@ void EntityIcon::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     //qDebug() <<"EntityIcon::mousePressEvent1";
      QGraphicsPixmapItem::mousePressEvent(event);
+       qDebug()<<entityType->name;
+
      // qDebug() <<"EntityIcon::mousePressEvent2";
 }
 

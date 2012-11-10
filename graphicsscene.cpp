@@ -1,49 +1,32 @@
- #include "graphicsscene.h"
+#include "graphicsscene.h"
 #include <QDebug>
 #include <QSqlTableModel>
 #include <QGraphicsSceneMouseEvent>
 #include "edge.h"
 #include "cmath"
 #include "math.h"
+#include <QGraphicsItem>
 
-GraphicsScene::GraphicsScene(QObject *parent,  QSqlQueryModel* model) :QGraphicsScene(parent)
+GraphicsScene::GraphicsScene(QObject *parent) :QGraphicsScene(parent)
 {
-   this->model=model;
-    entityIcons=new QVector<EntityIcon*>();
-
-
-    connect( model, SIGNAL(modelReset ()), this, SLOT(reset()));
-    connect( model, SIGNAL(layoutChanged ()), this, SLOT(layoutChanged()));
-    connect( model, SIGNAL(rowsInserted ( const QModelIndex & , int , int  )), this, SLOT(rowsInserted ( const QModelIndex & , int , int  )));
-    connect( model, SIGNAL(rowsAboutToBeRemoved ( const QModelIndex & , int , int  )), this, SLOT(rowsAboutToBeRemoved ( const QModelIndex & , int , int  )));
-    connect( model, SIGNAL(dataChanged ( const QModelIndex & , const QModelIndex &  )), this, SLOT(dataChanged ( const QModelIndex & , const QModelIndex &  )));
+    models=new QVector<QAbstractItemModel*>();
     this->setItemIndexMethod(QGraphicsScene::NoIndex);
+
     activeIcons=0;
-
-    /* fix*/
-    tmpEntity=new EntityType();
-    tmpEntity->addIcon(":/icons/star.png");
-    tmpEntity->setName("star");
-    /*fix*/
-
-    qDebug()<<model->rowCount();
-    for ( int i = 0; i <model->rowCount(); ++i )
-       {
-         QModelIndex item = model->index( i, 0);
-         addEntityIcon(0,item,tmpEntity);
-         //qDebug() << item.data();
-       }
+    entityIcons=new QVector<EntityIcon*>();
     lastSelectedIcon=0;
 
     timer = new QTimer(this);
     connect (timer, SIGNAL(timeout()), this, SLOT(layoutItems()));
     timer->start(100);
-
 }
+
+
 
 
 void GraphicsScene::addEntityIcon(QGraphicsItem *parent, QModelIndex index, EntityType *entityType)
 {
+
     EntityIcon* pix=new EntityIcon(parent,index,entityType);
     this->addItem(pix);
     this->entityIcons->append(pix);
@@ -54,6 +37,9 @@ void GraphicsScene::layoutItems()
   float forceX,forceY;
   for( int i=0; i<entityIcons->size(); i++)
    {
+
+
+
             forceX=0;
             forceY=0;
 
@@ -104,7 +90,34 @@ void GraphicsScene::layoutItems()
              (*entityIcons)[i]->moveBy(forceX,forceY);
     }
 
- }
+}
+
+void GraphicsScene::addModel(QAbstractItemModel *model,EntityType*  tmpEntity)
+{
+    models->append(model);
+    connect( model, SIGNAL(modelReset ()), this, SLOT(reset()));
+    connect( model, SIGNAL(layoutChanged ()), this, SLOT(layoutChanged()));
+    connect( model, SIGNAL(rowsInserted ( const QModelIndex & , int , int  )), this, SLOT(rowsInserted ( const QModelIndex & , int , int  )));
+    connect( model, SIGNAL(rowsAboutToBeRemoved ( const QModelIndex & , int , int  )), this, SLOT(rowsAboutToBeRemoved ( const QModelIndex & , int , int  )));
+    connect( model, SIGNAL(dataChanged ( const QModelIndex & , const QModelIndex &  )), this, SLOT(dataChanged ( const QModelIndex & , const QModelIndex &  )));
+
+    /* fix
+    tmpEntity=new EntityType();
+    tmpEntity->addIcon(":/icons/star.png");
+    tmpEntity->setName("star");
+    fix*/
+  qDebug()<<tmpEntity->iconPath;
+    qDebug()<<model->rowCount();
+    for ( int i = 0; i <model->rowCount(); ++i )
+       {
+         QModelIndex item = model->index( i, 0);
+         addEntityIcon(0,item,tmpEntity);
+
+         //qDebug() << item.data();
+       }
+
+
+}
 
 /*! helper function to implement a reset call for a custom view */
 void GraphicsScene::reset()
@@ -115,20 +128,22 @@ void GraphicsScene::reset()
 
 void GraphicsScene::layoutChanged()
 {
-     qDebug()<<"GraphicsScene::layoutChanged()";
+    qDebug()<<"GraphicsScene::layoutChanged()";
 }
 
+
 /*! callback which is called by the model on item insertion operations */
-void GraphicsScene::rowsInserted( const QModelIndex & parent, int start, int end )
+
+void GraphicsScene::rowsInserted(const QModelIndex & parent, int start, int end )
 {
 
  qDebug()<<"GraphicsScene::rowsInserted( const QModelIndex & parent, int start "<<start<< "int end "<<end <<")";
 
- for ( int i = start; i <= end; ++i )
+  /*for ( int i = start; i <= end; ++i )
     {
-      QModelIndex item = model->index( i, 0, parent );
+      QModelIndex item = parent.model()->index( i, 0, parent );
       addEntityIcon(0,item,tmpEntity);
-    }
+    }*/
 }
 
 /*! callback which is called by the model on item removal operations */
@@ -177,5 +192,13 @@ void GraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     //qDebug() <<"QGraphicsScene::mouseReleaseEvent(event)1";
     QGraphicsScene::mouseReleaseEvent(event);
-   // qDebug() <<"QGraphicsScene::mouseReleaseEvent(event)2";
+    qDebug() <<"QGraphicsScene::mouseReleaseEvent(event)2";
+   // qDebug() << "Woop" <<this->items().size();
+
+    for (int i=0;i<items().size();i++)
+    {
+
+        qDebug()<<((EntityIcon*)(this->items()[i]));
+    }
+
 }

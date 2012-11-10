@@ -3,7 +3,6 @@
 
 #include <QString>
 #include <QPixmap>
-#include "fieldmap.h"
 #include "datasource.h"
 
 class EntityType
@@ -15,7 +14,6 @@ public:
     QString iconPath;
     QPixmap selected;
     QPixmap normal;
-    //FieldMap*  fieldMap;
 
     QString name;
     QString datasourcename;

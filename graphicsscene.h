@@ -13,7 +13,7 @@ class GraphicsScene : public QGraphicsScene
 {
     Q_OBJECT
 public:
-    explicit GraphicsScene(QObject *parent , QSqlQueryModel *model);
+    explicit GraphicsScene(QObject *parent);
     int activeIcons;
     EntityIcon* lastSelectedIcon;
     
@@ -27,7 +27,7 @@ public slots:
     void layoutChanged();
     /*! callback which is called by the model on item insertion operations */
 
-    void rowsInserted( const QModelIndex & parent, int start, int end );
+    void rowsInserted(const QModelIndex & parent, int start, int end );
     /*! callback which is called by the model on item removal operations */
 
     void rowsAboutToBeRemoved( const QModelIndex & parent, int start, int end );
@@ -42,9 +42,11 @@ public slots:
 
     void layoutItems();
 
+    void addModel(QAbstractItemModel *model,EntityType*  entityType);
+
 private :
-       QAbstractItemModel  *model;
-       EntityType* tmpEntity;
+       QVector<QAbstractItemModel*>* models;
+
        QVector<EntityIcon*>* entityIcons;
        QTimer* timer;
 
