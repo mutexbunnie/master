@@ -9,18 +9,11 @@ EntityType::EntityType()
 {
    normal=0;
    selected=0;
-   //fieldMap=new FieldMap();
 }
 
 
 void EntityType::addIcon(QString iconPath)
 {
-    /*normalPixmap= new QPixmap(iconPath);
-    QIcon icon;
-    icon.addPixmap(*normalPixmap);
-    selectedPixmap= new QPixmap( icon.pixmap(64,64,QIcon::Selected,QIcon::On));*/
-
-
     this->iconPath=iconPath;
     normal= QPixmap(iconPath);
     normal=normal.scaled(50,50, Qt::KeepAspectRatio);
@@ -36,22 +29,13 @@ void EntityType::addIcon(QString iconPath)
     painter.end();
 }
 
+
+void EntityType::setEntitySource(EntitySource* _entitySource)
+{
+  entitySource =_entitySource;
+}
+
 void EntityType::setName(QString _name)
 {
-  name= _name;
-}
-
-void EntityType::setDataSourceName(QString _datasourceName)
-{
- datasourcename=_datasourceName;
-}
-
-void EntityType::setDataSourceLocation(QString _dataSourceLocation)
-{
- datalocation=_dataSourceLocation;
-}
-
-void EntityType::setDataSource(DataSource* _dataSource)
-{
-  datasource=_dataSource;
+  name =_name;
 }

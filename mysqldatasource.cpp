@@ -1,15 +1,16 @@
-#include "datasource.h"
+#include "entitysource.h"
 #include "mysqldatasource.h"
 
 
-MysqlDataSource::MysqlDataSource(QString _name,QString _host,QString _user, QString _pass,QString _db):DataSource(_name)
+MysqlDataSource::MysqlDataSource(QString _name, QString _entityname, QString _host, QString _user, QString _pass, QString _db, QString _query):EntitySource(_name,_entityname)
 {
     host=_host;
     user=_user;
     pass=_pass;
-    db="test";//_db;
+    db=_db;
+    query=_query;
 
-    dbConnection =  (QSqlDatabase::addDatabase("QMYSQL"));
+    dbConnection =  (QSqlDatabase::addDatabase("QMYSQL",name));
     dbConnection.setHostName(host);
     dbConnection.setDatabaseName(db);
     dbConnection.setUserName(user);
@@ -18,9 +19,5 @@ MysqlDataSource::MysqlDataSource(QString _name,QString _host,QString _user, QStr
     bool ok = dbConnection.open();
     qDebug()<<ok;
     model = new  QSqlQueryModel();
-    model->setQuery("select concat(FirstName,' ',LastName) from Persons limit 100",dbConnection);
-
-    //model->setQuery("select username,externalip from fwauth limit 4000",dbConnection);
-    //model->setEditStrategy(QSqlTableModel::OnManualSubmit);
-    //model->select();
+    ((QSqlQueryModel*)(model))->setQuery(query,dbConnection);
 }

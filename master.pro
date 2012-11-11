@@ -19,23 +19,23 @@ SOURCES += main.cpp\
     entitytype.cpp \
     entitytypebutton.cpp \
     projectstore.cpp \
-    datasource.cpp \
     mysqldatasource.cpp \
     graphicsscene.cpp \
     entityicon.cpp \
     edge.cpp \
-    graphicsview.cpp
+    graphicsview.cpp \
+    entitysource.cpp
 
 HEADERS  +=mainform.h \
     entitytype.h \
     entitytypebutton.h \
     projectstore.h \
-    datasource.h \
     mysqldatasource.h \
     graphicsscene.h \
     entityicon.h \
     edge.h \
-    graphicsview.h
+    graphicsview.h \
+    entitysource.h
 
 FORMS += \
     mainform.ui

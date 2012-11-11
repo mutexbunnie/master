@@ -1,17 +1,16 @@
 #ifndef MYSQLDATASOURCE_H
 #define MYSQLDATASOURCE_H
-#include "datasource.h"
+#include "entitysource.h"
 #include <QtSql>
 #include <QSqlDatabase>
 #include <QSqlError>
 #include <QSqlQueryModel>
 
-class MysqlDataSource: public DataSource
+class MysqlDataSource: public EntitySource
 {
 public:
-    MysqlDataSource(QString _name, QString _host, QString _user, QString _pass, QString _db);
+    MysqlDataSource(QString _name, QString _entityname ,QString _host, QString _user, QString _pass, QString _db,QString _query);
     QSqlDatabase dbConnection;
-    QSqlQueryModel* model;
 
 private:
     QString host;
@@ -19,6 +18,7 @@ private:
     QString user;
     QString pass;
     QString db;
+    QString query;
 };
 
 

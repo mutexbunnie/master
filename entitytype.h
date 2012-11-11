@@ -3,28 +3,24 @@
 
 #include <QString>
 #include <QPixmap>
-#include "datasource.h"
+#include "entitysource.h"
 
 class EntityType
 {
 public:
     EntityType();
 
-
     QString iconPath;
     QPixmap selected;
     QPixmap normal;
 
     QString name;
-    QString datasourcename;
-    DataSource* datasource;
-    QString datalocation;
+    EntitySource* entitySource;
 
-    void setName(QString);
-    void setDataSourceName(QString _datasourceName);
-    void setDataSourceLocation(QString _dataSourceLocation);
+
+    void setName(QString _name);
     void addIcon(QString iconPath);
-    void setDataSource(DataSource* _dataSource);
+    void setEntitySource(EntitySource* _entitySource);
 
 };
 

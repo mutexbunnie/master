@@ -1,10 +1,11 @@
 #include "projectstore.h"
 #include "mysqldatasource.h"
+#include <QDebug>
 
 void ProjectStore::loadProject(QString filenname)
 {
     entityTypes= new QVector<EntityType*>();
-    dataSources= new QVector<DataSource*>();
+    entitySources= new QVector<EntitySource*>();
 
 
     QXmlSimpleReader* parser  = new QXmlSimpleReader();
@@ -15,20 +16,22 @@ void ProjectStore::loadProject(QString filenname)
 
    for (int i=0; i<entityTypes->size(); i++)
     {
-        for (int k=0; k<dataSources->size(); k++)
+
+        for (int k=0; k<entitySources->size(); k++)
         {
-            if ((*entityTypes)[i]->datasourcename == ((*dataSources)[k]->getName()))
+
+            if ((*entityTypes)[i]->name == ((*entitySources)[k]->getEntityName()))
             {
-               (*entityTypes)[i]->datasource=(*dataSources)[k];
+                 qDebug()<<(*entityTypes)[i]->name;
+               (*entityTypes)[i]->entitySource=(*entitySources)[k];
 
-             /* QVector<StringIntTurple*>* tmpFields= (*dataSources)[k]->getFieldsDesc((*entityTypes)[i]->datalocation);
-
-              for (int j=0; j<tmpFields->size(); j++)
-                  (*entityTypes)[i]->fieldMap->addField((*tmpFields)[j]->getString(),(*tmpFields)[j]->getInt());*/
-              break;
+               break;
             }
         }
     }
+
+
+
 }
 
 
@@ -51,19 +54,15 @@ bool ProjectStore::startElement(const QString & namespaceURI, const QString & lo
 
         EntityType* tmpEntity=new EntityType();
 
-        for(int index = 0 ; index<atts.length();index++)
+        for (int index = 0 ; index<atts.length();index++)
          {
             if (atts.localName(index)=="icon")           {     tmpEntity->addIcon(atts.value(index));           }
             if (atts.localName(index)=="name")           {     tmpEntity->setName(atts.value(index));           }
-            if (atts.localName(index)=="datasource")     {     tmpEntity->setDataSourceName(atts.value(index)); }
-            if (atts.localName(index)=="datalocation")   {     tmpEntity->setDataSourceLocation(atts.value(index)); }
-          }
+         }
+         entityTypes->append(tmpEntity);
+    }
 
-        entityTypes->append(tmpEntity);
-
-     }
-
-    if (localName=="datesource")
+    if (localName=="entitysource")
     {
         QString host;
         QString type;
@@ -71,20 +70,26 @@ bool ProjectStore::startElement(const QString & namespaceURI, const QString & lo
         QString pass;
         QString db;
         QString name;
+        QString entityname;
+        QString query;
 
         for (int index = 0 ; index<atts.length();index++)
          {
             if (atts.localName(index)=="name")   {     name=atts.value(index); }
+            if (atts.localName(index)=="entityname")   {entityname=atts.value(index);  }
             if (atts.localName(index)=="host")   {     host=atts.value(index); }
             if (atts.localName(index)=="type")   {     type=atts.value(index); }
             if (atts.localName(index)=="pass")   {     pass=atts.value(index); }
             if (atts.localName(index)=="user")   {     user=atts.value(index); }
             if (atts.localName(index)=="db")     {     db=atts.value(index);   }
+            if (atts.localName(index)=="query")     {  query=atts.value(index);   }
          }
 
         if (type=="mysql")
         {
-            dataSources->append(new  MysqlDataSource(name,host,user,pass,db));
+
+            entitySources->append(new  MysqlDataSource(name,entityname,host,user,pass,db,query));
+
         }
     }
 

@@ -21,10 +21,19 @@ MainForm::MainForm(ProjectStore* projectStore, QWidget *parent) : QMainWindow(pa
         graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
         graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
         graphicsView -> setMinimumSize(400, 400);
-        ui->tabWidget->addTab(graphicsView,"Sheet 1");
         scene= new  GraphicsScene(0);
         scene->setSceneRect(0,0,1024,1024);
         graphicsView->setScene(scene);
+
+        QFrame* frame = new QFrame();
+        QVBoxLayout* layout = new QVBoxLayout();
+        frame->setLayout(layout);
+        layout->addWidget(graphicsView);
+        QTabWidget* entityTables=new QTabWidget();
+
+        QSpacerItem* verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        layout->addItem(verticalSpacer);
+        layout->addWidget(entityTables);
 
         for (int i=0;i<projectStore->entityTypes->size() ;i++)
         {
@@ -34,13 +43,14 @@ MainForm::MainForm(ProjectStore* projectStore, QWidget *parent) : QMainWindow(pa
             this->entityTypeButtons->append(tmp_entityButton);
 
             QTableView* tableView = new QTableView();
-            ui->tabWidget->addTab(tableView, projectStore->entityTypes->at(i)->name);
-            //* FIX MYSQLSOURCE CAST*//
-            tableView->setModel( ((MysqlDataSource*)(((*(projectStore->entityTypes))[i])->datasource))->model);
-            scene->addModel(((MysqlDataSource*)(((*(projectStore->entityTypes))[i])->datasource))->model,projectStore->entityTypes->at(i));
+            entityTables->addTab(tableView, projectStore->entityTypes->at(i)->name);
+            tableView->setModel(((*(projectStore->entityTypes))[i])->entitySource->getModel());
+            scene->addModel(((*(projectStore->entityTypes))[i])->entitySource->getModel(),projectStore->entityTypes->at(i));
         }
-        QSpacerItem* verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
-        ui->entityBoxLayout->addItem(verticalSpacer);
+         ui->tabWidget->addTab(frame,"Sheet 1");
+
+        QSpacerItem* verticalSpacer1 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        ui->entityBoxLayout->addItem(verticalSpacer1);
 
 }
 
