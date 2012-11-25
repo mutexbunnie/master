@@ -15,17 +15,29 @@ EntityType::EntityType()
 void EntityType::addIcon(QString iconPath)
 {
     this->iconPath=iconPath;
-    normal= QPixmap(iconPath);
-    normal=normal.scaled(50,50, Qt::KeepAspectRatio);
+    normal= QPixmap(QSize(75,75));
 
-    selected= QPixmap(normal.size());
+    normal.fill(QColor(255, 255, 255,0));
+    QPainter painterNormal(&normal);
+
+    QBrush brush(QColor(0, 0, 0,100));
+    QPen pen(brush,4);
+    painterNormal.setPen(pen);
+    //painterNormal.drawRect(normal.rect());
+   painterNormal.drawPixmap(15,5,50,50, QPixmap(iconPath));
+    painterNormal.end();
+
+    //normal=normal.scaled(50,50, Qt::KeepAspectRatio);
+
+
+    selected= QPixmap(QSize(75,75));
     selected.fill(QColor(0, 0, 255, 50));
     QPainter painter(&selected);
-    QBrush brush(QColor(0, 0, 255,100));
-    QPen pen(brush,4);
-    painter.drawPixmap(0, 0, normal);
+
+
     painter.setPen(pen);
-    painter.drawRect(normal.rect());
+    painter.drawRect(selected.rect());
+    painter.drawPixmap(15,5,50,50, QPixmap(iconPath));
     painter.end();
 }
 

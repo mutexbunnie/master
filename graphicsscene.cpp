@@ -14,9 +14,9 @@ GraphicsScene::GraphicsScene(QObject *parent) :QGraphicsScene(parent)
 
     entityIcons=new QVector<EntityIcon*>();
 
-    timer = new QTimer(this);
-    connect (timer, SIGNAL(timeout()), this, SLOT(layoutItems()));
-    timer->start(100);
+    //timer = new QTimer(this);
+ //   connect (timer, SIGNAL(timeout()), this, SLOT(layoutItems()));
+   // timer->start(100);
 }
 
 
@@ -129,7 +129,7 @@ void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
         {
             if  (prevSelected[i]!=selectedNow[j])
             {
-               qDebug()<<"Adding" << ((EntityIcon*)selectedNow[j])->labelItem->text() << "to "<< ((EntityIcon*)prevSelected[i])->labelItem->text();
+             //  qDebug()<<"Adding" << ((EntityIcon*)selectedNow[j])->labelItem->text() << "to "<< ((EntityIcon*)prevSelected[i])->labelItem->text();
                ((EntityIcon*)selectedNow[j])->addConnection(((EntityIcon*)prevSelected[i]));
                (((EntityIcon*)prevSelected[i]))->addConnection((EntityIcon*)selectedNow[j]);
             }

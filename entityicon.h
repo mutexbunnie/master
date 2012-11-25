@@ -3,7 +3,7 @@
 
 
 #include <QGraphicsItem>
-#include <QGraphicsPixmapItem>
+
 #include <QStyleOptionGraphicsItem>
 #include <QPersistentModelIndex>
 #include <QGraphicsSceneMouseEvent>
@@ -12,7 +12,7 @@
 class Edge ;
 
 
-class EntityIcon : public QGraphicsPixmapItem
+class EntityIcon : public QGraphicsItem
 {
 
 public:
@@ -21,16 +21,14 @@ public:
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
     virtual void	mouseReleaseEvent ( QGraphicsSceneMouseEvent * event );
     virtual void	mousePressEvent   (  QGraphicsSceneMouseEvent * event );
-    virtual QRectF boundingRect();
+    QRectF boundingRect() const;
     void addConnection(EntityIcon* dest);
 
-    void updateText();
+
+   // void updateText();
 
     QVector<EntityIcon*>* connectionList;
-
-QGraphicsSimpleTextItem* labelItem;
-
- EntityType* entityType;
+    EntityType* entityType;
 signals:
 
 
@@ -38,9 +36,7 @@ public slots:
 
 private:
         QPersistentModelIndex  index;
-        QPixmap* normal;
-        QPixmap* selected;
-
+        QPixmap currentPixmap;
 
 };
 

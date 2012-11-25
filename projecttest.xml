@@ -1,16 +1,11 @@
 <project name="Test">
 
 	<entitysources>
-		<entitysource name="db" entityname="Computer" type="mysql" host="127.0.0.1" user="root" pass="root" db="test" query="select concat(FirstName,&apos; &apos;,LastName) from Persons limit 100" >
-		</entitysource>  
-
-		<entitysource name="db2" entityname="person" type="mysql" host="127.0.0.1" user="root" pass="root" db="test" query="select concat(FirstName,&apos; &apos;,LastName) from Persons limit 100" > 
-			select concat(FirstName,&apos; &apos;,LastName) from Persons limit 100 </entitysource>  
-		</entitysources>
+		<entitysource name="db" entityname="Computer" type="mysql" host="127.0.0.1" user="root" pass="root" db="unix" query="select AccountName from  ad limit 100" > </entitysource>  
+	</entitysources>
 
 	<entitytypes>
 		<entitytype name="Computer" icon=":icons/Computer.png" > </entitytype>
-		<entitytype name="person" icon=":icons/star.png" > </entitytype>
 	</entitytypes>
 
 </project> 
