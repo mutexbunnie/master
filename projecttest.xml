@@ -1,7 +1,7 @@
 <project name="Test">
 
 	<entitysources>
-		<entitysource name="db" entityname="Computer" type="mysql" host="127.0.0.1" user="root" pass="root" db="unix" query="select AccountName from  ad limit 100" > </entitysource>  
+		<entitysource name="db" entityname="Computer" type="mysql" host="127.0.0.1" user="root" pass="root" db="test" query="select FirstName from Persons limit 100" > </entitysource>  
 	</entitysources>
 
 	<entitytypes>

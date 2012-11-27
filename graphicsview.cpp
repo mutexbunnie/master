@@ -9,6 +9,8 @@ GraphicsView::GraphicsView(QWidget *parent) :  QGraphicsView(parent)
       setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
       setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
       //scale(qreal(0.8), qreal(0.8));
+      setRenderHint(QPainter::HighQualityAntialiasing, true);
+        setRenderHint(QPainter::SmoothPixmapTransform, true);
 }
 
 

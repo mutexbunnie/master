@@ -112,3 +112,8 @@ MainForm::~MainForm()
    // delete ui;
 }
 
+
+void MainForm::on_actionLink_triggered(bool checked)
+{
+
+}

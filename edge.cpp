@@ -28,13 +28,13 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     //QLineF line(destIcon->pos(), sourceIcon->pos());
 
 
-     QPointF startPoint(sourceIcon->pos().x()+25, sourceIcon->pos().y()+25);
-     QPointF endPoint  (destIcon->pos().x()+25, destIcon->pos().y()+25);
+     QPointF startPoint(sourceIcon->pos().x()+37.5, sourceIcon->pos().y()+37.5);
+     QPointF endPoint  (destIcon->pos().x()+37.5, destIcon->pos().y()+37.5);
 
      QLineF line(startPoint,endPoint);
 
-     QPointF startPoint2(startPoint.x()+(line.unitVector().dx()*25), startPoint.y()+(line.unitVector().dy()*25));
-     QPointF endPoint2  (endPoint.x()-(line.unitVector().dx()*25), endPoint.y()-(line.unitVector().dy()*25));
+     QPointF startPoint2(startPoint.x()+(line.unitVector().dx()*37.5), startPoint.y()+(line.unitVector().dy()*37.5));
+     QPointF endPoint2  (endPoint.x()-(line.unitVector().dx()*37.5), endPoint.y()-(line.unitVector().dy()*37.5));
 
      QLineF line2(startPoint2,endPoint2);
 

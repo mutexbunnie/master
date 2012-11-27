@@ -1,10 +1,10 @@
 #ifndef ENTITYTYPEBUTTON_H
 #define ENTITYTYPEBUTTON_H
 
-#include <QPushButton>
+#include <QToolButton>
 #include  "entitytype.h"
 
-class EntityTypeButton : public QPushButton
+class EntityTypeButton : public QToolButton
 {
     Q_OBJECT
 public:

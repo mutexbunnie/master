@@ -71,6 +71,9 @@
           </property>
           <item>
            <widget class="QPushButton" name="pushButton">
+            <property name="layoutDirection">
+             <enum>Qt::LeftToRight</enum>
+            </property>
             <property name="text">
              <string>E
 n
@@ -99,13 +102,13 @@ s</string>
         <widget class="QFrame" name="entityBox">
          <property name="minimumSize">
           <size>
-           <width>80</width>
+           <width>90</width>
            <height>98</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>80</width>
+           <width>90</width>
            <height>16777215</height>
           </size>
          </property>
@@ -190,7 +193,7 @@ s</string>
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>910</width>
+            <width>900</width>
             <height>614</height>
            </rect>
           </property>
@@ -249,6 +252,7 @@ s</string>
     <bool>false</bool>
    </attribute>
    <addaction name="actionSelection"/>
+   <addaction name="actionLink"/>
   </widget>
   <action name="actionSelection">
    <property name="checkable">
@@ -275,6 +279,18 @@ s</string>
   <action name="actionOpen_Project">
    <property name="text">
     <string>Open Project</string>
+   </property>
+  </action>
+  <action name="actionLink">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset theme="Home">
+     <normaloff>../Desktop/11_02_osa_icons_png/osa_arrow_green_left.png</normaloff>../Desktop/11_02_osa_icons_png/osa_arrow_green_left.png</iconset>
+   </property>
+   <property name="text">
+    <string>Link</string>
    </property>
   </action>
  </widget>

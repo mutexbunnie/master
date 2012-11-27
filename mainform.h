@@ -42,6 +42,8 @@ public slots:
 private slots:
     void on_pushButton_toggled(bool checked);
 
+    void on_actionLink_triggered(bool checked);
+
 private:
     Ui::MainForm *ui;
 

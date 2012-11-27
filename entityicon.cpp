@@ -51,7 +51,7 @@ void EntityIcon::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
     painter->setPen(pen);
     painter->drawRect(selected.rect());*/
 
-    painter->drawText(QRectF(15,60,50,10), Qt::AlignCenter, "Testjkljklafjklfjkljfklsdjfkasjfkljasfkljsdfasfkjdkldfjqwetjiowjvqinuiqrguiqehtiowejfojeiowcjiojweiojweomciweqweosdlmioqejiowkepkojwiomqowj");
+    painter->drawText(QRectF(15,60,50,1000), Qt::TextWrapAnywhere,index.data().toString());
 
    // painter->end();
 
