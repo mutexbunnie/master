@@ -5,52 +5,12 @@
 #include <mysqldatasource.h>
 #include <QTableView>
 #include <QDebug>
+#include <QFileDialog>
 
-MainForm::MainForm(ProjectStore* projectStore, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainForm)
+MainForm::MainForm(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainForm)
 {
         ui->setupUi(this);
-        ui->actionSelection->setChecked(true);
 
-        //connect(ui->actionSelection, SIGNAL(toggled(bool)), this, SLOT(toggleSelectionState(bool)));
-        this->entityTypeButtons = new QVector<EntityTypeButton*>();
-        ui->entityBoxLayout->setAlignment(Qt::AlignTop);
-
-
-        QGraphicsView* graphicsView = new GraphicsView();
-        graphicsView->setFocus();
-        graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-        graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-        graphicsView -> setMinimumSize(400, 400);
-        scene= new  GraphicsScene(0);
-        scene->setSceneRect(0,0,1024,1024);
-        graphicsView->setScene(scene);
-
-        QFrame* frame = new QFrame();
-        QVBoxLayout* layout = new QVBoxLayout();
-        frame->setLayout(layout);
-        layout->addWidget(graphicsView);
-        QTabWidget* entityTables=new QTabWidget();
-
-        QSpacerItem* verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
-        layout->addItem(verticalSpacer);
-        layout->addWidget(entityTables);
-
-        for (int i=0;i<projectStore->entityTypes->size() ;i++)
-        {
-            EntityTypeButton* tmp_entityButton =new EntityTypeButton(ui->entityBoxContent,(*(projectStore->entityTypes))[i]);
-            ui->entityBoxLayout->addWidget(tmp_entityButton);
-            connect(tmp_entityButton , SIGNAL(toggled(bool)), this, SLOT(toggleEntity(bool)));
-            this->entityTypeButtons->append(tmp_entityButton);
-
-            QTableView* tableView = new QTableView();
-            entityTables->addTab(tableView, projectStore->entityTypes->at(i)->name);
-            tableView->setModel(((*(projectStore->entityTypes))[i])->entitySource->getModel());
-            scene->addModel(((*(projectStore->entityTypes))[i])->entitySource->getModel(),projectStore->entityTypes->at(i));
-        }
-         ui->tabWidget->addTab(frame,"Sheet 1");
-
-        QSpacerItem* verticalSpacer1 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
-        ui->entityBoxLayout->addItem(verticalSpacer1);
 
 }
 
@@ -116,4 +76,57 @@ MainForm::~MainForm()
 void MainForm::on_actionLink_triggered(bool checked)
 {
 
+}
+
+void MainForm::on_actionOpen_Project_triggered()
+{
+   QString filepath=QFileDialog::getOpenFileName(this, "Open Project File","","Files (*.xml)");
+   projectStore= new ProjectStore();
+   projectStore->loadProject(filepath);
+
+   ui->actionSelection->setChecked(true);
+
+   this->entityTypeButtons = new QVector<EntityTypeButton*>();
+   ui->entityBoxLayout->setAlignment(Qt::AlignTop);
+
+   QGraphicsView* graphicsView = new GraphicsView();
+   graphicsView->setFocus();
+   graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+   graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+   graphicsView -> setMinimumSize(400, 400);
+   scene= new  GraphicsScene(0);
+   scene->setSceneRect(0,0,1024,1024);
+   graphicsView->setScene(scene);
+
+   connect(ui->actionLink, SIGNAL(toggled(bool)), scene, SLOT(setLinkMode(bool)));
+
+
+      QFrame* frame = new QFrame();
+      QVBoxLayout* layout = new QVBoxLayout();
+      frame->setLayout(layout);
+
+      QTabWidget* entityTables=new QTabWidget();
+         layout->addWidget(graphicsView);
+      QSpacerItem* verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+      layout->addItem(verticalSpacer);
+      layout->addWidget(entityTables);
+
+
+      for (int i=0;i<projectStore->entityTypes->size() ;i++)
+      {
+          EntityTypeButton* tmp_entityButton =new EntityTypeButton(ui->entityBoxContent,(*(projectStore->entityTypes))[i]);
+          ui->entityBoxLayout->addWidget(tmp_entityButton);
+          connect(tmp_entityButton , SIGNAL(toggled(bool)), this, SLOT(toggleEntity(bool)));
+          this->entityTypeButtons->append(tmp_entityButton);
+
+          QTableView* tableView = new QTableView();
+          entityTables->addTab(tableView, projectStore->entityTypes->at(i)->name);
+          tableView->setModel(((*(projectStore->entityTypes))[i])->entitySource->getModel());
+          scene->addModel(((*(projectStore->entityTypes))[i])->entitySource->getModel(),projectStore->entityTypes->at(i));
+      }
+
+       ui->tabWidget->addTab(frame,"Sheet 1");
+
+      QSpacerItem* verticalSpacer1 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+      ui->entityBoxLayout->addItem(verticalSpacer1);
 }

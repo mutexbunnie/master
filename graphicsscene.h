@@ -31,11 +31,14 @@ public slots:
     void addEntityIcon(QGraphicsItem * parent  , QModelIndex  index, EntityType*  entityType );
     void layoutItems();
     void addModel(QAbstractItemModel *model,EntityType*  entityType);
+    void setLinkMode(bool linkEnabled);
+
 
 private :
        QVector<QAbstractItemModel*>* models;
        QVector<EntityIcon*>* entityIcons;
        QTimer* timer;
+       bool linkMode;
 };
 
 #endif // GRAPHICSSCENE_H

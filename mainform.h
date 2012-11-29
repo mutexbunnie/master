@@ -18,7 +18,7 @@ class MainForm : public QMainWindow
     Q_OBJECT
     
 public:
-    explicit MainForm(ProjectStore* projectStore, QWidget *parent = 0);
+    explicit MainForm( QWidget *parent = 0);
     ~MainForm();
    // QScrollArea* scrollArea;
     //ActiveDialog* activeDialog;
@@ -44,10 +44,12 @@ private slots:
 
     void on_actionLink_triggered(bool checked);
 
+    void on_actionOpen_Project_triggered();
+
 private:
     Ui::MainForm *ui;
 
-
+    ProjectStore* projectStore;
 
 
 

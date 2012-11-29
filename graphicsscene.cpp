@@ -17,6 +17,7 @@ GraphicsScene::GraphicsScene(QObject *parent) :QGraphicsScene(parent)
     //timer = new QTimer(this);
  //   connect (timer, SIGNAL(timeout()), this, SLOT(layoutItems()));
    // timer->start(100);
+    this->linkMode=false;
 }
 
 
@@ -77,6 +78,11 @@ void GraphicsScene::addModel(QAbstractItemModel *model,EntityType*  tmpEntity)
     }
 }
 
+void GraphicsScene::setLinkMode(bool linkEnabled)
+{
+    this->linkMode=linkEnabled;
+}
+
 void GraphicsScene::reset() /*! helper function to implement a reset call for a custom view */
 {
     qDebug()<<"GraphicsScene::reset()";
@@ -123,15 +129,18 @@ void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
     QList<QGraphicsItem*> selectedNow= this->selectedItems();
 
-    for (int i=0; i<prevSelected.size(); i++)
+    if (this->linkMode)
     {
-        for (int j=0; j<selectedNow.size(); j++)
+        for (int i=0; i<prevSelected.size(); i++)
         {
-            if  (prevSelected[i]!=selectedNow[j])
+            for (int j=0; j<selectedNow.size(); j++)
             {
-             //  qDebug()<<"Adding" << ((EntityIcon*)selectedNow[j])->labelItem->text() << "to "<< ((EntityIcon*)prevSelected[i])->labelItem->text();
-               ((EntityIcon*)selectedNow[j])->addConnection(((EntityIcon*)prevSelected[i]));
-               (((EntityIcon*)prevSelected[i]))->addConnection((EntityIcon*)selectedNow[j]);
+                if  (prevSelected[i]!=selectedNow[j])
+                {
+                //  qDebug()<<"Adding" << ((EntityIcon*)selectedNow[j])->labelItem->text() << "to "<< ((EntityIcon*)prevSelected[i])->labelItem->text();
+                ((EntityIcon*)selectedNow[j])->addConnection(((EntityIcon*)prevSelected[i]));
+                (((EntityIcon*)prevSelected[i]))->addConnection((EntityIcon*)selectedNow[j]);
+                }
             }
         }
     }

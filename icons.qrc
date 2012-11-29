@@ -1,8 +1,9 @@
 <RCC>
-    <qresource prefix="/icons">
-        <file>star.png</file>
-        <file>Computer.png</file>
-        <file>green_dot.png</file>
-        <file>mouse_pointer.png</file>
+    <qresource prefix="/">
+        <file>icons/Computer.png</file>
+        <file>icons/green_dot.png</file>
+        <file>icons/mouse_pointer.png</file>
+        <file>icons/star.png</file>
+        <file>icons/osa_user_blue.png</file>
     </qresource>
 </RCC>
