@@ -32,6 +32,7 @@ public slots:
     void layoutItems();
     void addModel(QAbstractItemModel *model,EntityType*  entityType);
     void setLinkMode(bool linkEnabled);
+    void setAutoLayout(bool autoLayout);
 
 
 private :
@@ -39,6 +40,7 @@ private :
        QVector<EntityIcon*>* entityIcons;
        QTimer* timer;
        bool linkMode;
+
 };
 
 #endif // GRAPHICSSCENE_H

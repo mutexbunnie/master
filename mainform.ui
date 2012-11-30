@@ -253,6 +253,7 @@ s</string>
    </attribute>
    <addaction name="actionSelection"/>
    <addaction name="actionLink"/>
+   <addaction name="actionAutoLayout"/>
   </widget>
   <action name="actionSelection">
    <property name="checkable">
@@ -286,11 +287,23 @@ s</string>
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset theme="Home">
-     <normaloff>../Desktop/11_02_osa_icons_png/osa_arrow_green_left.png</normaloff>../Desktop/11_02_osa_icons_png/osa_arrow_green_left.png</iconset>
+    <iconset>
+     <normaloff>../../../../../Desktop/Documents/Clean/Persoonlik/code/master/icons/osa_arrow_green_left.png</normaloff>../../../../../Desktop/Documents/Clean/Persoonlik/code/master/icons/osa_arrow_green_left.png</iconset>
    </property>
    <property name="text">
     <string>Link</string>
+   </property>
+  </action>
+  <action name="actionAutoLayout">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/osa_lifecycle.png</normaloff>:/icons/osa_lifecycle.png</iconset>
+   </property>
+   <property name="text">
+    <string>AutoLayout</string>
    </property>
   </action>
  </widget>

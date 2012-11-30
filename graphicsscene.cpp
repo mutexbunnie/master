@@ -13,11 +13,13 @@ GraphicsScene::GraphicsScene(QObject *parent) :QGraphicsScene(parent)
     this->setItemIndexMethod(QGraphicsScene::NoIndex);
 
     entityIcons=new QVector<EntityIcon*>();
-
-    //timer = new QTimer(this);
- //   connect (timer, SIGNAL(timeout()), this, SLOT(layoutItems()));
-   // timer->start(100);
     this->linkMode=false;
+
+
+     timer = new QTimer(this);
+     connect (timer, SIGNAL(timeout()), this, SLOT(layoutItems()));
+
+
 }
 
 
@@ -30,36 +32,39 @@ void GraphicsScene::addEntityIcon(QGraphicsItem *parent, QModelIndex index, Enti
 
 void GraphicsScene::layoutItems()
 {
-  float forceX,forceY;
-  for( int i=0; i<entityIcons->size(); i++)
-   {
-            forceX=0;
-            forceY=0;
-            for( int k=0; k<entityIcons->size(); k++)
-            {
 
-                        if (k!=i)
-                        {
-                              float distanceX= ((*entityIcons)[i])->x()- ((*entityIcons)[k])->x();
-                              float distanceY= ((*entityIcons)[i])->y()- ((*entityIcons)[k])->y();
-                              float distance=(distanceX*distanceX)+(distanceY*distanceY);
 
-                              if (distance>0)
-                              {
-                                   forceX+= (75*distanceX)/distance;
-                                   forceY+= (75*distanceY)/distance;
-                              }
+          float forceX,forceY;
+          for( int i=0; i<entityIcons->size(); i++)
+           {
+                    forceX=0;
+                    forceY=0;
+                    for( int k=0; k<entityIcons->size(); k++)
+                    {
 
-                               if (((*entityIcons)[i])->connectionList->contains((*entityIcons)[k]))
-                              {
-                                forceX-= distanceX/50;
-                                forceY-= distanceY/50;
-                               }
-                        }
+                                if (k!=i)
+                                {
+                                      float distanceX= ((*entityIcons)[i])->x()- ((*entityIcons)[k])->x();
+                                      float distanceY= ((*entityIcons)[i])->y()- ((*entityIcons)[k])->y();
+                                      float distance=(distanceX*distanceX)+(distanceY*distanceY);
 
-             }
-             (*entityIcons)[i]->moveBy(forceX,forceY);
-    }
+                                      if (distance>0)
+                                      {
+                                           forceX+= (75*distanceX)/distance;
+                                           forceY+= (75*distanceY)/distance;
+                                      }
+
+                                       if (((*entityIcons)[i])->connectionList->contains((*entityIcons)[k]))
+                                      {
+                                        forceX-= distanceX/50;
+                                        forceY-= distanceY/50;
+                                       }
+                                }
+
+                     }
+                     (*entityIcons)[i]->moveBy(forceX,forceY);
+            }
+
 }
 
 void GraphicsScene::addModel(QAbstractItemModel *model,EntityType*  tmpEntity)
@@ -81,6 +86,12 @@ void GraphicsScene::addModel(QAbstractItemModel *model,EntityType*  tmpEntity)
 void GraphicsScene::setLinkMode(bool linkEnabled)
 {
     this->linkMode=linkEnabled;
+}
+
+void GraphicsScene::setAutoLayout(bool autoLayout)
+{
+    if (autoLayout) timer->start(100);
+    else      timer->stop();
 }
 
 void GraphicsScene::reset() /*! helper function to implement a reset call for a custom view */

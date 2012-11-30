@@ -99,17 +99,26 @@ void MainForm::on_actionOpen_Project_triggered()
    graphicsView->setScene(scene);
 
    connect(ui->actionLink, SIGNAL(toggled(bool)), scene, SLOT(setLinkMode(bool)));
+   connect(ui->actionAutoLayout, SIGNAL(toggled(bool)), scene, SLOT(setAutoLayout(bool)));
 
 
-      QFrame* frame = new QFrame();
-      QVBoxLayout* layout = new QVBoxLayout();
-      frame->setLayout(layout);
+   QFrame* frame = new QFrame();
+   QVBoxLayout* layout = new QVBoxLayout();
+   frame->setLayout(layout);
+   layout->addWidget(graphicsView);
 
-      QTabWidget* entityTables=new QTabWidget();
-         layout->addWidget(graphicsView);
-      QSpacerItem* verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
-      layout->addItem(verticalSpacer);
-      layout->addWidget(entityTables);
+
+   QFrame* frame2 = new QFrame();
+   QVBoxLayout* layout2 = new QVBoxLayout();
+   frame2->setLayout(layout2);
+
+
+
+     // QTabWidget* entityTables=new QTabWidget();
+
+    //  QSpacerItem* verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    //  layout->addItem(verticalSpacer);
+    //  layout->addWidget(entityTables);
 
 
       for (int i=0;i<projectStore->entityTypes->size() ;i++)
@@ -120,13 +129,16 @@ void MainForm::on_actionOpen_Project_triggered()
           this->entityTypeButtons->append(tmp_entityButton);
 
           QTableView* tableView = new QTableView();
-          entityTables->addTab(tableView, projectStore->entityTypes->at(i)->name);
+          //entityTables->addTab(tableView, projectStore->entityTypes->at(i)->name);
+          layout2->addWidget(tableView);
           tableView->setModel(((*(projectStore->entityTypes))[i])->entitySource->getModel());
           scene->addModel(((*(projectStore->entityTypes))[i])->entitySource->getModel(),projectStore->entityTypes->at(i));
       }
 
        ui->tabWidget->addTab(frame,"Sheet 1");
+       ui->tabWidget->addTab(frame2,"Tables 1");
 
       QSpacerItem* verticalSpacer1 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
       ui->entityBoxLayout->addItem(verticalSpacer1);
 }
+
