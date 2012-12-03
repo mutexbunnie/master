@@ -9,5 +9,6 @@
         <file>icons/osa_arrow_green_left.png</file>
         <file>icons/osa_lifecycle.png</file>
         <file>icons/network-transmit.png</file>
+        <file>icons/document-save-as-4.png</file>
     </qresource>
 </RCC>

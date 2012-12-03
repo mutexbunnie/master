@@ -89,6 +89,8 @@ void MainForm::on_actionOpen_Project_triggered()
    this->entityTypeButtons = new QVector<EntityTypeButton*>();
    ui->entityBoxLayout->setAlignment(Qt::AlignTop);
 
+   //fix multiple sheets, mutliple views?
+
    QGraphicsView* graphicsView = new GraphicsView();
    graphicsView->setFocus();
    graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
@@ -120,6 +122,7 @@ void MainForm::on_actionOpen_Project_triggered()
     //  layout->addItem(verticalSpacer);
     //  layout->addWidget(entityTables);
 
+      scene->addSheetMap(projectStore->projectSheet);
 
       for (int i=0;i<projectStore->entityTypes->size() ;i++)
       {
@@ -133,6 +136,7 @@ void MainForm::on_actionOpen_Project_triggered()
           layout2->addWidget(tableView);
           tableView->setModel(((*(projectStore->entityTypes))[i])->entitySource->getModel());
           scene->addModel(((*(projectStore->entityTypes))[i])->entitySource->getModel(),projectStore->entityTypes->at(i));
+
       }
 
        ui->tabWidget->addTab(frame,"Sheet 1");
@@ -142,3 +146,11 @@ void MainForm::on_actionOpen_Project_triggered()
       ui->entityBoxLayout->addItem(verticalSpacer1);
 }
 
+
+void MainForm::on_actionSave_triggered()
+{
+    scene->save();
+    projectStore->projectSheet=scene->getSheetMap();
+    projectStore->saveScene();
+
+}

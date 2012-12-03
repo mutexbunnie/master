@@ -1,11 +1,19 @@
 <project name="Test">
 
 	<entitysources>
-		<entitysource name="db" entityname="User" type="mysql" host="127.0.0.1" user="root" pass="root" db="test" query="select distinct FirstName from Persons limit 100" > </entitysource>  
+		<entitysource name="db" entityname="User" type="mysql" host="127.0.0.1" user="root" pass="root" db="test" query="select distinct FirstName from Persons limit 10" > </entitysource>  
+  	 	<entitysource name="logs" entityname="ip" type="mysql" host="127.0.0.1" user="root" pass="root" db="test" query="select distinct ip  from ips limit 20" > </entitysource>
+  	 	<entitysource name="block" entityname="ipblock" type="mysql" host="127.0.0.1" user="root" pass="root" db="test" query="select distinct ipblock  from ipblock " > </entitysource>
 	</entitysources>
 
 	<entitytypes>
 		<entitytype name="User" icon=":icons/osa_user_blue.png" > </entitytype>
+                <entitytype name="ip" icon=":icons/osa_desktop.png" > </entitytype>
+                <entitytype name="ipblock" icon=":icons/network-transmit.png" > </entitytype>
 	</entitytypes>
+
+	<projectsheets>
+  	 	<projectsheet name="Sheet 1" type="mysql" host="127.0.0.1" user="root" pass="root" db="projectone" > </projectsheet>
+	</projectsheets>
 
 </project> 

@@ -254,6 +254,7 @@ s</string>
    <addaction name="actionSelection"/>
    <addaction name="actionLink"/>
    <addaction name="actionAutoLayout"/>
+   <addaction name="actionSave"/>
   </widget>
   <action name="actionSelection">
    <property name="checkable">
@@ -287,8 +288,8 @@ s</string>
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset>
-     <normaloff>../../../../../Desktop/Documents/Clean/Persoonlik/code/master/icons/osa_arrow_green_left.png</normaloff>../../../../../Desktop/Documents/Clean/Persoonlik/code/master/icons/osa_arrow_green_left.png</iconset>
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/osa_arrow_green_left.png</normaloff>:/icons/osa_arrow_green_left.png</iconset>
    </property>
    <property name="text">
     <string>Link</string>
@@ -304,6 +305,15 @@ s</string>
    </property>
    <property name="text">
     <string>AutoLayout</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/document-save-as-4.png</normaloff>:/icons/document-save-as-4.png</iconset>
+   </property>
+   <property name="text">
+    <string>Save</string>
    </property>
   </action>
  </widget>

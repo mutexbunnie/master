@@ -47,6 +47,8 @@ private slots:
     void on_actionOpen_Project_triggered();
 
 
+    void on_actionSave_triggered();
+
 private:
     Ui::MainForm *ui;
 

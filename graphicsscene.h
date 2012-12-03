@@ -28,18 +28,26 @@ public slots:
 
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-    void addEntityIcon(QGraphicsItem * parent  , QModelIndex  index, EntityType*  entityType );
+    void addEntityIcon(QGraphicsItem * parent  , QModelIndex  index, EntityType*  entityType ,QPointF pos);
     void layoutItems();
     void addModel(QAbstractItemModel *model,EntityType*  entityType);
+
     void setLinkMode(bool linkEnabled);
     void setAutoLayout(bool autoLayout);
 
+    void addSheetMap(QMap<QString, QMap<QString,QPointF>*   >* sheet);
+
+    void save();
+    QMap<QString, QMap<QString,QPointF>*   >*  getSheetMap();
 
 private :
        QVector<QAbstractItemModel*>* models;
        QVector<EntityIcon*>* entityIcons;
        QTimer* timer;
        bool linkMode;
+
+       QMap<QString, QMap<QString,QPointF>*   >* sheetMap;
+
 
 };
 

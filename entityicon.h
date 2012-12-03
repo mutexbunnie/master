@@ -16,7 +16,7 @@ class EntityIcon : public QGraphicsItem
 {
 
 public:
-    explicit EntityIcon(QGraphicsItem * parent,  QModelIndex  index, EntityType*  entityType );
+    explicit EntityIcon(QGraphicsItem * parent,  QModelIndex  index, EntityType*  entityType , QPointF pos);
     virtual void  paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget );
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
     virtual void	mouseReleaseEvent ( QGraphicsSceneMouseEvent * event );
@@ -26,6 +26,8 @@ public:
 
 
    // void updateText();
+    QString getUidValue();
+
 
     QVector<EntityIcon*>* connectionList;
     EntityType* entityType;

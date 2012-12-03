@@ -4,14 +4,18 @@
 #include "graphicsscene.h"
 #include "edge.h"
 
-EntityIcon::EntityIcon(QGraphicsItem *parent, QModelIndex index, EntityType *entityType) : QGraphicsItem(parent)
+EntityIcon::EntityIcon(QGraphicsItem *parent, QModelIndex index, EntityType *entityType, QPointF pos) : QGraphicsItem(parent)
 {
     this->entityType=entityType;
     this->setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
     this->index=index;
 
     //fix location by model//
-    setPos((qrand() % 1024)+100,(qrand() % 1024)+100);
+    //
+
+    if (pos.x()==0 && pos.y()==0) setPos((qrand() % 1024)+100,(qrand() % 1024)+100);
+    else
+    setPos(pos);
 
     currentPixmap=entityType->normal;
     setFlag(ItemIsMovable);
@@ -97,6 +101,11 @@ void EntityIcon::addConnection(EntityIcon *dest)
     scene()->addItem(tmpEdge);
     scene()->update();
     this->connectionList->append(dest);
+}
+
+QString EntityIcon::getUidValue()
+{
+    return index.data().toString();
 }
 
 

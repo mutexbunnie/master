@@ -23,9 +23,9 @@ GraphicsScene::GraphicsScene(QObject *parent) :QGraphicsScene(parent)
 }
 
 
-void GraphicsScene::addEntityIcon(QGraphicsItem *parent, QModelIndex index, EntityType *entityType)
+void GraphicsScene::addEntityIcon(QGraphicsItem *parent, QModelIndex index, EntityType *entityType,QPointF pos)
 {
-    EntityIcon* pix=new EntityIcon(parent,index,entityType);
+    EntityIcon* pix=new EntityIcon(parent,index,entityType,pos);
     this->addItem(pix);
     this->entityIcons->append(pix);
 }
@@ -78,10 +78,23 @@ void GraphicsScene::addModel(QAbstractItemModel *model,EntityType*  tmpEntity)
 
     for ( int i = 0; i <model->rowCount(); ++i )
     {
+        //fix 0 if not uid?
+
          QModelIndex item = model->index( i, 0);
-         addEntityIcon(0,item,tmpEntity);
+
+         QMap<QString,QPointF>* sourceMap = sheetMap->value(tmpEntity->name);
+
+         QPointF pos=QPointF(0.0,0.0);
+
+         if (sourceMap!=0)
+         {
+            pos= sourceMap->value(item.data().toString());
+            qDebug() <<pos;
+         }
+         addEntityIcon(0,item,tmpEntity,pos);
     }
 }
+
 
 void GraphicsScene::setLinkMode(bool linkEnabled)
 {
@@ -92,6 +105,36 @@ void GraphicsScene::setAutoLayout(bool autoLayout)
 {
     if (autoLayout) timer->start(100);
     else      timer->stop();
+}
+
+void GraphicsScene::addSheetMap(QMap<QString, QMap<QString, QPointF> *> * sheet)
+{
+    sheetMap=sheet;
+}
+
+void GraphicsScene::save()
+{
+    //memleak here,fix
+   sheetMap = new  QMap<QString, QMap<QString,QPointF>* >();
+   for( int i=0; i<entityIcons->size(); i++)
+   {
+       QString entityTypeName =(*entityIcons)[i]->entityType->name;
+       QMap<QString,QPointF>*  tmpMap =sheetMap->value(entityTypeName);
+       if (tmpMap==0)
+       {
+           tmpMap= new  QMap<QString,QPointF>();
+           sheetMap->insert(entityTypeName,tmpMap);
+       }
+
+       tmpMap->insert((*entityIcons)[i]->getUidValue(),(*entityIcons)[i]->pos());
+
+   }
+
+}
+
+QMap<QString, QMap<QString, QPointF> *> *GraphicsScene::getSheetMap()
+{
+     return sheetMap;
 }
 
 void GraphicsScene::reset() /*! helper function to implement a reset call for a custom view */
