@@ -43,6 +43,7 @@ void ProjectStore::loadProject(QString filenname)
    bool ok = dbConnection.open();
 
    QSqlQuery entityQuery("SELECT distinct entityName FROM entityMap",dbConnection);
+   qDebug()  << "Loading";
 
 
 
@@ -58,6 +59,27 @@ void ProjectStore::loadProject(QString filenname)
       }
       projectSheet->insert(source,tmpMap);
    }
+
+
+   QSqlQuery linkQuery("SELECT entitytype_1,UID1,entitytype_2,UID2 entityName FROM entityMap",dbConnection);
+   qDebug()  << "Loading";
+
+
+   while (entityQuery.next())
+   {
+     /* QString source = entityQuery.value(0).toString();
+      QSqlQuery queryPos("SELECT uid,x,y FROM entityMap where entityName='"+source+"';",dbConnection);
+      QMap<QString,QPointF>*  tmpMap = new   QMap<QString,QPointF> ();
+
+      while (queryPos.next())
+      {
+          tmpMap->insert(queryPos.value(0).toString(),QPointF(queryPos.value(1).toFloat(),queryPos.value(2).toFloat()) );
+      }
+      projectSheet->insert(source,tmpMap);*/
+   }
+
+
+   qDebug()  << "Load done";
 
 }
 

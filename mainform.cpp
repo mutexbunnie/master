@@ -149,8 +149,10 @@ void MainForm::on_actionOpen_Project_triggered()
 
 void MainForm::on_actionSave_triggered()
 {
+    qDebug()<<"Start save";
     scene->save();
     projectStore->projectSheet=scene->getSheetMap();
     projectStore->saveScene();
+    qDebug()<<"Stop save";
 
 }
