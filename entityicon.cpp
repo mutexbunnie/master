@@ -97,10 +97,7 @@ QRectF EntityIcon::boundingRect() const
 
 void EntityIcon::addConnection(EntityIcon *dest)
 {
-    Edge* tmpEdge = new Edge(this,dest);
-    scene()->addItem(tmpEdge);
-    scene()->update();
-    this->connectionList->append(dest);
+     this->connectionList->append(dest);
 }
 
 QString EntityIcon::getUidValue()

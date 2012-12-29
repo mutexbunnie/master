@@ -29,11 +29,17 @@ public slots:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
     void addEntityIcon(QGraphicsItem * parent  , QModelIndex  index, EntityType*  entityType ,QPointF pos);
+
+    void createEdge   ( EntityIcon* source, EntityIcon* dest);
+    void storeEdge    ( EntityIcon* source, EntityIcon* dest);
+
     void layoutItems();
     void addModel(QAbstractItemModel *model,EntityType*  entityType);
 
     void setLinkMode(bool linkEnabled);
     void setAutoLayout(bool autoLayout);
+
+    void addSheetLink(QSqlTableModel* projectLink);
 
     void addSheetMap(QMap<QString, QMap<QString,QPointF>*   >* sheet);
 
@@ -43,11 +49,15 @@ public slots:
 private :
        QVector<QAbstractItemModel*>* models;
        QVector<EntityIcon*>* entityIcons;
+       QVector<Edge*>* edges;
        QTimer* timer;
        bool linkMode;
 
        QMap<QString, QMap<QString,QPointF>*   >* sheetMap;
+       QSqlTableModel* projectLink;
 
+
+       QMap <QString, QMap<QString, EntityIcon*>* >* entityLookup;
 
 };
 

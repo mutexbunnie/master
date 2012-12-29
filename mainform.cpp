@@ -124,6 +124,7 @@ void MainForm::on_actionOpen_Project_triggered()
 
       scene->addSheetMap(projectStore->projectSheet);
 
+
       for (int i=0;i<projectStore->entityTypes->size() ;i++)
       {
           EntityTypeButton* tmp_entityButton =new EntityTypeButton(ui->entityBoxContent,(*(projectStore->entityTypes))[i]);
@@ -138,6 +139,8 @@ void MainForm::on_actionOpen_Project_triggered()
           scene->addModel(((*(projectStore->entityTypes))[i])->entitySource->getModel(),projectStore->entityTypes->at(i));
 
       }
+
+      scene->addSheetLink(projectStore->projectLink);
 
        ui->tabWidget->addTab(frame,"Sheet 1");
        ui->tabWidget->addTab(frame2,"Tables 1");

@@ -8,6 +8,7 @@
 #include "entitysource.h"
 #include <QVector>
 #include <QMap>
+#include <QSqlTableModel>
 
 
 class ProjectStore :public QXmlDefaultHandler
@@ -24,7 +25,8 @@ class ProjectStore :public QXmlDefaultHandler
     QVector<EntityType*>* entityTypes;
     QVector<EntitySource*>* entitySources;
 
-    QMap<QString, QMap<QString,QPointF>*   >* projectSheet;
+    QMap<QString, QMap<QString,QPointF>*>* projectSheet;
+    QSqlTableModel* projectLink;
 
 
 private:

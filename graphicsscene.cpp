@@ -1,11 +1,14 @@
 #include "graphicsscene.h"
 #include <QDebug>
 #include <QSqlTableModel>
+#include <QSqlQuery>
 #include <QGraphicsSceneMouseEvent>
 #include "edge.h"
 #include "cmath"
 #include "math.h"
 #include <QGraphicsItem>
+#include <QSqlRecord>
+#include <QSqlField>
 
 GraphicsScene::GraphicsScene(QObject *parent) :QGraphicsScene(parent)
 {
@@ -18,16 +21,53 @@ GraphicsScene::GraphicsScene(QObject *parent) :QGraphicsScene(parent)
 
      timer = new QTimer(this);
      connect (timer, SIGNAL(timeout()), this, SLOT(layoutItems()));
-
+     entityLookup =   new  QMap <QString, QMap<QString, EntityIcon*>* >();
+     edges=new QVector<Edge*>();
 
 }
 
 
+void GraphicsScene::addSheetLink( QSqlTableModel* projectLink )
+{
+    /*model display, not copy and load*/
+    this->projectLink=projectLink;
+
+    for ( int i = 0; i <projectLink->rowCount(); ++i )
+    {
+        QModelIndex item = projectLink->index( i, 0);
+        QString entityTypeName1= item.data().toString();
+        QString uid1=item.sibling (item.row(),item.column()+1).data().toString();
+        QString entityTypeName2= item.sibling(item.row(),item.column()+2).data().toString();
+        QString uid2= item.sibling(item.row(),item.column()+3).data().toString();
+
+        EntityIcon* entityIcon1 = entityLookup->value(entityTypeName1)->value(uid1);
+        EntityIcon* entityIcon2 = entityLookup->value(entityTypeName2)->value(uid2);
+        createEdge(entityIcon1,entityIcon2);
+    }
+
+}
+
+
+
 void GraphicsScene::addEntityIcon(QGraphicsItem *parent, QModelIndex index, EntityType *entityType,QPointF pos)
 {
-    EntityIcon* pix=new EntityIcon(parent,index,entityType,pos);
-    this->addItem(pix);
-    this->entityIcons->append(pix);
+    EntityIcon* tmpEntityIcon=new EntityIcon(parent,index,entityType,pos);
+
+    QString entityTypeName =tmpEntityIcon->entityType->name;
+
+    QMap<QString, EntityIcon*>*  tmpMap = entityLookup->value(entityTypeName);
+
+    if (tmpMap==0)
+    {
+        tmpMap = new QMap<QString, EntityIcon*>();
+        entityLookup->insert(entityTypeName,tmpMap);
+    }
+
+    tmpMap->insert(tmpEntityIcon->getUidValue(),tmpEntityIcon);
+
+    this->addItem(tmpEntityIcon);
+    this->entityIcons->append(tmpEntityIcon);
+
 }
 
 void GraphicsScene::layoutItems()
@@ -80,7 +120,7 @@ void GraphicsScene::addModel(QAbstractItemModel *model,EntityType*  tmpEntity)
     {
         //fix 0 if not uid?
 
-         QModelIndex item = model->index( i, 0);
+        QModelIndex item = model->index( i, 0);
 
          QMap<QString,QPointF>* sourceMap = sheetMap->value(tmpEntity->name);
 
@@ -130,6 +170,20 @@ void GraphicsScene::save()
 
    }
 
+
+
+
+
+   for( int i=0; i<edges->size(); i++)
+   {
+       qDebug()<<((*edges)[i])->sourceIcon->entityType->name;
+       qDebug()<<((*edges)[i])->sourceIcon->getUidValue();
+
+       qDebug()<<((*edges)[i])->destIcon->entityType->name;
+       qDebug()<<((*edges)[i])->destIcon->getUidValue();
+
+  }
+
 }
 
 QMap<QString, QMap<QString, QPointF> *> *GraphicsScene::getSheetMap()
@@ -175,6 +229,40 @@ void GraphicsScene::dataChanged(const QModelIndex& topLeft, const QModelIndex& b
     }*/
 }
 
+/*creates an edge object for screen viewing*/
+
+void GraphicsScene::createEdge( EntityIcon* source, EntityIcon* dest)
+{
+    Edge* tmpEdge = new Edge(source,dest);
+    source->addConnection(dest);
+    addItem(tmpEdge);
+    edges->append(tmpEdge);
+
+
+    update();
+}
+
+/*stores an edge in the db*/
+void GraphicsScene::storeEdge(EntityIcon* source, EntityIcon* dest)
+{
+    QSqlRecord tmp_record;
+    QSqlField entitytype_1("entitytype_1",QVariant::String);
+    QSqlField uid1        ("UID1",QVariant::String);
+    QSqlField entitytype_2("entitytype_2",QVariant::String);
+    QSqlField uid2        ("UID2",QVariant::String);
+    entitytype_1.setValue(source->entityType->name);
+    uid1.setValue(source->getUidValue());
+    entitytype_2.setValue(dest->entityType->name);
+    uid2.setValue(dest->getUidValue());
+    tmp_record.insert(0,entitytype_1);
+    tmp_record.insert(1,uid1);
+    tmp_record.insert(2,entitytype_2);
+    tmp_record.insert(3,uid2);
+    projectLink->insertRecord(0,tmp_record);
+    projectLink->submitAll();
+}
+
+
 void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     QList<QGraphicsItem*> prevSelected= this->selectedItems();
@@ -192,8 +280,11 @@ void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
                 if  (prevSelected[i]!=selectedNow[j])
                 {
                 //  qDebug()<<"Adding" << ((EntityIcon*)selectedNow[j])->labelItem->text() << "to "<< ((EntityIcon*)prevSelected[i])->labelItem->text();
-                ((EntityIcon*)selectedNow[j])->addConnection(((EntityIcon*)prevSelected[i]));
-                (((EntityIcon*)prevSelected[i]))->addConnection((EntityIcon*)selectedNow[j]);
+                    createEdge(((EntityIcon*)selectedNow[j]),((EntityIcon*)prevSelected[i]));
+                    storeEdge(((EntityIcon*)selectedNow[j]),((EntityIcon*)prevSelected[i]));
+                    createEdge(((EntityIcon*)prevSelected[i]),(EntityIcon*)selectedNow[j]);
+                    storeEdge(((EntityIcon*)prevSelected[i]),(EntityIcon*)selectedNow[j]);
+                    /*fix double addition*/
                 }
             }
         }

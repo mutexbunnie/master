@@ -35,7 +35,7 @@ void ProjectStore::loadProject(QString filenname)
     }
 
 
-   QSqlDatabase dbConnection =  QSqlDatabase::addDatabase("QMYSQL","entityMap");
+   QSqlDatabase dbConnection =  QSqlDatabase::addDatabase("QMYSQL","projectdb");
    dbConnection.setHostName(projectdb_host);
    dbConnection.setDatabaseName(projectdb_dbname);
    dbConnection.setUserName(projectdb_user);
@@ -61,33 +61,21 @@ void ProjectStore::loadProject(QString filenname)
    }
 
 
-   QSqlQuery linkQuery("SELECT entitytype_1,UID1,entitytype_2,UID2 entityName FROM entityMap",dbConnection);
-   qDebug()  << "Loading";
 
-
-   while (entityQuery.next())
-   {
-     /* QString source = entityQuery.value(0).toString();
-      QSqlQuery queryPos("SELECT uid,x,y FROM entityMap where entityName='"+source+"';",dbConnection);
-      QMap<QString,QPointF>*  tmpMap = new   QMap<QString,QPointF> ();
-
-      while (queryPos.next())
-      {
-          tmpMap->insert(queryPos.value(0).toString(),QPointF(queryPos.value(1).toFloat(),queryPos.value(2).toFloat()) );
-      }
-      projectSheet->insert(source,tmpMap);*/
-   }
-
-
+   projectLink = new QSqlTableModel(0, dbConnection );
+   projectLink->setTable("link");
+   projectLink->setEditStrategy(QSqlTableModel::OnManualSubmit);
+   projectLink->select();
    qDebug()  << "Load done";
+
 
 }
 
 void ProjectStore::saveScene()
 {
 
-   QSqlDatabase dbConnection =  QSqlDatabase::database("entityMap");
-   dbConnection.exec("truncate entityMap;");
+    QSqlDatabase dbConnection =  QSqlDatabase::database("projectdb");
+    dbConnection.exec("truncate entityMap;");
 
 
     QMapIterator<QString, QMap<QString,QPointF>*  > i(*projectSheet);
@@ -106,6 +94,12 @@ void ProjectStore::saveScene()
             //qDebug() << i.key()<<k.key() << ": " << k.value().x() <<":"<<k.value().y() ;
        }
     }
+
+
+
+   // dbConnection.exec("truncate link;");
+
+
 
 }
 
