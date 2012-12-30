@@ -30,9 +30,11 @@ public slots:
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
     void addEntityIcon(QGraphicsItem * parent  , QModelIndex  index, EntityType*  entityType ,QPointF pos);
 
+
+    void hideOrphan();
     void createEdge   ( EntityIcon* source, EntityIcon* dest);
     void storeEdge    ( EntityIcon* source, EntityIcon* dest);
-
+    void createEdge( QString src_entitytype,QString src_uid,QString dest_entitytype,QString dest_uid );
     void layoutItems();
     void addModel(QAbstractItemModel *model,EntityType*  entityType);
 

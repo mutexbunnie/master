@@ -1,0 +1,24 @@
+#!/usr/bin/python
+import random
+
+f = open('/tmp/names')
+names = f.readlines()
+f.close()
+
+f = open('/tmp/ips')
+ips = f.readlines()
+f.close()
+
+
+for i in xrange(0,100):
+	x=random.randint(0,len(names)-1);
+	y=random.randint(0,len(ips)-1);
+
+	year=random.randint(2000,2012)
+	month=random.randint(1,12);
+	day=random.randint(0,30);
+	
+	date=str(year)+"-"+str(month)+"-"+str(day)
+	print date+","+names[x].strip() +"," + ips[y].strip()
+
+

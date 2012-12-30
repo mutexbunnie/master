@@ -49,6 +49,8 @@ private slots:
 
     void on_actionSave_triggered();
 
+    void on_actionAutoLink_triggered();
+
 private:
     Ui::MainForm *ui;
 

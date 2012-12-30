@@ -255,6 +255,7 @@ s</string>
    <addaction name="actionLink"/>
    <addaction name="actionAutoLayout"/>
    <addaction name="actionSave"/>
+   <addaction name="actionAutoLink"/>
   </widget>
   <action name="actionSelection">
    <property name="checkable">
@@ -289,7 +290,7 @@ s</string>
    </property>
    <property name="icon">
     <iconset resource="icons.qrc">
-     <normaloff>:/icons/osa_arrow_green_left.png</normaloff>:/icons/osa_arrow_green_left.png</iconset>
+     <normaloff>:/icons/insert-link-2.png</normaloff>:/icons/insert-link-2.png</iconset>
    </property>
    <property name="text">
     <string>Link</string>
@@ -314,6 +315,15 @@ s</string>
    </property>
    <property name="text">
     <string>Save</string>
+   </property>
+  </action>
+  <action name="actionAutoLink">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/insert-link.png</normaloff>:/icons/insert-link.png</iconset>
+   </property>
+   <property name="text">
+    <string>AutoLink</string>
    </property>
   </action>
  </widget>

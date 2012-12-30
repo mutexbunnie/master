@@ -48,6 +48,15 @@ void GraphicsScene::addSheetLink( QSqlTableModel* projectLink )
 }
 
 
+void GraphicsScene::hideOrphan()
+{
+    for( int i =0; i<entityIcons->size() ;i++)
+    {
+        if (((*entityIcons)[i])->connectionList->size()==0)
+         ((*entityIcons)[i])->hide();
+    }
+}
+
 
 void GraphicsScene::addEntityIcon(QGraphicsItem *parent, QModelIndex index, EntityType *entityType,QPointF pos)
 {
@@ -77,10 +86,13 @@ void GraphicsScene::layoutItems()
           float forceX,forceY;
           for( int i=0; i<entityIcons->size(); i++)
            {
+              if  (!((*entityIcons)[i])->isVisible()) continue;
+
                     forceX=0;
                     forceY=0;
                     for( int k=0; k<entityIcons->size(); k++)
                     {
+                      if  (!((*entityIcons)[k])->isVisible()) continue;
 
                                 if (k!=i)
                                 {
@@ -240,6 +252,21 @@ void GraphicsScene::createEdge( EntityIcon* source, EntityIcon* dest)
 
 
     update();
+}
+
+void GraphicsScene::createEdge( QString src_entitytype,QString src_uid,QString dest_entitytype,QString dest_uid )
+{
+
+    QMap<QString,EntityIcon*>*  tmpMap =entityLookup->value(src_entitytype);
+    EntityIcon* source= tmpMap->value(src_uid);
+
+
+    QMap<QString,EntityIcon*>*  tmpMap2 =entityLookup->value(dest_entitytype);
+    EntityIcon* dest = tmpMap2->value(dest_uid);
+
+    if (dest&&source)
+        createEdge(   source,  dest);
+
 }
 
 /*stores an edge in the db*/

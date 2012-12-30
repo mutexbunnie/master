@@ -159,3 +159,31 @@ void MainForm::on_actionSave_triggered()
     qDebug()<<"Stop save";
 
 }
+
+void MainForm::on_actionAutoLink_triggered()
+{
+    QSqlDatabase dbConnection =  QSqlDatabase::addDatabase("QMYSQL","testy");
+    dbConnection.setHostName("localhost");
+    dbConnection.setDatabaseName("test");
+    dbConnection.setUserName("root");
+    dbConnection.setPassword("root");
+    bool ok = dbConnection.open();
+    QSqlQuery joinQuery("select distinctrow FirstName as UID1,ip as UID2 from Persons join log on Persons.FirstName=log.user",dbConnection);
+    qDebug()  << "Loading";
+
+
+
+    while (joinQuery.next())
+    {
+
+       QString uid1 = joinQuery.value(0).toString();
+       QString uid2 = joinQuery.value(1).toString();
+       scene->createEdge("User",uid1,"ip",uid2);
+       scene->createEdge("ip",uid2,"User",uid1);
+    }
+
+  scene->hideOrphan();
+
+
+
+}
