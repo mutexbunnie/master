@@ -6,10 +6,29 @@
 #include <QTableView>
 #include <QDebug>
 #include <QFileDialog>
+#include "kservice.h"
+#include "kparts/part.h"
 
 MainForm::MainForm(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainForm)
 {
         ui->setupUi(this);
+
+        KService::Ptr service = KService::serviceByDesktopPath("konsolepart.desktop");
+        KParts::ReadOnlyPart *m_part = service->createInstance<KParts::ReadOnlyPart>(0);
+        QWidget* terminal1=m_part->widget();
+
+        KParts::ReadOnlyPart *m_part2 = service->createInstance<KParts::ReadOnlyPart>(0);
+        QWidget* terminal2=m_part2->widget();
+
+      //  terminal->setMinimumHeight(0);
+      //  terminal->setMaximumHeight(200);
+
+        ui->tabWidget->addTab(terminal1,"Session 1");
+        ui->tabWidget->addTab(terminal2,"Session 2");
+
+
+        //ui->verticalLayout_5->addWidget();
+       // ui->frame->layout()->addWidget( m_part->widget());
 
 
 }
@@ -61,11 +80,7 @@ void MainForm::toggleSelectionState(bool selection)
 
 }
 
-void MainForm::on_pushButton_toggled(bool checked)
-{
-    if (checked)  ui->entityBox->show();
-    else ui->entityBox->hide();
-}
+
 
 MainForm::~MainForm()
 {
@@ -73,10 +88,7 @@ MainForm::~MainForm()
 }
 
 
-void MainForm::on_actionLink_triggered(bool checked)
-{
 
-}
 
 void MainForm::on_actionOpen_Project_triggered()
 {
@@ -87,7 +99,7 @@ void MainForm::on_actionOpen_Project_triggered()
    ui->actionSelection->setChecked(true);
 
    this->entityTypeButtons = new QVector<EntityTypeButton*>();
-   ui->entityBoxLayout->setAlignment(Qt::AlignTop);
+   ui->entityBoxLayout_2->setAlignment(Qt::AlignTop);
 
    //fix multiple sheets, mutliple views?
 
@@ -127,8 +139,8 @@ void MainForm::on_actionOpen_Project_triggered()
 
       for (int i=0;i<projectStore->entityTypes->size() ;i++)
       {
-          EntityTypeButton* tmp_entityButton =new EntityTypeButton(ui->entityBoxContent,(*(projectStore->entityTypes))[i]);
-          ui->entityBoxLayout->addWidget(tmp_entityButton);
+          EntityTypeButton* tmp_entityButton =new EntityTypeButton(ui->entityBoxContent_2,(*(projectStore->entityTypes))[i]);
+          ui->entityBoxLayout_2->addWidget(tmp_entityButton);
           connect(tmp_entityButton , SIGNAL(toggled(bool)), this, SLOT(toggleEntity(bool)));
           this->entityTypeButtons->append(tmp_entityButton);
 
@@ -142,11 +154,11 @@ void MainForm::on_actionOpen_Project_triggered()
 
       scene->addSheetLink(projectStore->projectLink);
 
-       ui->tabWidget->addTab(frame,"Sheet 1");
-       ui->tabWidget->addTab(frame2,"Tables 1");
+       ui->tabWidget_2->addTab(frame,"Sheet 1");
+       ui->tabWidget_2->addTab(frame2,"Tables 1");
 
       QSpacerItem* verticalSpacer1 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
-      ui->entityBoxLayout->addItem(verticalSpacer1);
+      ui->entityBoxLayout_2->addItem(verticalSpacer1);
 }
 
 
@@ -185,5 +197,12 @@ void MainForm::on_actionAutoLink_triggered()
   scene->hideOrphan();
 
 
+
+}
+
+void MainForm::on_pushButton_2_toggled(bool checked)
+{
+    if (checked)  ui->entityBox_2->show();
+    else ui->entityBox_2->hide();
 
 }

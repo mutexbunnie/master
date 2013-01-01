@@ -40,9 +40,9 @@ public slots:
     void toggleEntity(bool selection);
     
 private slots:
-    void on_pushButton_toggled(bool checked);
+   // void on_pushButton_toggled(bool checked);
 
-    void on_actionLink_triggered(bool checked);
+  //  void on_actionLink_triggered(bool checked);
 
     void on_actionOpen_Project_triggered();
 
@@ -50,6 +50,8 @@ private slots:
     void on_actionSave_triggered();
 
     void on_actionAutoLink_triggered();
+
+    void on_pushButton_2_toggled(bool checked);
 
 private:
     Ui::MainForm *ui;
