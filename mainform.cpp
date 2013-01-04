@@ -176,11 +176,20 @@ void MainForm::on_actionAutoLink_triggered()
 {
     QSqlDatabase dbConnection =  QSqlDatabase::addDatabase("QMYSQL","testy");
     dbConnection.setHostName("localhost");
-    dbConnection.setDatabaseName("test");
+    dbConnection.setDatabaseName("nmap");
     dbConnection.setUserName("root");
     dbConnection.setPassword("root");
     bool ok = dbConnection.open();
-    QSqlQuery joinQuery("select distinctrow FirstName as UID1,ip as UID2 from Persons join log on Persons.FirstName=log.user",dbConnection);
+  //  QSqlQuery joinQuery("select distinctrow FirstName as UID1,ip as UID2 from Persons join log on Persons.FirstName=log.user",dbConnection);
+    //traceroute//
+    //traceroute www.google.com | awk {'print $2","$3'} |tr -d "()" >/tmp/trace
+    //truncate traceroute; load data local infile '/tmp/trace' into table traceroute fields terminated by ',' enclosed by '"' (hostname,ip) ;
+
+   // QSqlQuery joinQuery("select traceroute1.ip as 'UID1',traceroute2.ip as 'UID2' from traceroute as traceroute1 join traceroute as traceroute2 on traceroute1.id+1=traceroute2.id",dbConnection);
+ //QSqlQuery joinQuery("select traceroute1.ip as 'UID1',traceroute2.ip as 'UID2' from traceroute as traceroute1 join traceroute as traceroute2 on traceroute1.id+1=traceroute2.id",dbConnection);
+ QSqlQuery joinQuery("select distinctrow hostname as UID1 ,port as UID2 from hosts  join ports on hosts.hid=ports.hid; ",dbConnection);
+
+
     qDebug()  << "Loading";
 
 
@@ -190,8 +199,10 @@ void MainForm::on_actionAutoLink_triggered()
 
        QString uid1 = joinQuery.value(0).toString();
        QString uid2 = joinQuery.value(1).toString();
-       scene->createEdge("User",uid1,"ip",uid2);
-       scene->createEdge("ip",uid2,"User",uid1);
+      // qDebug()<<uid1;
+
+       scene->createEdge("host",uid1,"port",uid2);
+       scene->createEdge("port",uid2,"host",uid1);
     }
 
   scene->hideOrphan();

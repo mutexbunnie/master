@@ -1,0 +1,18 @@
+<project name="Test">
+
+	<entitysources>
+<entitysource name="hosts" entityname="host" type="mysql" host="127.0.0.1" user="root" pass="root" db="nmap" query="select distinct hostname from hosts limit 100" > </entitysource>  
+<entitysource name="ports" entityname="port" type="mysql" host="127.0.0.1" user="root" pass="root" db="nmap" query="select distinct port from ports" > </entitysource>  
+	</entitysources>
+
+	<entitytypes>
+		<entitytype name="host" icon=":icons/network-transmit.png" > </entitytype>
+		<entitytype name="port" icon=":icons/socket.png" > </entitytype>
+	</entitytypes>
+
+ <projectsheets>
+                <projectsheet name="Sheet 1" type="mysql" host="127.0.0.1" user="root" pass="root" db="project3" > </projectsheet>
+  </projectsheets>
+
+
+</project> 

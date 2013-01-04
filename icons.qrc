@@ -12,5 +12,6 @@
         <file>icons/document-save-as-4.png</file>
         <file>icons/insert-link-2.png</file>
         <file>icons/insert-link.png</file>
+        <file>icons/socket.png</file>
     </qresource>
 </RCC>
