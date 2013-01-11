@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1042</width>
-    <height>923</height>
+    <width>1194</width>
+    <height>797</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -170,7 +170,7 @@ s</string>
                    <x>0</x>
                    <y>0</y>
                    <width>80</width>
-                   <height>670</height>
+                   <height>546</height>
                   </rect>
                  </property>
                  <layout class="QVBoxLayout" name="entityBoxLayout_2">
@@ -224,8 +224,8 @@ s</string>
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>880</width>
-                   <height>656</height>
+                   <width>1032</width>
+                   <height>532</height>
                   </rect>
                  </property>
                  <property name="documentMode">
@@ -283,8 +283,8 @@ s</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1042</width>
-     <height>20</height>
+     <width>1194</width>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

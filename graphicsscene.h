@@ -61,6 +61,7 @@ private :
 
        QMap <QString, QMap<QString, EntityIcon*>* >* entityLookup;
 
+
 };
 
 #endif // GRAPHICSSCENE_H

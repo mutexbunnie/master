@@ -9,6 +9,7 @@
 #include <QVector>
 #include <QMap>
 #include <QSqlTableModel>
+#include "projectsheet.h"
 
 
 class ProjectStore :public QXmlDefaultHandler
@@ -25,16 +26,16 @@ class ProjectStore :public QXmlDefaultHandler
     QVector<EntityType*>* entityTypes;
     QVector<EntitySource*>* entitySources;
 
-    QMap<QString, QMap<QString,QPointF>*>* projectSheet;
-    QSqlTableModel* projectLink;
 
 
 private:
-    QString sheetname;
+
+    QString projectname;
     QString projectdb_host;
     QString projectdb_user;
     QString projectdb_pass;
     QString projectdb_dbname;
+    QVector<ProjectSheet*>* projectSheets;
 
 
 };

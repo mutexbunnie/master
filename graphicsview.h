@@ -11,13 +11,27 @@ class GraphicsView : public QGraphicsView
     Q_OBJECT
 public:
     explicit GraphicsView(QWidget *parent = 0);
-    
-    void zoomIn();
-    void zoomOut();
 
-    void wheelEvent(QWheelEvent *event);
-    void scaleView(qreal scaleFactor);
-    virtual void keyPressEvent(QKeyEvent *event);
+
+
+
+
+
+
+    QPointF CurrentCenterPoint;
+    void setCenter(const QPointF& centerPoint);
+
+    QPointF getCenter() { return CurrentCenterPoint; }
+
+    //From panning the view
+    QPoint LastPanPoint;
+
+
+    virtual void mousePressEvent(QMouseEvent* event);
+    virtual void mouseReleaseEvent(QMouseEvent* event);
+    virtual void mouseMoveEvent(QMouseEvent* event);
+    virtual void wheelEvent(QWheelEvent* event);
+    virtual void resizeEvent(QResizeEvent* event);
 
 signals:
     

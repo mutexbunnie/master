@@ -53,11 +53,15 @@ private slots:
 
     void on_pushButton_2_toggled(bool checked);
 
+    void on_tabWidget_2_currentChanged(int index);
+
+    void on_tabWidget_2_tabCloseRequested(int index);
+
 private:
     Ui::MainForm *ui;
 
-    ProjectStore* projectStore;
-
+ ProjectStore* projectStore;
+ QMap<int,ProjectStore*> projectSheetMap;
 
 
 };

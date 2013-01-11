@@ -101,18 +101,40 @@ void MainForm::on_actionOpen_Project_triggered()
    this->entityTypeButtons = new QVector<EntityTypeButton*>();
    ui->entityBoxLayout_2->setAlignment(Qt::AlignTop);
 
-   //fix multiple sheets, mutliple views?
+   //fix multiple sheets, mutliple views?*/
 
-   QGraphicsView* graphicsView = new GraphicsView();
+   GraphicsView* graphicsView = new GraphicsView();
    graphicsView->setFocus();
-   graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-   graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-   graphicsView -> setMinimumSize(400, 400);
-   scene= new  GraphicsScene(0);
-   scene->setSceneRect(0,0,1024,1024);
-   graphicsView->setScene(scene);
 
-   connect(ui->actionLink, SIGNAL(toggled(bool)), scene, SLOT(setLinkMode(bool)));
+   scene= new  GraphicsScene(0);
+   scene->setSceneRect(0,0,4000,4000);
+
+   graphicsView->setCenter(QPointF(1000.0, 1000.0));
+   //Populate the scene
+   for(int x = 0; x < 4000; x = x + 25) {
+       for(int y = 0; y < 4000; y = y + 25) {
+
+           if(x % 100 == 0 && y % 100 == 0) {
+               scene->addRect(x, y, 2, 2);
+
+               QString pointString;
+               QTextStream stream(&pointString);
+               stream << "(" << x << "," << y << ")";
+               QGraphicsTextItem* item = scene->addText(pointString);
+               item->setPos(x, y);
+           } else {
+               scene->addRect(x, y, 1, 1);
+           }
+       }
+   }
+
+   graphicsView->setScene(scene);
+   graphicsView->scale(1.0,1.0);
+
+
+
+
+    connect(ui->actionLink, SIGNAL(toggled(bool)), scene, SLOT(setLinkMode(bool)));
    connect(ui->actionAutoLayout, SIGNAL(toggled(bool)), scene, SLOT(setAutoLayout(bool)));
 
 
@@ -149,13 +171,13 @@ void MainForm::on_actionOpen_Project_triggered()
           layout2->addWidget(tableView);
           tableView->setModel(((*(projectStore->entityTypes))[i])->entitySource->getModel());
           scene->addModel(((*(projectStore->entityTypes))[i])->entitySource->getModel(),projectStore->entityTypes->at(i));
-
       }
 
       scene->addSheetLink(projectStore->projectLink);
-
-       ui->tabWidget_2->addTab(frame,"Sheet 1");
-       ui->tabWidget_2->addTab(frame2,"Tables 1");
+      ui->tabWidget_2->addTab(frame,"Sheet 1");
+      projectSheetMap.insert(ui->tabWidget_2->count()-1,projectStore);
+      ui->tabWidget_2->addTab(frame2,"Tables 1");
+      projectSheetMap.insert(ui->tabWidget_2->count()-1,projectStore);
 
       QSpacerItem* verticalSpacer1 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
       ui->entityBoxLayout_2->addItem(verticalSpacer1);
@@ -187,7 +209,7 @@ void MainForm::on_actionAutoLink_triggered()
 
    // QSqlQuery joinQuery("select traceroute1.ip as 'UID1',traceroute2.ip as 'UID2' from traceroute as traceroute1 join traceroute as traceroute2 on traceroute1.id+1=traceroute2.id",dbConnection);
  //QSqlQuery joinQuery("select traceroute1.ip as 'UID1',traceroute2.ip as 'UID2' from traceroute as traceroute1 join traceroute as traceroute2 on traceroute1.id+1=traceroute2.id",dbConnection);
- QSqlQuery joinQuery("select distinctrow hostname as UID1 ,port as UID2 from hosts  join ports on hosts.hid=ports.hid; ",dbConnection);
+ QSqlQuery joinQuery("select distinctrow ip4 as UID1 ,port as UID2 from hosts  join ports on hosts.hid=ports.hid; ",dbConnection);
 
 
     qDebug()  << "Loading";
@@ -216,4 +238,17 @@ void MainForm::on_pushButton_2_toggled(bool checked)
     if (checked)  ui->entityBox_2->show();
     else ui->entityBox_2->hide();
 
+}
+
+void MainForm::on_tabWidget_2_currentChanged(int index)
+{
+    qDebug()<<index;
+}
+
+void MainForm::on_tabWidget_2_tabCloseRequested(int index)
+{
+    qDebug()<<index;
+
+    ui->tabWidget_2->removeTab(index);
+    projectSheetMap.remove(index);
 }

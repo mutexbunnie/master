@@ -5,8 +5,13 @@
 
 void ProjectStore::loadProject(QString filenname)
 {
+
     entityTypes= new QVector<EntityType*>();
     entitySources= new QVector<EntitySource*>();
+
+    projectSheets = new QVector<ProjectSheet*>* ;
+
+
 
     projectSheet = new QMap<QString, QMap<QString,QPointF>* >();
 
@@ -117,6 +122,20 @@ ProjectStore::~ProjectStore()
 bool ProjectStore::startElement(const QString & namespaceURI, const QString & localName,const QString & qName, const QXmlAttributes & atts )
 {
 
+    if (localName=="project")
+    {
+        for (int index = 0 ; index<atts.length();index++)
+         {
+                if (atts.localName(index)=="name")   {     projectname=atts.value(index); }
+                if (atts.localName(index)=="host")   {     projectdb_host=atts.value(index); }
+                if (atts.localName(index)=="pass")   {     projectdb_pass=atts.value(index); }
+                if (atts.localName(index)=="user")   {     projectdb_user=atts.value(index); }
+                if (atts.localName(index)=="db")     {     projectdb_dbname=atts.value(index);   }
+         }
+    }
+
+
+
     if (localName=="entitytype")
     {
 
@@ -163,18 +182,15 @@ bool ProjectStore::startElement(const QString & namespaceURI, const QString & lo
 
     if (localName=="projectsheet")
     {
-
-
+        QString mapTableName;
+        QString linkTableName;
+        QString projectName;
         for (int index = 0 ; index<atts.length();index++)
-         {
-            if (atts.localName(index)=="name")   {     sheetname=atts.value(index); }
-            if (atts.localName(index)=="host")   {     projectdb_host=atts.value(index); }
-            if (atts.localName(index)=="pass")   {     projectdb_pass=atts.value(index); }
-            if (atts.localName(index)=="user")   {     projectdb_user=atts.value(index); }
-            if (atts.localName(index)=="db")     {     projectdb_dbname=atts.value(index);   }
-
-         }
-
+        {
+              if (atts.localName(index)=="name")   projectName=atts.value(index);
+              if (atts.localName(index)=="mapTableName")   mapTableName=atts.value(index);
+              if (atts.localName(index)=="linkTableName")  linkTableName=atts.value(index);
+        }
 
     }
 

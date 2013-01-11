@@ -25,7 +25,8 @@ SOURCES += main.cpp\
     entityicon.cpp \
     edge.cpp \
     graphicsview.cpp \
-    entitysource.cpp
+    entitysource.cpp \
+    projectsheet.cpp
 
 HEADERS  +=mainform.h \
     entitytype.h \
@@ -36,7 +37,8 @@ HEADERS  +=mainform.h \
     entityicon.h \
     edge.h \
     graphicsview.h \
-    entitysource.h
+    entitysource.h \
+    projectsheet.h
 
 FORMS += \
     mainform.ui

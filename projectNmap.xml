@@ -1,7 +1,7 @@
-<project name="Test">
+<project name="Test" type="mysql" host="127.0.0.1" user="root" pass="root" db="project3" >
 
 	<entitysources>
-<entitysource name="hosts" entityname="host" type="mysql" host="127.0.0.1" user="root" pass="root" db="nmap" query="select distinct hostname from hosts limit 100" > </entitysource>  
+<entitysource name="hosts" entityname="host" type="mysql" host="127.0.0.1" user="root" pass="root" db="nmap" query="select distinct ip4 from hosts limit 100" > </entitysource>  
 <entitysource name="ports" entityname="port" type="mysql" host="127.0.0.1" user="root" pass="root" db="nmap" query="select distinct port from ports" > </entitysource>  
 	</entitysources>
 
@@ -11,8 +11,7 @@
 	</entitytypes>
 
  <projectsheets>
-                <projectsheet name="Sheet 1" type="mysql" host="127.0.0.1" user="root" pass="root" db="project3" > </projectsheet>
-  </projectsheets>
-
+               <projectsheet name="" mapTableName="entityMap" linkTableName="link"> </projectsheet>
+ </projectsheets>
 
 </project> 
