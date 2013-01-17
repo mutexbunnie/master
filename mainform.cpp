@@ -101,63 +101,52 @@ void MainForm::on_actionOpen_Project_triggered()
    this->entityTypeButtons = new QVector<EntityTypeButton*>();
    ui->entityBoxLayout_2->setAlignment(Qt::AlignTop);
 
-   //fix multiple sheets, mutliple views?*/
+   for (int i=0; i<projectStore->projectSheets->size();i++)
+   {
+        GraphicsView* graphicsView = new GraphicsView();
+        graphicsView->setFocus();
 
-   GraphicsView* graphicsView = new GraphicsView();
-   graphicsView->setFocus();
+        scene= new  GraphicsScene(0);
+        scene->setSceneRect(0,0,4000,4000);
+        graphicsView->setCenter(QPointF(1000.0, 1000.0));
+    /*   //Populate the scene
+                for(int x = 0; x < 4000; x = x + 25)
+                {
+                for(int y = 0; y < 4000; y = y + 25) {
+                   if(x % 100 == 0 && y % 100 == 0) {
+                       scene->addRect(x, y, 2, 2);
 
-   scene= new  GraphicsScene(0);
-   scene->setSceneRect(0,0,4000,4000);
+                       QString pointString;
+                       QTextStream stream(&pointString);
+                       stream << "(" << x << "," << y << ")";
+                       QGraphicsTextItem* item = scene->addText(pointString);
+                       item->setPos(x, y);
+                   } else {
+                       scene->addRect(x, y, 1, 1);
+                   }
+               }
+           }*/
+       graphicsView->setScene(scene);
+       graphicsView->scale(1.0,1.0);
+       connect(ui->actionLink, SIGNAL(toggled(bool)), scene, SLOT(setLinkMode(bool)));
+       connect(ui->actionAutoLayout, SIGNAL(toggled(bool)), scene, SLOT(setAutoLayout(bool)));
 
-   graphicsView->setCenter(QPointF(1000.0, 1000.0));
-   //Populate the scene
-   for(int x = 0; x < 4000; x = x + 25) {
-       for(int y = 0; y < 4000; y = y + 25) {
+       QFrame* frame = new QFrame();
+       QVBoxLayout* layout = new QVBoxLayout();
+       frame->setLayout(layout);
+       layout->addWidget(graphicsView);
 
-           if(x % 100 == 0 && y % 100 == 0) {
-               scene->addRect(x, y, 2, 2);
+       QFrame* frame2 = new QFrame();
+       QVBoxLayout* layout2 = new QVBoxLayout();
+       frame2->setLayout(layout2);
 
-               QString pointString;
-               QTextStream stream(&pointString);
-               stream << "(" << x << "," << y << ")";
-               QGraphicsTextItem* item = scene->addText(pointString);
-               item->setPos(x, y);
-           } else {
-               scene->addRect(x, y, 1, 1);
-           }
-       }
-   }
+        // QTabWidget* entityTables=new QTabWidget();
 
-   graphicsView->setScene(scene);
-   graphicsView->scale(1.0,1.0);
+        //  QSpacerItem* verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        //  layout->addItem(verticalSpacer);
+        //  layout->addWidget(entityTables);
 
-
-
-
-    connect(ui->actionLink, SIGNAL(toggled(bool)), scene, SLOT(setLinkMode(bool)));
-   connect(ui->actionAutoLayout, SIGNAL(toggled(bool)), scene, SLOT(setAutoLayout(bool)));
-
-
-   QFrame* frame = new QFrame();
-   QVBoxLayout* layout = new QVBoxLayout();
-   frame->setLayout(layout);
-   layout->addWidget(graphicsView);
-
-
-   QFrame* frame2 = new QFrame();
-   QVBoxLayout* layout2 = new QVBoxLayout();
-   frame2->setLayout(layout2);
-
-
-
-     // QTabWidget* entityTables=new QTabWidget();
-
-    //  QSpacerItem* verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
-    //  layout->addItem(verticalSpacer);
-    //  layout->addWidget(entityTables);
-
-      scene->addSheetMap(projectStore->projectSheet);
-
+       scene->addSheetMap(((*(projectStore->projectSheets))[i]->projectSheet));
 
       for (int i=0;i<projectStore->entityTypes->size() ;i++)
       {
@@ -173,24 +162,25 @@ void MainForm::on_actionOpen_Project_triggered()
           scene->addModel(((*(projectStore->entityTypes))[i])->entitySource->getModel(),projectStore->entityTypes->at(i));
       }
 
-      scene->addSheetLink(projectStore->projectLink);
+      scene->addSheetLink(((*(projectStore->projectSheets))[i]->projectLink));
       ui->tabWidget_2->addTab(frame,"Sheet 1");
-      projectSheetMap.insert(ui->tabWidget_2->count()-1,projectStore);
+     // projectSheetMap.insert(ui->tabWidget_2->count()-1,projectStore);
       ui->tabWidget_2->addTab(frame2,"Tables 1");
-      projectSheetMap.insert(ui->tabWidget_2->count()-1,projectStore);
+      //projectSheetMap.insert(ui->tabWidget_2->count()-1,projectStore);
 
       QSpacerItem* verticalSpacer1 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
       ui->entityBoxLayout_2->addItem(verticalSpacer1);
+}
 }
 
 
 void MainForm::on_actionSave_triggered()
 {
-    qDebug()<<"Start save";
+   /* qDebug()<<"Start save";
     scene->save();
     projectStore->projectSheet=scene->getSheetMap();
     projectStore->saveScene();
-    qDebug()<<"Stop save";
+    qDebug()<<"Stop save";*/
 
 }
 
@@ -198,7 +188,7 @@ void MainForm::on_actionAutoLink_triggered()
 {
     QSqlDatabase dbConnection =  QSqlDatabase::addDatabase("QMYSQL","testy");
     dbConnection.setHostName("localhost");
-    dbConnection.setDatabaseName("nmap");
+    dbConnection.setDatabaseName("test");
     dbConnection.setUserName("root");
     dbConnection.setPassword("root");
     bool ok = dbConnection.open();
@@ -209,8 +199,9 @@ void MainForm::on_actionAutoLink_triggered()
 
    // QSqlQuery joinQuery("select traceroute1.ip as 'UID1',traceroute2.ip as 'UID2' from traceroute as traceroute1 join traceroute as traceroute2 on traceroute1.id+1=traceroute2.id",dbConnection);
  //QSqlQuery joinQuery("select traceroute1.ip as 'UID1',traceroute2.ip as 'UID2' from traceroute as traceroute1 join traceroute as traceroute2 on traceroute1.id+1=traceroute2.id",dbConnection);
- QSqlQuery joinQuery("select distinctrow ip4 as UID1 ,port as UID2 from hosts  join ports on hosts.hid=ports.hid; ",dbConnection);
+ //QSqlQuery joinQuery("select distinctrow ip4 as UID1 ,port as UID2 from hosts  join ports on hosts.hid=ports.hid; ",dbConnection);
 
+    QSqlQuery joinQuery("select distinctrow host  as UID1 ,  user as UID2 from users",dbConnection);
 
     qDebug()  << "Loading";
 
@@ -221,13 +212,13 @@ void MainForm::on_actionAutoLink_triggered()
 
        QString uid1 = joinQuery.value(0).toString();
        QString uid2 = joinQuery.value(1).toString();
-      // qDebug()<<uid1;
+//       qDebug()<<uid1<<uid2;
 
-       scene->createEdge("host",uid1,"port",uid2);
-       scene->createEdge("port",uid2,"host",uid1);
+       scene->createEdge("host",uid1,"user",uid2);
+       scene->createEdge("user",uid2,"host",uid1);
     }
 
-  scene->hideOrphan();
+   scene->hideOrphan();
 
 
 

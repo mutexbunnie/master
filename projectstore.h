@@ -25,7 +25,7 @@ class ProjectStore :public QXmlDefaultHandler
 
     QVector<EntityType*>* entityTypes;
     QVector<EntitySource*>* entitySources;
-
+    QVector<ProjectSheet*>* projectSheets;
 
 
 private:
@@ -35,7 +35,8 @@ private:
     QString projectdb_user;
     QString projectdb_pass;
     QString projectdb_dbname;
-    QVector<ProjectSheet*>* projectSheets;
+
+    QSqlDatabase dbConnection;
 
 
 };

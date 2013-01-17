@@ -1,0 +1,20 @@
+<project name="Test" type="mysql" host="127.0.0.1" user="root" pass="root" db="projectApp" >
+
+	<entitysources>
+	<entitysource name="db" entityname="host" type="mysql" host="127.0.0.1" user="root" pass="root" db="test" query="select distinct host from users " > </entitysource>  
+
+	<entitysource name="db1" entityname="user" type="mysql" host="127.0.0.1" user="root" pass="root" db="test" query="select distinct user from users" > </entitysource> 
+
+	</entitysources>
+
+	<entitytypes>
+		<entitytype name="host" icon=":icons/network-transmit.png" > </entitytype> 
+       	     <entitytype name="user" icon=":icons/osa_user_blue.png" > </entitytype> 
+
+	</entitytypes>
+
+ <projectsheets>
+               <projectsheet name="User-Host Map" mapTableName="entityMap" linkTableName="link"> </projectsheet>
+ </projectsheets>
+
+</project> 

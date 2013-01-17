@@ -1,7 +1,7 @@
-DROP DATABASE IF EXISTS project3;
+DROP DATABASE IF EXISTS projectApp;
 
-CREATE DATABASE project3;
-USE project3;
+CREATE DATABASE projectApp;
+USE projectApp;
 
 DROP TABLE IF EXISTS entityMap;
 CREATE TABLE entityMap 

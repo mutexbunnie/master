@@ -8,12 +8,7 @@ void ProjectStore::loadProject(QString filenname)
 
     entityTypes= new QVector<EntityType*>();
     entitySources= new QVector<EntitySource*>();
-
-    projectSheets = new QVector<ProjectSheet*>* ;
-
-
-
-    projectSheet = new QMap<QString, QMap<QString,QPointF>* >();
+    projectSheets = new QVector<ProjectSheet*>();
 
 
     QXmlSimpleReader* parser  = new QXmlSimpleReader();
@@ -40,46 +35,26 @@ void ProjectStore::loadProject(QString filenname)
     }
 
 
-   QSqlDatabase dbConnection =  QSqlDatabase::addDatabase("QMYSQL","projectdb");
+   dbConnection =  QSqlDatabase::addDatabase("QMYSQL","projectdb");
    dbConnection.setHostName(projectdb_host);
    dbConnection.setDatabaseName(projectdb_dbname);
    dbConnection.setUserName(projectdb_user);
    dbConnection.setPassword(projectdb_pass);
    bool ok = dbConnection.open();
 
-   QSqlQuery entityQuery("SELECT distinct entityName FROM entityMap",dbConnection);
-   qDebug()  << "Loading";
 
-
-
-   while (entityQuery.next())
+   for(int i=0; i<projectSheets->size(); i++)
    {
-      QString source = entityQuery.value(0).toString();
-      QSqlQuery queryPos("SELECT uid,x,y FROM entityMap where entityName='"+source+"';",dbConnection);
-      QMap<QString,QPointF>*  tmpMap = new   QMap<QString,QPointF> ();
-
-      while (queryPos.next())
-      {
-          tmpMap->insert(queryPos.value(0).toString(),QPointF(queryPos.value(1).toFloat(),queryPos.value(2).toFloat()) );
-      }
-      projectSheet->insert(source,tmpMap);
+       (*projectSheets)[i]->setProjectdb(dbConnection);
+       (*projectSheets)[i]->loadSheet();
    }
-
-
-
-   projectLink = new QSqlTableModel(0, dbConnection );
-   projectLink->setTable("link");
-   projectLink->setEditStrategy(QSqlTableModel::OnManualSubmit);
-   projectLink->select();
-   qDebug()  << "Load done";
-
 
 }
 
 void ProjectStore::saveScene()
 {
 
-    QSqlDatabase dbConnection =  QSqlDatabase::database("projectdb");
+  /*  QSqlDatabase dbConnection =  QSqlDatabase::database("projectdb");
     dbConnection.exec("truncate entityMap;");
 
 
@@ -105,7 +80,7 @@ void ProjectStore::saveScene()
    // dbConnection.exec("truncate link;");
 
 
-
+*/
 }
 
 
@@ -184,14 +159,15 @@ bool ProjectStore::startElement(const QString & namespaceURI, const QString & lo
     {
         QString mapTableName;
         QString linkTableName;
-        QString projectName;
+        QString sheetName;
         for (int index = 0 ; index<atts.length();index++)
         {
-              if (atts.localName(index)=="name")   projectName=atts.value(index);
+              if (atts.localName(index)=="name")           sheetName=atts.value(index);
               if (atts.localName(index)=="mapTableName")   mapTableName=atts.value(index);
               if (atts.localName(index)=="linkTableName")  linkTableName=atts.value(index);
         }
 
+        projectSheets->append(new ProjectSheet(sheetName,linkTableName,mapTableName));
     }
 
     return true;

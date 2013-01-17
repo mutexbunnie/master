@@ -82,52 +82,55 @@ void GraphicsScene::addEntityIcon(QGraphicsItem *parent, QModelIndex index, Enti
 void GraphicsScene::layoutItems()
 {
 
- float forceX,forceY;
+
 
 
   for( int i=0; i<entityIcons->size(); i++)
   {
-      forceX=0;
-      forceY=0;
+      float forceX=0;
+      float forceY=0;
                       if  (!((*entityIcons)[i])->isVisible()) continue;
 
-                      for (int k=i+1; k<entityIcons->size(); k++)
+                      for (int k=0; k<entityIcons->size(); k++)
                       {
-                              if  (!((*entityIcons)[k])->isVisible()) continue;
+                          if (k==i) continue;
+                          if  (!((*entityIcons)[k])->isVisible()) continue;
 
 
                                             //collect force
                                               float distanceX=  ((*entityIcons)[i])->x()-((*entityIcons)[k])->x();
                                               float distanceY=  ((*entityIcons)[i])->y()-((*entityIcons)[k])->y();
 
-                                              float forceXK,forceYK;
-                                              forceXK=0;
-                                              forceYK=0;
-
                                               float distance=(distanceX*distanceX)+(distanceY*distanceY);
 
                                               if (distance>0)
                                               {
-                                                   forceXK= (400*distanceX)/distance;
-                                                   forceYK= (400*distanceY)/distance;
-                                              }
-                                              if (distance <10)   forceXK+=100;
-
-
-                                              if (((*entityIcons)[i])->connectionList->contains((*entityIcons)[k]))
-                                              {
-                                                   forceXK-= distanceX/75.0;
-                                                   forceYK-= distanceY/75.0;
+                                                   forceX+= (150.0*distanceX)/distance;
+                                                   forceY+= (150.0*distanceY)/distance;
                                               }
 
-                                              (*entityIcons)[k]->moveBy(-forceXK,-forceYK);
-                                            forceX+=  forceXK;
-                                            forceY+=  forceYK;
+                      }
 
-                       }
+                      double weight = (((*entityIcons)[i])->connectionList->size() + 1) * 20;
+
+                      for (int k=0; k< ((*entityIcons)[i])->connectionList->size();k++)
+                      {
+                           EntityIcon* tmpIcon=(*((*entityIcons)[i])->connectionList)[k];
+
+                          if  (!tmpIcon->isVisible()) continue;
+                          float distanceX=  ((*entityIcons)[i])->x()-tmpIcon->x();
+                          float distanceY=  ((*entityIcons)[i])->y()-tmpIcon->y();
+                          {
+                                  forceX-= distanceX/weight;
+                                  forceY-= distanceY/weight;
+                          }
+                      }
+
+                      if (qAbs(forceX) < 0.1 && qAbs(forceY) < 0.1)
+                          forceX = forceY = 0;
+
 
         (*entityIcons)[i]->moveBy(forceX,forceY);
-
     }
 
 
