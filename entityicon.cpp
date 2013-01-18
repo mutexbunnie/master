@@ -13,7 +13,7 @@ EntityIcon::EntityIcon(QGraphicsItem *parent, QModelIndex index, EntityType *ent
     //fix location by model//
     //
 
-    if (pos.x()==0 && pos.y()==0) setPos((qrand() % 1024)+100,(qrand() % 1024)+100);
+    if (pos.x()==0 && pos.y()==0) setPos((qrand() % 8000)+100,(qrand() % 8000)+100);
     else
     setPos(pos);
 

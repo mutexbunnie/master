@@ -111,7 +111,7 @@ void GraphicsScene::layoutItems()
 
                       }
 
-                      double weight = (((*entityIcons)[i])->connectionList->size() + 1) * 20;
+                      double weight = (((*entityIcons)[i])->connectionList->size() + 1) * 10;
 
                       for (int k=0; k< ((*entityIcons)[i])->connectionList->size();k++)
                       {

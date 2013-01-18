@@ -107,8 +107,8 @@ void MainForm::on_actionOpen_Project_triggered()
         graphicsView->setFocus();
 
         scene= new  GraphicsScene(0);
-        scene->setSceneRect(0,0,4000,4000);
-        graphicsView->setCenter(QPointF(1000.0, 1000.0));
+        scene->setSceneRect(0,0,16777215,16777215);
+        graphicsView->setCenter(QPointF(8388607.0, 8388607.0));
     /*   //Populate the scene
                 for(int x = 0; x < 4000; x = x + 25)
                 {
@@ -201,7 +201,7 @@ void MainForm::on_actionAutoLink_triggered()
  //QSqlQuery joinQuery("select traceroute1.ip as 'UID1',traceroute2.ip as 'UID2' from traceroute as traceroute1 join traceroute as traceroute2 on traceroute1.id+1=traceroute2.id",dbConnection);
  //QSqlQuery joinQuery("select distinctrow ip4 as UID1 ,port as UID2 from hosts  join ports on hosts.hid=ports.hid; ",dbConnection);
 
-    QSqlQuery joinQuery("select distinctrow host  as UID1 ,  user as UID2 from users",dbConnection);
+  QSqlQuery joinQuery("select distinctrow host  as UID1 ,  user as UID2 from users",dbConnection);
 
     qDebug()  << "Loading";
 
@@ -217,6 +217,25 @@ void MainForm::on_actionAutoLink_triggered()
        scene->createEdge("host",uid1,"user",uid2);
        scene->createEdge("user",uid2,"host",uid1);
     }
+
+
+    QSqlQuery joinQuery2("select distinctrow host  as UID1 ,  app as UID2 from app",dbConnection);
+
+    qDebug()  << "Loading";
+
+
+
+    while (joinQuery2.next())
+    {
+
+       QString uid1 = joinQuery2.value(0).toString();
+       QString uid2 = joinQuery2.value(1).toString();
+//       qDebug()<<uid1<<uid2;
+
+       scene->createEdge("host",uid1,"app",uid2);
+       scene->createEdge("app",uid2,"host",uid1);
+    }
+
 
    scene->hideOrphan();
 
