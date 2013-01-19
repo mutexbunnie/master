@@ -14,6 +14,7 @@ GraphicsView::GraphicsView(QWidget *parent) :  QGraphicsView(parent)
       setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
       setMinimumSize(400, 400);
 
+
 }
 void GraphicsView::resizeEvent(QResizeEvent* event)
 {
