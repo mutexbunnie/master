@@ -13,6 +13,8 @@ GraphicsView::GraphicsView(QWidget *parent) :  QGraphicsView(parent)
       setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
       setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
       setMinimumSize(400, 400);
+      scale(0.7,0.7);
+
 
 
 }
@@ -102,9 +104,10 @@ void GraphicsView::setCenter(const QPointF& centerPoint)
 void GraphicsView::mousePressEvent(QMouseEvent* event)
 {
     //For panning the view
-   /* LastPanPoint = event->pos();
+    LastPanPoint = event->pos();
     qDebug()<<event->x()<<event->y();
-    setCursor(Qt::ClosedHandCursor);*/
+    setCursor(Qt::ClosedHandCursor);
+
      event->ignore();
      QGraphicsView::mousePressEvent(event);
 }
@@ -114,8 +117,9 @@ void GraphicsView::mousePressEvent(QMouseEvent* event)
   */
 void GraphicsView::mouseReleaseEvent(QMouseEvent* event)
 {
-   /* setCursor(Qt::OpenHandCursor);
-    LastPanPoint = QPoint();*/
+    setCursor(Qt::OpenHandCursor);
+    LastPanPoint = QPoint();
+
      event->ignore();
      QGraphicsView::mouseReleaseEvent(event);
 }
@@ -125,14 +129,15 @@ void GraphicsView::mouseReleaseEvent(QMouseEvent* event)
 */
 void GraphicsView::mouseMoveEvent(QMouseEvent* event)
 {
-  /*  if(!LastPanPoint.isNull()) {
+   if(!LastPanPoint.isNull()) {
         //Get how much we panned
         QPointF delta = mapToScene(LastPanPoint) - mapToScene(event->pos());
         LastPanPoint = event->pos();
 
         //Update the center ie. do the pan
         setCenter(getCenter() + delta);
-    }*/
+    }
+
  event->ignore();
      QGraphicsView::mouseMoveEvent(event);
 }

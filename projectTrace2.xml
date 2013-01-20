@@ -1,13 +1,15 @@
 <project name="Test" type="mysql" host="127.0.0.1" user="root" pass="root" db="projectApp" >
 
 	<entitysources>
-	<entitysource name="db" entityname="host" type="mysql" host="127.0.0.1" user="root" pass="root" db="test" query="select distinct host1 from combined ; " > </entitysource>  
+	<entitysource name="db" entityname="host" type="mysql" host="127.0.0.1" user="root" pass="root" db="test" query="select distinct host from app ; " > </entitysource>  
+	<entitysource name="db4" entityname="app" type="mysql" host="127.0.0.1" user="root" pass="root" db="test" query="select distinct app from app " > </entitysource>
+
 
 	</entitysources>
 
 	<entitytypes>
 		<entitytype name="host" icon=":icons/network-transmit.png" > </entitytype> 
-
+	       <entitytype name="app" icon=":icons/socket.png" > </entitytype>
 	</entitytypes>
 
  <projectsheets>

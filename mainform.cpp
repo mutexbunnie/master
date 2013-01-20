@@ -56,28 +56,6 @@ void MainForm::toggleEntity(bool selection)
 
 void MainForm::toggleSelectionState(bool selection)
 {
-    if (selection)
-    {
-
-                for (int i=0; i<entityTypeButtons->size(); i++)
-                {
-                    (*entityTypeButtons)[i]->setAutoExclusive(false);
-                }
-                for (int i=0; i<entityTypeButtons->size(); i++)
-                {
-                    (*entityTypeButtons)[i]->setChecked(false);
-                }
-
-                for (int i=0; i<entityTypeButtons->size(); i++)
-                {
-                    (*entityTypeButtons)[i]->setAutoExclusive(true);
-                }
-    }
-   // selectionState=selection;
-   // activeDialog->selectionActive=selectionState;
-    //activeDialog2->selectionActive=selectionState;
- qDebug()<<"MainForm::toggleSelectionState"<<selectionState;
-
 }
 
 
@@ -107,8 +85,8 @@ void MainForm::on_actionOpen_Project_triggered()
         graphicsView->setFocus();
 
         scene= new  GraphicsScene(0);
-        scene->setSceneRect(0,0,16777215,16777215);
-        graphicsView->setCenter(QPointF(0.0,0.0));
+
+
     /*   //Populate the scene
                 for(int x = 0; x < 4000; x = x + 25)
                 {
@@ -127,7 +105,7 @@ void MainForm::on_actionOpen_Project_triggered()
                }
            }*/
        graphicsView->setScene(scene);
-       graphicsView->scale(1.0,1.0);
+
        connect(ui->actionLink, SIGNAL(toggled(bool)), scene, SLOT(setLinkMode(bool)));
        connect(ui->actionAutoLayout, SIGNAL(toggled(bool)), scene, SLOT(setAutoLayout(bool)));
 
@@ -170,6 +148,8 @@ void MainForm::on_actionOpen_Project_triggered()
 
       QSpacerItem* verticalSpacer1 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
       ui->entityBoxLayout_2->addItem(verticalSpacer1);
+       graphicsView->setCenter(QPointF(8388607.0+512,8388607.0+512));
+
 }
 }
 
@@ -202,8 +182,8 @@ void MainForm::on_actionAutoLink_triggered()
  //QSqlQuery joinQuery("select distinctrow ip4 as UID1 ,port as UID2 from hosts  join ports on hosts.hid=ports.hid; ",dbConnection);
 
  // QSqlQuery joinQuery("select distinctrow host  as UID1 ,  user as UID2 from users",dbConnection);
-   QSqlQuery joinQuery("select host1 as UID1,host2 as UID2 from combined where amount>95 ",dbConnection);
-
+   QSqlQuery joinQuery("select host1 as UID1,host2 as UID2 from combined where amount=100 ",dbConnection);
+//
     qDebug()  << "Loading";
 
 
@@ -220,7 +200,7 @@ void MainForm::on_actionAutoLink_triggered()
     }
 
 
-    /*QSqlQuery joinQuery2("select distinctrow host  as UID1 ,  app as UID2 from app",dbConnection);
+    QSqlQuery joinQuery2("select distinctrow host  as UID1 ,  app as UID2 from app",dbConnection);
 
     qDebug()  << "Loading";
 
@@ -236,9 +216,8 @@ void MainForm::on_actionAutoLink_triggered()
        scene->createEdge("host",uid1,"app",uid2);
        scene->createEdge("app",uid2,"host",uid1);
     }
-*/
 
-   scene->hideOrphan();
+  // scene->hideOrphan();
 
 
 
@@ -262,4 +241,31 @@ void MainForm::on_tabWidget_2_tabCloseRequested(int index)
 
     ui->tabWidget_2->removeTab(index);
     projectSheetMap.remove(index);
+}
+
+void MainForm::on_actionSelection_toggled(bool arg1)
+{
+
+    /*if ()
+    {
+
+                for (int i=0; i<entityTypeButtons->size(); i++)
+                {
+                    (*entityTypeButtons)[i]->setAutoExclusive(false);
+                }
+                for (int i=0; i<entityTypeButtons->size(); i++)
+                {
+                    (*entityTypeButtons)[i]->setChecked(false);
+                }
+
+                for (int i=0; i<entityTypeButtons->size(); i++)
+                {
+                    (*entityTypeButtons)[i]->setAutoExclusive(true);
+                }
+    }
+     selectionState=selection;
+
+ qDebug()<<"MainForm::toggleSelectionState"<<selectionState;*/
+
+
 }

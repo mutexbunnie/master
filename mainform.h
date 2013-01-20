@@ -57,6 +57,8 @@ private slots:
 
     void on_tabWidget_2_tabCloseRequested(int index);
 
+    void on_actionSelection_toggled(bool selection);
+
 private:
     Ui::MainForm *ui;
 

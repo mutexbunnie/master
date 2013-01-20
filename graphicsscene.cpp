@@ -23,6 +23,7 @@ GraphicsScene::GraphicsScene(QObject *parent) :QGraphicsScene(parent)
      connect (timer, SIGNAL(timeout()), this, SLOT(layoutItems()));
      entityLookup =   new  QMap <QString, QMap<QString, EntityIcon*>* >();
      edges=new QVector<Edge*>();
+     setSceneRect(0,0,16777215,16777215);
 
 }
 
