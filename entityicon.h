@@ -16,7 +16,7 @@ class EntityIcon : public QGraphicsItem
 {
 
 public:
-    explicit EntityIcon(QGraphicsItem * parent,  QModelIndex  index, EntityType*  entityType , QPointF pos);
+    explicit EntityIcon(QGraphicsItem * parent,  QGraphicsScene* scene, QModelIndex  index, EntityType*  entityType , QPointF pos);
     virtual void  paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget );
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
     virtual void	mouseReleaseEvent ( QGraphicsSceneMouseEvent * event );

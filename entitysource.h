@@ -2,19 +2,21 @@
 #define ENTITYSOURCE_H
 #include <QString>
 #include <QAbstractItemModel>
-
+#include <QSqlQueryModel>
 
 class EntitySource
 {
 public:
-    EntitySource(QString _name,QString _entityname);
+    EntitySource(QString _name, QString _entityType, QString _query, QString _dataSourceName);
     QString getName() { return name;}
-    QString getEntityName() { return entityName;}
+    QString getEntityType() { return entityType;}
     QAbstractItemModel* getModel() {return model;}
 
-protected:
-   QString name;
-   QString entityName;
+private:
+    QString name;
+    QString query;
+    QString dataSourceName;
+    QString entityType;
    QAbstractItemModel* model;
 
 

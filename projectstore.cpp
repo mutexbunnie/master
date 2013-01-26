@@ -1,52 +1,41 @@
 #include "projectstore.h"
-#include "mysqldatasource.h"
+
 #include <QDebug>
 
 
 void ProjectStore::loadProject(QString filenname)
 {
 
-    entityTypes= new QVector<EntityType*>();
-    entitySources= new QVector<EntitySource*>();
+    entityTypes   = new QVector<EntityType*>();
+    entitySources = new QVector<EntitySource*>();
     projectSheets = new QVector<ProjectSheet*>();
-
+    dataSources   = new QVector<Datasource*>();
+    autoLinks     = new QVector<AutoLink*>();
 
     QXmlSimpleReader* parser  = new QXmlSimpleReader();
     parser->setContentHandler(this);
 
-    if(parser->parse(new QXmlInputSource(new QFile(filenname))))    std::cout<<"Parsed Successfully!"<< std::endl;
-    else std::cout<<"Parsing Failed..."<< std::endl;
+    if(parser->parse(new QXmlInputSource(new QFile(filenname))))
+        qDebug()<<"Parsed Successfully!";
+    else
+        qDebug()<<"Parsing Failed...";
 
-
-   for (int i=0; i<entityTypes->size(); i++)
+    for (int i=0; i<entityTypes->size(); i++)
     {
-
         for (int k=0; k<entitySources->size(); k++)
         {
-
-            if ((*entityTypes)[i]->name == ((*entitySources)[k]->getEntityName()))
+            if ((*entityTypes)[i]->name == ((*entitySources)[k]->getEntityType()))
             {
-                 qDebug()<<(*entityTypes)[i]->name;
+                qDebug()<<(*entityTypes)[i]->name;
                (*entityTypes)[i]->entitySource=(*entitySources)[k];
-
                break;
             }
         }
     }
 
-
-   dbConnection =  QSqlDatabase::addDatabase("QMYSQL","projectdb");
-   dbConnection.setHostName(projectdb_host);
-   dbConnection.setDatabaseName(projectdb_dbname);
-   dbConnection.setUserName(projectdb_user);
-   dbConnection.setPassword(projectdb_pass);
-   bool ok = dbConnection.open();
-
-
    for(int i=0; i<projectSheets->size(); i++)
    {
-       (*projectSheets)[i]->setProjectdb(dbConnection);
-       (*projectSheets)[i]->loadSheet();
+        (*projectSheets)[i]->loadSheet();
    }
 
 }
@@ -83,6 +72,11 @@ void ProjectStore::saveScene()
 */
 }
 
+QString ProjectStore::getProjectName()
+{
+    return projectname;
+}
+
 
 ProjectStore::ProjectStore():QXmlDefaultHandler()
 {
@@ -102,14 +96,31 @@ bool ProjectStore::startElement(const QString & namespaceURI, const QString & lo
         for (int index = 0 ; index<atts.length();index++)
          {
                 if (atts.localName(index)=="name")   {     projectname=atts.value(index); }
-                if (atts.localName(index)=="host")   {     projectdb_host=atts.value(index); }
-                if (atts.localName(index)=="pass")   {     projectdb_pass=atts.value(index); }
-                if (atts.localName(index)=="user")   {     projectdb_user=atts.value(index); }
-                if (atts.localName(index)=="db")     {     projectdb_dbname=atts.value(index);   }
          }
     }
 
+    if (localName=="datasource")
+    {
 
+        QString name;
+        QString host;
+        QString type;
+        QString pass;
+        QString user;
+        QString db;
+
+        for (int index = 0 ; index<atts.length();index++)
+         {
+                if (atts.localName(index)=="name")   {    name=atts.value(index);  }
+                if (atts.localName(index)=="host")   {     host=atts.value(index); }
+                if (atts.localName(index)=="type")   {     type=atts.value(index); }
+                if (atts.localName(index)=="pass")   {     pass=atts.value(index); }
+                if (atts.localName(index)=="user")   {     user=atts.value(index); }
+                if (atts.localName(index)=="db")     {     db=atts.value(index);   }
+         }
+
+        dataSources->append(new  Datasource(name,type,host,user,pass,db));
+    }
 
     if (localName=="entitytype")
     {
@@ -126,48 +137,61 @@ bool ProjectStore::startElement(const QString & namespaceURI, const QString & lo
 
     if (localName=="entitysource")
     {
-        QString host;
-        QString type;
-        QString user;
-        QString pass;
-        QString db;
+
         QString name;
-        QString entityname;
+        QString entitytype;
         QString query;
+        QString datasource;
 
         for (int index = 0 ; index<atts.length();index++)
          {
-            if (atts.localName(index)=="name")   {     name=atts.value(index); }
-            if (atts.localName(index)=="entityname")   {entityname=atts.value(index);  }
-            if (atts.localName(index)=="host")   {     host=atts.value(index); }
-            if (atts.localName(index)=="type")   {     type=atts.value(index); }
-            if (atts.localName(index)=="pass")   {     pass=atts.value(index); }
-            if (atts.localName(index)=="user")   {     user=atts.value(index); }
-            if (atts.localName(index)=="db")     {     db=atts.value(index);   }
-            if (atts.localName(index)=="query")     {  query=atts.value(index);   }
+            if (atts.localName(index)=="name")        {  name=atts.value(index);        }
+            if (atts.localName(index)=="entitytype")  {  entitytype=atts.value(index);  }
+            if (atts.localName(index)=="datasource")  {  datasource=atts.value(index);  }
+            if (atts.localName(index)=="query")       {  query=atts.value(index);       }
          }
 
-        if (type=="mysql")
-        {
-
-            entitySources->append(new  MysqlDataSource(name,entityname,host,user,pass,db,query));
-
-        }
+        entitySources->append(new EntitySource(name,entitytype,query,datasource));
     }
+
 
     if (localName=="projectsheet")
     {
         QString mapTableName;
         QString linkTableName;
         QString sheetName;
+        QString datasource;
+
         for (int index = 0 ; index<atts.length();index++)
         {
               if (atts.localName(index)=="name")           sheetName=atts.value(index);
               if (atts.localName(index)=="mapTableName")   mapTableName=atts.value(index);
               if (atts.localName(index)=="linkTableName")  linkTableName=atts.value(index);
+              if (atts.localName(index)=="datasource")     datasource=atts.value(index);
         }
 
-        projectSheets->append(new ProjectSheet(sheetName,linkTableName,mapTableName));
+        projectSheets->append(new ProjectSheet(sheetName,linkTableName,mapTableName,datasource));
+    }
+
+
+    if (localName=="autolink")
+    {
+
+        QString name;
+        QString entityType1;
+        QString entityType2;
+        QString query;
+        QString datasource;
+
+        for (int index = 0 ; index<atts.length();index++)
+         {
+            if (atts.localName(index)=="name")          name=atts.value(index);
+            if (atts.localName(index)=="entitytype1")   entityType1=atts.value(index);
+            if (atts.localName(index)=="entitytype2")   entityType2=atts.value(index);
+            if (atts.localName(index)=="query")         query=atts.value(index);
+            if (atts.localName(index)=="datasource")    datasource=atts.value(index);
+         }
+        autoLinks->append(new AutoLink(name,entityType1,entityType2,query,datasource));
     }
 
     return true;

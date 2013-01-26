@@ -12,10 +12,7 @@ class GraphicsView : public QGraphicsView
 public:
     explicit GraphicsView(QWidget *parent = 0);
 
-
-
-
-
+    bool selectMode;
 
 
     QPointF CurrentCenterPoint;
@@ -33,9 +30,14 @@ public:
     virtual void wheelEvent(QWheelEvent* event);
     virtual void resizeEvent(QResizeEvent* event);
 
+
+    void updateCenterPoint(const QPointF &centerPoint);
 signals:
     
 public slots:
+    void setSelectMode(bool linkEnabled);
+    void sliderMoved(int);
+
     
 };
 

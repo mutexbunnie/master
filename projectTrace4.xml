@@ -1,0 +1,26 @@
+<project name="Test">
+
+	<datasources>
+		<datasource name="dbtest"  type="mysql" host="127.0.0.1" user="root" pass="root" db="test"></datasource>
+		<datasource name="project" type="mysql" host="127.0.0.1" user="root" pass="root" db="projectApp"></datasource>
+	</datasources>
+
+	<entitytypes>
+        	<entitytype name="App" icon=":icons/socket.png" > </entitytype> 
+		<entitytype name="User" icon=":icons/osa_user_blue.png" > </entitytype>
+	</entitytypes>
+
+	<entitysources>
+		<entitysource name="usersource" entitytype="User" datasource="dbtest" query='select distinct user from usersExcluded join app on usersExcluded.host =concat(app.host,".mtn.co.za");'  > </entitysource>
+		<entitysource  name="appsource" entitytype="App" datasource="dbtest" query="select distinct app from app" > </entitysource> 
+	</entitysources>
+
+	<projectsheets>
+		<projectsheet name="User App" datasource="project" mapTableName="entityMap" linkTableName="link"> </projectsheet>
+	</projectsheets>
+	
+	<autolinks>
+		<autolink name="link1"  entitytype1="App" entitytype2="User" datasource="dbtest" query="select distinctrow app as UID1,user as UID2 from users join app on users.host=concat(app.host,'.mtn.co.za')"  > </autolink>
+	</autolinks>
+
+</project> 

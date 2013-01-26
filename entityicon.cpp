@@ -4,7 +4,9 @@
 #include "graphicsscene.h"
 #include "edge.h"
 
-EntityIcon::EntityIcon(QGraphicsItem *parent, QModelIndex index, EntityType *entityType, QPointF pos) : QGraphicsItem(parent)
+
+
+EntityIcon::EntityIcon (QGraphicsItem * parent,  QGraphicsScene* scene, QModelIndex  index, EntityType*  entityType , QPointF pos) : QGraphicsItem(parent)
 {
     this->entityType=entityType;
     this->setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
@@ -13,11 +15,11 @@ EntityIcon::EntityIcon(QGraphicsItem *parent, QModelIndex index, EntityType *ent
     //fix location by model//
     //
 
-
-
-    if (pos.x()==0 && pos.y()==0) setPos((qrand() %1024 )+8388607,(qrand() % 1024)+8388607);
+    if (pos.x()==0 && pos.y()==0) setPos((qrand() %1024 )+ scene->sceneRect().width()/2,(qrand() % 1024)+ scene->sceneRect().height()/2);
     else
-    setPos(pos);
+       setPos(pos);
+
+    scene->addItem(this);
 
     currentPixmap=entityType->normal;
     setFlag(ItemIsMovable);
@@ -29,35 +31,29 @@ EntityIcon::EntityIcon(QGraphicsItem *parent, QModelIndex index, EntityType *ent
 
 }
 
-/*void EntityIcon::updateText()
-{
-  //fix//
-  if  (index.data(Qt::EditRole).toString() !=labelItem->text())
-  {
-   labelItem->setText(index.data().toString());
-   labelItem->setPos(0,50);
-  }
-}*/
 
 
 void EntityIcon::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-   // updateText();
+
     QStyleOptionGraphicsItem* style = const_cast<QStyleOptionGraphicsItem*>( option );
     style->state &= ~( QStyle::State_Selected | QStyle::State_HasFocus );
-    painter->drawPixmap(0,0,75,75,currentPixmap);
+    painter->drawPixmap(0,0,150,150,currentPixmap);
+
+    QRectF textRect=QRectF(0,128,150,200);
 
 
-    /*QPixmap selected( QSize(75,75));
-    selected.fill(QColor(0, 0, 255, 50));
-    painter->drawPixmap(0,0,75,75,selected);
-    painter->drawPixmap(15,5,50,50,entityType->normal);
-    QBrush brush(QColor(0, 0, 255,100));
-    QPen pen(brush,4);
-    painter->setPen(pen);
-    painter->drawRect(selected.rect());*/
+    QFont f = painter->font();
+    f.setPointSizeF(12);
+    painter->setFont(f);
 
-    painter->drawText(QRectF(15,60,50,1000), Qt::TextWrapAnywhere,index.data().toString());
+    if (this->isSelected())
+    painter->drawText(textRect,Qt::AlignHCenter+Qt::TextWrapAnywhere+Qt::TextDontClip,index.data().toString() );
+    else
+    {
+      QString text= painter->fontMetrics().elidedText( index.data().toString() ,Qt::ElideRight ,150);
+      painter->drawText(textRect,Qt::AlignHCenter+Qt::TextWrapAnywhere,text );
+    }
 
    // painter->end();
 
@@ -94,7 +90,7 @@ void EntityIcon::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 QRectF EntityIcon::boundingRect() const
 {
-    return QRectF(QPoint(0,0),QSize(100,100));
+    return QRectF(QPoint(0,0),QSize(150,150));
 }
 
 void EntityIcon::addConnection(EntityIcon *dest)

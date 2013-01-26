@@ -23,7 +23,7 @@ GraphicsScene::GraphicsScene(QObject *parent) :QGraphicsScene(parent)
      connect (timer, SIGNAL(timeout()), this, SLOT(layoutItems()));
      entityLookup =   new  QMap <QString, QMap<QString, EntityIcon*>* >();
      edges=new QVector<Edge*>();
-     setSceneRect(0,0,16777215,16777215);
+     setSceneRect(0,0,100000,100000);
 
 }
 
@@ -49,6 +49,18 @@ void GraphicsScene::addSheetLink( QSqlTableModel* projectLink )
 }
 
 
+void GraphicsScene::addJoin(QString entityType1,QString entityType2,QAbstractItemModel *model)
+{
+    //connects for model?
+    for ( int i = 0; i <model->rowCount(); ++i )
+    {
+
+        createEdge(entityType1,model->index( i, 0).data().toString(),entityType2,model->index( i, 1).data().toString());
+        createEdge(entityType2,model->index( i, 1).data().toString(),entityType1,model->index( i, 0).data().toString());
+    }
+   hideOrphan();
+}
+
 void GraphicsScene::hideOrphan()
 {
     for( int i =0; i<entityIcons->size() ;i++)
@@ -59,9 +71,10 @@ void GraphicsScene::hideOrphan()
 }
 
 
-void GraphicsScene::addEntityIcon(QGraphicsItem *parent, QModelIndex index, EntityType *entityType,QPointF pos)
+void GraphicsScene::addEntityIcon(QGraphicsItem *parent, QGraphicsScene* scene,  QModelIndex index, EntityType *entityType,QPointF pos)
+
 {
-    EntityIcon* tmpEntityIcon=new EntityIcon(parent,index,entityType,pos);
+    EntityIcon* tmpEntityIcon=new EntityIcon(parent,scene,index,entityType,pos);
 
     QString entityTypeName =tmpEntityIcon->entityType->name;
 
@@ -75,16 +88,12 @@ void GraphicsScene::addEntityIcon(QGraphicsItem *parent, QModelIndex index, Enti
 
     tmpMap->insert(tmpEntityIcon->getUidValue(),tmpEntityIcon);
 
-    this->addItem(tmpEntityIcon);
     this->entityIcons->append(tmpEntityIcon);
 
 }
 
 void GraphicsScene::layoutItems()
 {
-
-
-
 
   for( int i=0; i<entityIcons->size(); i++)
   {
@@ -106,13 +115,13 @@ void GraphicsScene::layoutItems()
 
                                               if (distance>0)
                                               {
-                                                   forceX+= (150.0*distanceX)/distance;
-                                                   forceY+= (150.0*distanceY)/distance;
+                                                   forceX+= (((75*75)/5)*distanceX)/distance;
+                                                   forceY+= (((75*75)/5)*distanceY)/distance;
                                               }
 
                       }
 
-                      double weight = (((*entityIcons)[i])->connectionList->size() + 1) * 10;
+                      double weight = (((*entityIcons)[i])->connectionList->size() + 1) * 5;
 
                       for (int k=0; k< ((*entityIcons)[i])->connectionList->size();k++)
                       {
@@ -161,8 +170,17 @@ void GraphicsScene::addModel(QAbstractItemModel *model,EntityType*  tmpEntity)
             pos= sourceMap->value(item.data().toString());
             qDebug() <<pos;
          }
-         addEntityIcon(0,item,tmpEntity,pos);
+         addEntityIcon(0,this,item,tmpEntity,pos);
     }
+}
+
+
+
+
+void GraphicsScene::setAutoLayout(bool autoLayout)
+{
+    if (autoLayout) timer->start(100);
+    else      timer->stop();
 }
 
 
@@ -171,11 +189,8 @@ void GraphicsScene::setLinkMode(bool linkEnabled)
     this->linkMode=linkEnabled;
 }
 
-void GraphicsScene::setAutoLayout(bool autoLayout)
-{
-    if (autoLayout) timer->start(100);
-    else      timer->stop();
-}
+
+
 
 void GraphicsScene::addSheetMap(QMap<QString, QMap<QString, QPointF> *> * sheet)
 {
@@ -263,6 +278,8 @@ void GraphicsScene::dataChanged(const QModelIndex& topLeft, const QModelIndex& b
 
 void GraphicsScene::createEdge( EntityIcon* source, EntityIcon* dest)
 {
+   // qDebug()<<"void GraphicsScene::createEdge( EntityIcon* source, EntityIcon* dest);";
+
     Edge* tmpEdge = new Edge(source,dest);
     source->addConnection(dest);
     addItem(tmpEdge);
@@ -274,13 +291,20 @@ void GraphicsScene::createEdge( EntityIcon* source, EntityIcon* dest)
 
 void GraphicsScene::createEdge( QString src_entitytype,QString src_uid,QString dest_entitytype,QString dest_uid )
 {
+  //  qDebug()<<"void GraphicsScene::createEdge" << src_entitytype << src_uid << dest_entitytype <<  dest_uid <<")";
+
 
     QMap<QString,EntityIcon*>*  tmpMap =entityLookup->value(src_entitytype);
-    EntityIcon* source= tmpMap->value(src_uid);
+    EntityIcon* source=0;
+    EntityIcon* dest =0;
+
+    if (tmpMap)
+      source = tmpMap->value(src_uid);
 
 
     QMap<QString,EntityIcon*>*  tmpMap2 =entityLookup->value(dest_entitytype);
-    EntityIcon* dest = tmpMap2->value(dest_uid);
+    if (tmpMap2)
+        dest= tmpMap2->value(dest_uid);
 
     if (dest&&source)
         createEdge(   source,  dest);
@@ -329,7 +353,7 @@ void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
                     storeEdge(((EntityIcon*)selectedNow[j]),((EntityIcon*)prevSelected[i]));
                     createEdge(((EntityIcon*)prevSelected[i]),(EntityIcon*)selectedNow[j]);
                     storeEdge(((EntityIcon*)prevSelected[i]),(EntityIcon*)selectedNow[j]);
-                    /*fix double addition*/
+
                 }
             }
         }

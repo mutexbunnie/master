@@ -4,19 +4,22 @@
 #include <QSqlTableModel>
 #include <QSqlQuery>
 
+
 class ProjectSheet
 {
 public:
-    ProjectSheet( QString _sheetName, QString _linkTableName, QString _mapTableName);
+    ProjectSheet( QString _sheetName, QString _linkTableName, QString _mapTableName,QString _dataSourceName);
     void loadSheet();
-    void setProjectdb(QSqlDatabase _projectdb);
+
 
     QString linkTableName;
     QString mapTableName;
     QString sheetname;
+    QString dataSourceName;
     QMap<QString, QMap<QString,QPointF>*>* projectSheet;
     QSqlTableModel* projectLink;
-    QSqlDatabase projectdb;
+
+
 
 };
 

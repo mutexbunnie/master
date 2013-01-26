@@ -170,7 +170,7 @@ s</string>
                    <x>0</x>
                    <y>0</y>
                    <width>80</width>
-                   <height>546</height>
+                   <height>544</height>
                   </rect>
                  </property>
                  <layout class="QVBoxLayout" name="entityBoxLayout_2">
@@ -225,7 +225,7 @@ s</string>
                    <x>0</x>
                    <y>0</y>
                    <width>1032</width>
-                   <height>532</height>
+                   <height>530</height>
                   </rect>
                  </property>
                  <property name="documentMode">
@@ -284,7 +284,7 @@ s</string>
      <x>0</x>
      <y>0</y>
      <width>1194</width>
-     <height>19</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

@@ -10,6 +10,8 @@
 #include <QMap>
 #include <QSqlTableModel>
 #include "projectsheet.h"
+#include "datasource.h"
+#include <autolink.h>
 
 
 class ProjectStore :public QXmlDefaultHandler
@@ -23,21 +25,17 @@ class ProjectStore :public QXmlDefaultHandler
 
     void saveScene();
 
+    QVector<AutoLink*>* autoLinks;
     QVector<EntityType*>* entityTypes;
+    QVector<Datasource*>* dataSources;
     QVector<EntitySource*>* entitySources;
     QVector<ProjectSheet*>* projectSheets;
 
 
+    QString  getProjectName();
+
 private:
-
     QString projectname;
-    QString projectdb_host;
-    QString projectdb_user;
-    QString projectdb_pass;
-    QString projectdb_dbname;
-
-    QSqlDatabase dbConnection;
-
 
 };
 
