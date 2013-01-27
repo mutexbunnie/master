@@ -115,13 +115,13 @@ void GraphicsScene::layoutItems()
 
                                               if (distance>0)
                                               {
-                                                   forceX+= (((75*75)/5)*distanceX)/distance;
-                                                   forceY+= (((75*75)/5)*distanceY)/distance;
+                                                   forceX+= (((30*30)/10)*distanceX)/distance;
+                                                   forceY+= (((30*30)/10)*distanceY)/distance;
                                               }
 
                       }
 
-                      double weight = (((*entityIcons)[i])->connectionList->size() + 1) * 5;
+                      double weight = (((*entityIcons)[i])->connectionList->size() + 1) * 10;
 
                       for (int k=0; k< ((*entityIcons)[i])->connectionList->size();k++)
                       {
@@ -280,6 +280,14 @@ void GraphicsScene::createEdge( EntityIcon* source, EntityIcon* dest)
 {
    // qDebug()<<"void GraphicsScene::createEdge( EntityIcon* source, EntityIcon* dest);";
 
+    //sif (dest==source) return;
+
+
+    for (int i=0; i<edges->size() ;i++)
+    {
+        if  ( (((*edges)[i]->sourceIcon)==source) &&  (((*edges)[i]->destIcon) == dest) )  return;
+    }
+
     Edge* tmpEdge = new Edge(source,dest);
     source->addConnection(dest);
     addItem(tmpEdge);
@@ -307,7 +315,7 @@ void GraphicsScene::createEdge( QString src_entitytype,QString src_uid,QString d
         dest= tmpMap2->value(dest_uid);
 
     if (dest&&source)
-        createEdge(   source,  dest);
+        createEdge(source,dest);
 
 }
 

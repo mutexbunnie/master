@@ -1,0 +1,24 @@
+<project name="Test">
+
+	<datasources>
+		<datasource name="dbtrace"  type="mysql" host="127.0.0.1" user="root" pass="root" db="traceroute"></datasource>
+		<datasource name="project" type="mysql" host="127.0.0.1" user="root" pass="root" db="projectApp"></datasource>
+	</datasources>
+
+	<entitytypes>
+		<entitytype name="Host" icon=":icons/osa_desktop.png" > </entitytype>
+	</entitytypes>
+
+	<entitysources>
+		<entitysource name="hostSource" entitytype="Host" datasource="dbtrace" query=' select distinct ip from traceroute '  > </entitysource>
+	</entitysources>
+
+	<projectsheets>
+		<projectsheet name="Traceroute" datasource="project" mapTableName="entityMap" linkTableName="link"> </projectsheet>
+	</projectsheets>
+	
+	<autolinks>
+		<autolink name="link1"  entitytype1="Host" entitytype2="Host" datasource="dbtrace" query="select traceroute1.ip as UID1,traceroute2.ip as UID2 from traceroute as traceroute1 join traceroute as traceroute2 on traceroute1.trace=traceroute2.trace and traceroute1.hop+1=traceroute2.hop"  > </autolink>
+	</autolinks>
+
+</project> 
