@@ -58,8 +58,67 @@ void GraphicsScene::addJoin(QString entityType1,QString entityType2,QAbstractIte
         createEdge(entityType1,model->index( i, 0).data().toString(),entityType2,model->index( i, 1).data().toString());
         createEdge(entityType2,model->index( i, 1).data().toString(),entityType1,model->index( i, 0).data().toString());
     }
-   hideOrphan();
+
+
+
+ /*  //EntityIcon* icon, QVector<EntityIcon* >* iconVector)
+
+   QVector<EntityIcon* > doneVector;
+
+   int k=0;
+
+   for (int i=0; i< entityIcons->size();i++)
+   {
+       QVector<EntityIcon* > iconVector;
+       if  (!doneVector.contains(entityIcons->at(i)))
+       {
+           iconVector=outputCluster(entityIcons->at(i),iconVector);
+
+           if (iconVector.size()>0)
+           {
+
+               k=k+1;
+           }
+
+           for( int j=0; j<iconVector.size(); j++)
+           {
+               qDebug()<<k<<iconVector.at(j)->getUidValue();
+               doneVector.append(iconVector[j]);
+           }
+       }
+
+   }*/
+
+
 }
+
+
+QVector<EntityIcon* > GraphicsScene::outputCluster(EntityIcon* icon, QVector<EntityIcon* > iconVector)
+{
+    QVector<EntityIcon* > emptyResult;
+    if (!icon->isVisible()) return emptyResult;
+
+    iconVector.append(icon);
+
+    for ( int i=0; i<icon->connectionList->size(); i++)
+    {
+
+        if (!iconVector.contains(icon->connectionList->at(i)))
+            {
+                QVector<EntityIcon* > tmpResult;
+                tmpResult=outputCluster(icon->connectionList->at(i),iconVector);
+
+                for (int j=0; j<tmpResult.size();j++)
+                {
+                    if (!iconVector.contains(tmpResult[j]))
+                    iconVector.append(tmpResult[j]);
+                }
+            }
+    }
+
+     return iconVector;
+}
+
 
 void GraphicsScene::hideOrphan()
 {
@@ -67,6 +126,8 @@ void GraphicsScene::hideOrphan()
     {
         if (((*entityIcons)[i])->connectionList->size()==0)
          ((*entityIcons)[i])->hide();
+        //else
+          // ((*entityIcons)[i])->show();
     }
 }
 
@@ -115,13 +176,13 @@ void GraphicsScene::layoutItems()
 
                                               if (distance>0)
                                               {
-                                                   forceX+= (((30*30)/10)*distanceX)/distance;
-                                                   forceY+= (((30*30)/10)*distanceY)/distance;
+                                                   forceX+= (((75*75)/5)*distanceX)/distance;
+                                                   forceY+= (((75*75)/5)*distanceY)/distance;
                                               }
 
                       }
 
-                      double weight = (((*entityIcons)[i])->connectionList->size() + 1) * 10;
+                      double weight = (((*entityIcons)[i])->connectionList->size() + 1) * 5;
 
                       for (int k=0; k< ((*entityIcons)[i])->connectionList->size();k++)
                       {
@@ -145,6 +206,57 @@ void GraphicsScene::layoutItems()
 
 
 }
+
+
+
+
+
+
+
+
+   /* QVector< QList<QString>*>* lists= new QVector< QList<QString>* >();
+
+    for( int i=0; i<entityIcons->size(); i++)
+    {
+         if (entityIcons->at(i)->isVisible()&&entityIcons->at(i)->connectionList->size()>0)
+         {
+              QStringList* userList = new QStringList();
+              userList->append(entityIcons->at(i)->getUidValue());
+
+              for( int j=0; j<entityIcons->at(i)->connectionList->size(); j++)
+              {
+                if (entityIcons->at(i)->connectionList->at(j))
+                    userList->append(entityIcons->at(i)->connectionList->at(j)->getUidValue());
+              }
+              userList->sort();
+              lists->append(userList);
+          }
+    }
+
+
+     for (int i=0; i<lists->size(); i++)
+     {
+         for (int j=0; j<lists->size(); j++)
+         {
+           if (j!=i)
+           {
+                 if ( (*(*lists)[i])==(*(*lists)[j]) )
+                   lists->at(j)->clear();
+           }
+         }
+     }
+
+     for (int i=0; i<lists->size(); i++)
+     {
+       if  (lists->at(i)->size()>0) qDebug() <<"========================";
+       for (int j=0; j<lists->at(i)->size(); j++)
+       {
+                qDebug()<<lists->at(i)->at(j);
+       }
+
+     }*/
+
+ //}
 
 void GraphicsScene::addModel(QAbstractItemModel *model,EntityType*  tmpEntity)
 {
@@ -282,10 +394,12 @@ void GraphicsScene::createEdge( EntityIcon* source, EntityIcon* dest)
 
     //sif (dest==source) return;
 
+    if (!source->isVisible() ||!dest->isVisible()) return ;
 
     for (int i=0; i<edges->size() ;i++)
     {
         if  ( (((*edges)[i]->sourceIcon)==source) &&  (((*edges)[i]->destIcon) == dest) )  return;
+
     }
 
     Edge* tmpEdge = new Edge(source,dest);
