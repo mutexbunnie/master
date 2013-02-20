@@ -27,7 +27,7 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 
     //QLineF line(destIcon->pos(), sourceIcon->pos());
 
-     float iconsize=150;
+     float iconsize=180;
 
      QPointF startPoint(sourceIcon->pos().x()+iconsize/2 ,sourceIcon->pos().y()+iconsize/2);
      QPointF endPoint  (destIcon->pos().x()+iconsize/2, destIcon->pos().y()+iconsize/2);
@@ -43,7 +43,8 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
  /*   if (qFuzzyCompare(line.length(), qreal(0.)))
         return;*/
 
-     painter->setPen(QPen(QColor(127, 127, 127,200), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+       painter->setPen(QPen(QColor(127, 127, 127,200), 5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+     //painter->setPen(QPen(QColor(127, 127, 127,200), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
      painter->drawLine(line2);
 
    /* double angle = ::acos(line.dx() / line.length());

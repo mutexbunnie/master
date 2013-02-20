@@ -115,13 +115,13 @@ void GraphicsScene::layoutItems()
 
                                               if (distance>0)
                                               {
-                                                   forceX+= (((30*30)/10)*distanceX)/distance;
-                                                   forceY+= (((30*30)/10)*distanceY)/distance;
+                                                   forceX+= (((75*75)/15)*distanceX)/distance;
+                                                   forceY+= (((75*75)/15)*distanceY)/distance;
                                               }
 
                       }
 
-                      double weight = (((*entityIcons)[i])->connectionList->size() + 1) * 10;
+                      double weight = (((*entityIcons)[i])->connectionList->size() + 1) * 15;
 
                       for (int k=0; k< ((*entityIcons)[i])->connectionList->size();k++)
                       {
