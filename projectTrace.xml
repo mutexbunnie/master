@@ -2,7 +2,7 @@
 
 	<datasources>
 		<datasource name="dbtrace"  type="mysql" host="127.0.0.1" user="root" pass="root" db="traceroute"></datasource>
-		<datasource name="project" type="mysql" host="127.0.0.1" user="root" pass="root" db="projectApp"></datasource>
+		<datasource name="project" type="mysql" host="127.0.0.1" user="root" pass="root" db="projectone"></datasource>
 	</datasources>
 
 	<entitytypes>
