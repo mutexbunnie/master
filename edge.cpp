@@ -43,7 +43,7 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
  /*   if (qFuzzyCompare(line.length(), qreal(0.)))
         return;*/
 
-     painter->setPen(QPen(QColor(127, 127, 127,200), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+     painter->setPen(QPen(QColor(127, 127, 127,200), 3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
      painter->drawLine(line2);
 
    /* double angle = ::acos(line.dx() / line.length());
