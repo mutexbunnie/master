@@ -93,7 +93,7 @@ void GraphicsScene::addJoin(QString entityType1,QString entityType2,QAbstractIte
 }
 
 
-QVector<EntityIcon* > GraphicsScene::outputCluster(EntityIcon* icon, QVector<EntityIcon* > iconVector)
+/*QVector<EntityIcon* > GraphicsScene::outputCluster(EntityIcon* icon, QVector<EntityIcon* > iconVector)
 {
     QVector<EntityIcon* > emptyResult;
     if (!icon->isVisible()) return emptyResult;
@@ -117,7 +117,7 @@ QVector<EntityIcon* > GraphicsScene::outputCluster(EntityIcon* icon, QVector<Ent
     }
 
      return iconVector;
-}
+}*/
 
 
 void GraphicsScene::hideOrphan()
