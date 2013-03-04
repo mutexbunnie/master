@@ -1,0 +1,44 @@
+<project name="Test">
+
+	<datasources>
+		<datasource name="dbtest"  type="mysql" host="127.0.0.1" user="root" pass="root" db="test"></datasource>
+		<datasource name="project" type="mysql" host="127.0.0.1" user="root" pass="root" db="projectApp"></datasource>
+	</datasources>
+
+	<entitytypes>
+        	<!--entitytype name="App" icon=":icons/socket.png" > </entitytype--> 
+		<entitytype name="Host" icon=":icons/osa_desktop.png" > </entitytype> 
+		<entitytype name="User" icon=":icons/osa_user_green.png" > </entitytype> 
+		<entitytype name="Group" icon=":icons/osa_user_large_group.png" > </entitytype> 
+        </entitytypes>
+
+
+	<entitysources>
+                <entitysource name="hostSource" entitytype="Host" datasource="dbtest" query='select distinct host from users'  > </entitysource>
+		<!--entitysource  name="appsource" entitytype="App" datasource="dbtest" query="select distinct app from app" > </entitysource-->  
+		<entitysource  name="UserSource" entitytype="User" datasource="dbtest" query="select distinct user from users where  users.user like '%\_%'" > </entitysource>  
+		<!--entitysource  name="groupSource" entitytype="Group" datasource="dbtest" query="select distinctrow groupname as UID2 from users join app on concat(app.host,'.mtn.co.za')=users.host join tmpClusterData on tmpClusterData.user=users.user where app like '%' and users.user like '%\_%'"  > </entitysource-->  
+		<entitysource  name="groupSource" entitytype="Group" datasource="dbtest" query=" select distinctrow groupname from usergroups where groupname !='Disabled' union all select 'Misc' ;"  > </entitysource>  
+	</entitysources>
+
+	<projectsheets>
+		<projectsheet name="User App" datasource="project" mapTableName="entityMap" linkTableName="link"> </projectsheet>
+	</projectsheets>
+	
+	<autolinks>
+		<!--autolink name="link3"  entitytype1="Host" entitytype2="User" datasource="dbtest" query=" select users.host as UID1, user as UID2 from users join app on concat(app.host,'.mtn.co.za')=users.host where app like '%soa%' and user like '%\_%' ;"  > </autolink-->
+
+		<!--autolink name="link1"  entitytype1="Host" entitytype2="App" datasource="dbtest" query="select concat(host,'.mtn.co.za') as UID1,app as UID2 from app where app like '%SOA%';"  > </autolink-->
+		<!--autolink name="link2"  entitytype1="Host" entitytype2="Host" datasource="dbtest" query="select host1 as UID1,host2 as UID2 from combined ;"  > </autolink-->
+
+		 <!--autolink name="link2"  entitytype1="Host" entitytype2="Group" datasource="dbtest" query="select distinctrow users.host,groupname as UID2 from users join app on concat(app.host,'.mtn.co.za')=users.host left join tmpClusterData on tmpClusterData.user=users.user where app like '%' and users.user like '%\_%'  ;" > </autolink-->
+
+	 <!--autolink name="link2"  entitytype1="Group" entitytype2="Host" datasource="dbtest" query="select groupname,users.host as UID2 from users join app on concat(app.host,'.mtn.co.za')=users.host right  join usergroups on usergroups.username=users.user where app like '%soa%' and users.user like '%\_%' and groupname !='Linux' and  groupname !='Storage' /* group by users.host having count(distinct(groupname))=1 */ ;" > </autolink-->
+
+	 <autolink name="link2"  entitytype1="Group" entitytype2="Host" datasource="dbtest" query="select * from (select if(groupname is NULL,'Misc',groupname) as groupname,users.host,users.user as UID2 from users  join app on concat(app.host,'.mtn.co.za')=users.host left  join usergroups on usergroups.username=users.user  where users.user like '%\_%'  and app like '%SOA%' ) as T2 where  groupname !='Linux' and groupName!='Storage';" > </autolink>
+	 <autolink name="link3"  entitytype1="Group" entitytype2="User" datasource="dbtest" query="select groupname,UID2 from (select if(groupname is NULL,'Misc',groupname) as groupname,users.host,users.user as UID2 from users  join app on concat(app.host,'.mtn.co.za')=users.host left  join usergroups on usergroups.username=users.user  where users.user like '%\_%'  and app like '%SOA%' ) as T2 where  groupname  not in('Linux','Storage','Disabled');" > </autolink>
+
+
+	</autolinks>
+
+</project> 
