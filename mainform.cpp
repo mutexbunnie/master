@@ -187,4 +187,11 @@ void MainForm::on_actionAutoLink_triggered()
         }
         scene->hideOrphan();
     }
+    scene->hideOrphan();
+}
+
+void MainForm::on_actionRemove_triggered()
+{
+ scene->removeSelected();
+
 }

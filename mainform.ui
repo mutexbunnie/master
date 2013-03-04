@@ -320,6 +320,7 @@ s</string>
    <addaction name="actionAutoLayout"/>
    <addaction name="actionSave"/>
    <addaction name="actionAutoLink"/>
+   <addaction name="actionRemove"/>
   </widget>
   <action name="actionSelection">
    <property name="checkable">
@@ -388,6 +389,15 @@ s</string>
    </property>
    <property name="text">
     <string>AutoLink</string>
+   </property>
+  </action>
+  <action name="actionRemove">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/osa_lightning.png</normaloff>:/icons/osa_lightning.png</iconset>
+   </property>
+   <property name="text">
+    <string>Remove</string>
    </property>
   </action>
  </widget>

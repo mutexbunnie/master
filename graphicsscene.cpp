@@ -345,7 +345,28 @@ void GraphicsScene::save()
 
 QMap<QString, QMap<QString, QPointF> *> *GraphicsScene::getSheetMap()
 {
-     return sheetMap;
+    return sheetMap;
+}
+
+void GraphicsScene::removeSelected()
+{
+    QList<QGraphicsItem*> selected= this->selectedItems();
+
+    for (int i=0; i<selected.size(); i++)
+    {
+        ((EntityIcon*)selected[i])->hide();
+        for (int j=0; j<edges->size(); j++)
+        {
+            if ( ((*edges)[j])->sourceIcon==selected[i] || ((*edges)[j])->destIcon==selected[i]  )
+            {
+              ((*edges)[j])->hide();
+            }
+        }
+
+    }
+
+
+
 }
 
 void GraphicsScene::reset() /*! helper function to implement a reset call for a custom view */

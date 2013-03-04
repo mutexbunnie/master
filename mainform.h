@@ -37,6 +37,9 @@ private slots:
 
     void on_actionAutoLink_triggered();
 
+
+    void on_actionRemove_triggered();
+
 private:
     Ui::MainForm *ui;
      QVector<ProjectStore*>* projectStores;

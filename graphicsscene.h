@@ -50,6 +50,8 @@ public slots:
     void save();
     QMap<QString, QMap<QString,QPointF>*   >*  getSheetMap();
 
+    void removeSelected();
+
 private :
        QVector<QAbstractItemModel*>* models;
        QVector<EntityIcon*>* entityIcons;
