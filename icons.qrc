@@ -13,5 +13,7 @@
         <file>icons/insert-link-2.png</file>
         <file>icons/insert-link.png</file>
         <file>icons/socket.png</file>
+        <file>icons/osa_user_green.png</file>
+        <file>icons/osa_user_large_group.png</file>
     </qresource>
 </RCC>

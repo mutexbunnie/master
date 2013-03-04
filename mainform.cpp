@@ -185,5 +185,6 @@ void MainForm::on_actionAutoLink_triggered()
         {
              scene->addJoin(projectStore->autoLinks->at(i)->entityType1,projectStore->autoLinks->at(i)->entityType2,projectStore->autoLinks->at(i)->getModel());
         }
+        scene->hideOrphan();
     }
 }
