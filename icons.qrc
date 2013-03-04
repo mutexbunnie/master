@@ -15,5 +15,6 @@
         <file>icons/socket.png</file>
         <file>icons/osa_user_green.png</file>
         <file>icons/osa_user_large_group.png</file>
+        <file>icons/osa_lightning.png</file>
     </qresource>
 </RCC>
