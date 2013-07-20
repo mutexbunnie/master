@@ -7,7 +7,8 @@
 QT       += core gui
 QT += sql
 QT += xml
-LIBS +=  -lkparts -lkdecore
+LIBS +=  -lkparts -lkdecore -lgvc -lgraph -lcdt
+INCLUDEPATH+="/usr/include/graphviz"
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -27,7 +28,8 @@ SOURCES += main.cpp\
     entitysource.cpp \
     projectsheet.cpp \
     datasource.cpp \
-    autolink.cpp
+    autolink.cpp \
+    GVGraph.cpp
 
 HEADERS  +=mainform.h \
     entitytype.h \
@@ -40,7 +42,8 @@ HEADERS  +=mainform.h \
     entitysource.h \
     projectsheet.h \
     datasource.h \
-    autolink.h
+    autolink.h \
+    GVGraph.h
 
 FORMS += \
     mainform.ui

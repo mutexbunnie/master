@@ -3,11 +3,14 @@
 #include <QDebug>
 #include "graphicsscene.h"
 #include "edge.h"
+#include <QGraphicsView>
 
 
 
 EntityIcon::EntityIcon (QGraphicsItem * parent,  QGraphicsScene* scene, QModelIndex  index, EntityType*  entityType , QPointF pos) : QGraphicsItem(parent)
 {
+    this->setZValue(-1);
+    this->fontsize=20;
     this->entityType=entityType;
     this->setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
     this->index=index;
@@ -22,6 +25,7 @@ EntityIcon::EntityIcon (QGraphicsItem * parent,  QGraphicsScene* scene, QModelIn
     scene->addItem(this);
 
     currentPixmap=entityType->normal;
+    //currentPixmap=entityType->selected;
     setFlag(ItemIsMovable);
     setFlag(ItemSendsGeometryChanges);
     setCacheMode(QGraphicsItem::NoCache);
@@ -32,27 +36,54 @@ EntityIcon::EntityIcon (QGraphicsItem * parent,  QGraphicsScene* scene, QModelIn
 }
 
 
+void EntityIcon::advance()
+{
+  //qDebug()<<pos();
+    if (newPos != pos())
+    {
+        setPos(newPos);
+   //     qDebug()<<pos();
+    }
+
+}
+
+
+void EntityIcon::setFontSize(int fontsize)
+{
+  //this->fontsize=fontsize;
+}
+
 
 void EntityIcon::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
 
     QStyleOptionGraphicsItem* style = const_cast<QStyleOptionGraphicsItem*>( option );
     style->state &= ~( QStyle::State_Selected | QStyle::State_HasFocus );
-    painter->drawPixmap(0,0,150,150,currentPixmap);
 
-    QRectF textRect=QRectF(0,128,150,200);
+    if (this->scene()->views().at(0)->transform().m11() < 0.2)
 
-
-    QFont f = painter->font();
-    f.setPointSizeF(12);
-    painter->setFont(f);
-
-    if (this->isSelected())
-    painter->drawText(textRect,Qt::AlignHCenter+Qt::TextWrapAnywhere+Qt::TextDontClip,index.data().toString() );
+    {
+        painter->setBrush(QBrush(QColor(255,0,0,150)));
+        painter->drawEllipse(0,0,150,150);
+    }
     else
     {
-      QString text= painter->fontMetrics().elidedText( index.data().toString() ,Qt::ElideRight ,150);
-      painter->drawText(textRect,Qt::AlignHCenter+Qt::TextWrapAnywhere,text );
+        //painter->setPen(Qt::NoPen);
+
+        painter->drawPixmap(0,0,150,150,currentPixmap);
+
+        QRectF textRect=QRectF(0,128,150,150);
+        QFont f = painter->font();
+        f.setPointSizeF(fontsize);
+        painter->setFont(f);
+
+        if (this->isSelected())
+        painter->drawText(textRect,Qt::AlignHCenter+Qt::TextWrapAnywhere+Qt::TextDontClip,index.data().toString() );
+        else
+        {
+          QString text= painter->fontMetrics().elidedText( index.data().toString() ,Qt::ElideRight ,150);
+          painter->drawText(textRect,Qt::AlignHCenter+Qt::TextWrapAnywhere,text );
+        }
     }
 
    // painter->end();

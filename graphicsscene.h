@@ -8,6 +8,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QVector>
 #include <QTimer>
+#include "GVGraph.h"
 
 class GraphicsScene : public QGraphicsScene
 {
@@ -30,7 +31,7 @@ public slots:
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
     void addEntityIcon(QGraphicsItem * parent  ,QGraphicsScene* scene,  QModelIndex  index, EntityType*  entityType ,QPointF pos);
 
-
+    void setFontSize(int fontsize);
     void hideOrphan();
     void createEdge   ( EntityIcon* source, EntityIcon* dest);
     void storeEdge    ( EntityIcon* source, EntityIcon* dest);
@@ -43,7 +44,7 @@ public slots:
 
     void addSheetLink(QSqlTableModel* projectLink);
 
-
+    void autoZoom();
     void addJoin(QString entityType1,QString entityType2,QAbstractItemModel *model);
     void addSheetMap(QMap<QString, QMap<QString,QPointF>*   >* sheet);
 
@@ -58,7 +59,7 @@ private :
        QVector<Edge*>* edges;
        QTimer* timer;
        bool linkMode;
-
+       GVGraph*  gvgraph;
 
        QMap<QString, QMap<QString,QPointF>*   >* sheetMap;
        QSqlTableModel* projectLink;

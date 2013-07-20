@@ -23,14 +23,15 @@ public:
     virtual void	mousePressEvent   (  QGraphicsSceneMouseEvent * event );
     QRectF boundingRect() const;
     void addConnection(EntityIcon* dest);
-
-
+    virtual void advance();
    // void updateText();
     QString getUidValue();
-
-
+    void setFontSize(int fontsize);
     QVector<EntityIcon*>* connectionList;
     EntityType* entityType;
+    QPointF newPos;
+
+
 signals:
 
 
@@ -39,6 +40,8 @@ public slots:
 private:
         QPersistentModelIndex  index;
         QPixmap currentPixmap;
+        int fontsize;
+
 
 };
 

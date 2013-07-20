@@ -11,6 +11,9 @@
 MainForm::MainForm(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainForm)
 {
         ui->setupUi(this);
+        //ui->toolBar_2->setVisible(false);
+        ui->entityBox_2->hide();
+
         KService::Ptr service = KService::serviceByDesktopPath("konsolepart.desktop");
         KParts::ReadOnlyPart *m_part = service->createInstance<KParts::ReadOnlyPart>(0);
         QWidget* terminal1=m_part->widget();
@@ -24,7 +27,7 @@ MainForm::MainForm(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainForm)
 
 void MainForm::toggleEntity(bool selection)
 {
-    if (selection)
+   /* if (selection)
     {
             if (selectionState)
             {
@@ -39,7 +42,7 @@ void MainForm::toggleEntity(bool selection)
                    break;
                 }
             }
-    }
+    }*/
 }
 
 
@@ -60,7 +63,8 @@ void MainForm::on_actionOpen_Project_triggered()
         projectStore->loadProject(filepath);
         projectStores->append(projectStore);
 
-        ui->actionSelection->setChecked(true);
+
+
         this->entityTypeButtons = new QVector<EntityTypeButton*>();
         ui->entityBoxLayout_2->setAlignment(Qt::AlignTop);
 
@@ -73,19 +77,100 @@ void MainForm::on_actionOpen_Project_triggered()
             QFrame* frame = new QFrame();
             QVBoxLayout* layout = new QVBoxLayout();
             frame->setLayout(layout);
+            QToolBar* toolbar = new  QToolBar(frame);
+            QAction *actionLink;
+            QAction *actionSelection;
+            QAction *actionAutoLayout;
+            QAction *actionSave;
+            QAction *actionAutoLink;
+            QAction *actionRemove;
+            QAction *actionAutoZoom;
+            actionSelection = new QAction(frame);
+            actionSelection->setObjectName(QString::fromUtf8("actionSelection"));
+            actionSelection->setCheckable(true);
+            QIcon icon;
+            icon.addFile(QString::fromUtf8(":/icons/mouse_pointer.png"), QSize(), QIcon::Normal, QIcon::Off);
+            actionSelection->setIcon(icon);
+
+            actionLink = new QAction(frame);
+            actionLink->setObjectName(QString::fromUtf8("actionLink"));
+            actionLink->setCheckable(true);
+            QIcon icon1;
+            icon1.addFile(QString::fromUtf8(":/icons/insert-link-2.png"), QSize(), QIcon::Normal, QIcon::Off);
+            actionLink->setIcon(icon1);
+
+            actionAutoLayout = new QAction(frame);
+            actionAutoLayout->setObjectName(QString::fromUtf8("actionAutoLayout"));
+            actionAutoLayout->setCheckable(true);
+            QIcon icon2;
+            icon2.addFile(QString::fromUtf8(":/icons/osa_lifecycle.png"), QSize(), QIcon::Normal, QIcon::Off);
+            actionAutoLayout->setIcon(icon2);
+            actionSave = new QAction(frame);
+            actionSave->setObjectName(QString::fromUtf8("actionSave"));
+            QIcon icon3;
+            icon3.addFile(QString::fromUtf8(":/icons/document-save-as-4.png"), QSize(), QIcon::Normal, QIcon::Off);
+            actionSave->setIcon(icon3);
+            actionAutoLink = new QAction(frame);
+            actionAutoLink->setObjectName(QString::fromUtf8("actionAutoLink"));
+            QIcon icon4;
+            icon4.addFile(QString::fromUtf8(":/icons/insert-link.png"), QSize(), QIcon::Normal, QIcon::Off);
+            actionAutoLink->setIcon(icon4);
+            actionRemove = new QAction(frame);
+            actionRemove->setObjectName(QString::fromUtf8("actionRemove"));
+            QIcon icon5;
+            icon5.addFile(QString::fromUtf8(":/icons/osa_lightning.png"), QSize(), QIcon::Normal, QIcon::Off);
+            actionRemove->setIcon(icon5);
+            actionAutoZoom = new QAction(frame);
+            actionAutoZoom->setObjectName(QString::fromUtf8("actionAutoZoom"));
+            QIcon icon6;
+            icon6.addFile(QString::fromUtf8(":/icons/star.png"), QSize(), QIcon::Normal, QIcon::Off);
+            actionAutoZoom->setIcon(icon6);
+
+            actionSelection->setText(QApplication::translate("MainForm", "Selection", 0, QApplication::UnicodeUTF8));
+            actionLink->setText(QApplication::translate("MainForm", "Link", 0, QApplication::UnicodeUTF8));
+            actionAutoLayout->setText(QApplication::translate("MainForm", "AutoLayout", 0, QApplication::UnicodeUTF8));
+            actionSave->setText(QApplication::translate("MainForm", "Save", 0, QApplication::UnicodeUTF8));
+            actionAutoLink->setText(QApplication::translate("MainForm", "AutoLink", 0, QApplication::UnicodeUTF8));
+            actionRemove->setText(QApplication::translate("MainForm", "Remove", 0, QApplication::UnicodeUTF8));
+            actionAutoZoom->setText(QApplication::translate("MainForm", "AutoZoom", 0, QApplication::UnicodeUTF8));
+
+            toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+
+            toolbar->addAction(actionSelection);
+            toolbar->addAction(actionLink);
+            toolbar->addAction(actionAutoLayout);
+            toolbar->addAction(actionSave);
+            toolbar->addAction(actionAutoLink);
+            toolbar->addAction(actionRemove);
+            toolbar->addAction(actionAutoZoom);
+
+            layout->addWidget(toolbar);
+            toolbar->setMovable(true);
+            toolbar->setFloatable(true);
             layout->addWidget(graphicsView);
             QFrame* frame2 = new QFrame();
             QVBoxLayout* layout2 = new QVBoxLayout();
             frame2->setLayout(layout2);
 
+
+
              scene= new  GraphicsScene(0);
             scene->addSheetMap(((*(projectStore->projectSheets))[i]->projectSheet));
             for (int i=0;i<projectStore->entityTypes->size() ;i++)
             {
-              EntityTypeButton* tmp_entityButton =new EntityTypeButton(ui->entityBoxContent_2,(*(projectStore->entityTypes))[i]);
-              ui->entityBoxLayout_2->addWidget(tmp_entityButton);
-              connect(tmp_entityButton , SIGNAL(toggled(bool)), this, SLOT(toggleEntity(bool)));
-              this->entityTypeButtons->append(tmp_entityButton);
+              QAction* tmp_Action =new QAction(this);
+
+
+              tmp_Action->setCheckable(true);
+              tmp_Action->setText(((*(projectStore->entityTypes))[i])->name);
+              tmp_Action->setIcon(((*(projectStore->entityTypes))[i])->normal);
+              toolbar->addAction(tmp_Action);
+
+
+             // EntityTypeButton* tmp_entityButton =new EntityTypeButton(ui->entityBoxContent_2,(*(projectStore->entityTypes))[i]);
+              //ui->entityBoxLayout_2->addWidget(tmp_entityButton);
+              //connect(tmp_entityButton , SIGNAL(toggled(bool)), this, SLOT(toggleEntity(bool)));
+              //this->entityTypeButtons->append(tmp_entityButton);
 
               QTableView* tableView = new QTableView();
               layout2->addWidget(tableView);
@@ -94,6 +179,8 @@ void MainForm::on_actionOpen_Project_triggered()
             }
              scene->addSheetLink(((*(projectStore->projectSheets))[i]->projectLink));
              graphicsView->setScene(scene);
+             //scene->layoutItems();
+             //scene->autoZoom();
 
              ui->tabWidget_2->addTab(frame,(*(projectStore->projectSheets))[i]->sheetname);
              projectSheetMap.insert(ui->tabWidget_2->count()-1,projectStore);
@@ -104,9 +191,19 @@ void MainForm::on_actionOpen_Project_triggered()
             ui->entityBoxLayout_2->addItem(verticalSpacer1);
             graphicsView->setCenter(QPointF((graphicsView->sceneRect().width()/2)+512,(graphicsView->sceneRect().height()/2)+512));
 
-            connect(ui->actionLink, SIGNAL(toggled(bool)), scene, SLOT(setLinkMode(bool)));
-            connect(ui->actionAutoLayout, SIGNAL(toggled(bool)), scene, SLOT(setAutoLayout(bool)));
-            connect(ui->actionSelection, SIGNAL(toggled(bool)), graphicsView, SLOT(setSelectMode(bool)));
+
+
+            toolbar->addAction(actionSave);
+            toolbar->addAction(actionAutoLink);
+
+            connect(actionSelection, SIGNAL(toggled(bool)), graphicsView, SLOT(setSelectMode(bool)));
+            connect(actionLink, SIGNAL(toggled(bool)), scene, SLOT(setLinkMode(bool)));
+            connect(actionAutoLayout, SIGNAL(toggled(bool)), scene, SLOT(setAutoLayout(bool)));
+
+
+            connect(actionRemove,SIGNAL(triggered()), scene, SLOT(removeSelected()));
+            connect(actionAutoZoom,SIGNAL(triggered()), scene, SLOT(autoZoom()));
+            //ui->actionSelection->setChecked(true);
         }
     }
 }
@@ -125,8 +222,7 @@ void MainForm::on_actionSave_triggered()
 
 void MainForm::on_pushButton_2_toggled(bool checked)
 {
-    if (checked)  ui->entityBox_2->show();
-    else ui->entityBox_2->hide();
+
 
 }
 
@@ -179,6 +275,7 @@ void MainForm::on_actionAutoLink_triggered()
     qDebug()<<"void MainForm::on_actionLink_triggered()";
     ProjectStore* projectStore= projectSheetMap.value(ui->tabWidget_2->currentIndex());
 
+
     if (projectStore)
     {
         for(int i=0; i< projectStore->autoLinks->size();i++)
@@ -192,6 +289,29 @@ void MainForm::on_actionAutoLink_triggered()
 
 void MainForm::on_actionRemove_triggered()
 {
- scene->removeSelected();
+
+
+}
+
+void MainForm::on_pushButton_2_clicked()
+{
+
+}
+
+void MainForm::on_actionEntities_triggered()
+{
+
+}
+
+void MainForm::on_actionEntities_triggered(bool checked)
+{
+    //if (checked)  ui->entityBox_2->show();
+    //else ui->entityBox_2->hide();
+
+    ui->toolBar_2->setVisible(!ui->toolBar_2->isVisible());
+}
+
+void MainForm::on_actionAutoZoom_triggered()
+{
 
 }

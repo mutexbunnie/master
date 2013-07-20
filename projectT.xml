@@ -1,0 +1,23 @@
+<project name="Test">
+
+	<datasources>
+		<datasource name="project" type="mysql" host="127.0.0.1" user="root" pass="root" db="projectT"></datasource>
+	</datasources>
+
+	<entitytypes>
+		<entitytype name="Host" icon=":icons/osa_desktop.png" > </entitytype> 
+        </entitytypes>
+
+
+	<entitysources>
+                <entitysource name="hostSource" entitytype="Host" datasource="project" query='select host from testHosts'  > </entitysource>
+	</entitysources>
+
+	<projectsheets>
+		<projectsheet name="Test" datasource="project" mapTableName="entityMap" linkTableName="link"> </projectsheet>
+	</projectsheets>
+	
+	<autolinks>
+	</autolinks>
+
+</project> 

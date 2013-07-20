@@ -40,6 +40,14 @@ private slots:
 
     void on_actionRemove_triggered();
 
+    void on_pushButton_2_clicked();
+
+    void on_actionEntities_triggered();
+
+    void on_actionEntities_triggered(bool checked);
+
+    void on_actionAutoZoom_triggered();
+
 private:
     Ui::MainForm *ui;
      QVector<ProjectStore*>* projectStores;

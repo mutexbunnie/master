@@ -28,7 +28,7 @@ void EntityType::addIcon(QString iconPath)
     QPen pen(brush,4);
     painterNormal.setPen(pen);
     //painterNormal.drawRect(normal.rect());
-    painterNormal.drawPixmap(0,0,128,128, QPixmap(iconPath));
+    painterNormal.drawPixmap(11,0,128,128, QPixmap(iconPath));
     painterNormal.end();
 
     //normal=normal.scaled(50,50, Qt::KeepAspectRatio);
@@ -43,7 +43,7 @@ void EntityType::addIcon(QString iconPath)
 
     painter.setPen(pen);
     painter.drawRect(selected.rect());
-    painter.drawPixmap(0,0,128,128, QPixmap(iconPath));
+    painter.drawPixmap(11,0,128,128, QPixmap(iconPath));
     painter.end();
 }
 
