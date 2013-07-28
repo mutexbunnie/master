@@ -70,6 +70,8 @@ GraphicSheet::GraphicSheet()
 
                 scene= new  GraphicsScene(0);
                //* scene->addSheetMap(((*(projectStore->projectSheets))[i]->projectSheet));
+                /*scene->addSheetLink(((*(projectStore->projectSheets))[i]->projectLink));*/
+
               /*  for (int i=0;i<projectStore->entityTypes->size() ;i++)
                 {
                   /*QAction* tmp_Action =new QAction(this);
@@ -90,7 +92,7 @@ GraphicSheet::GraphicSheet()
                   //tableView->setModel(((*(projectStore->entityTypes))[i])->entitySource->getModel());
                   scene->addModel(((*(projectStore->entityTypes))[i])->entitySource->getModel(),projectStore->entityTypes->at(i));
                 }
-                 scene->addSheetLink(((*(projectStore->projectSheets))[i]->projectLink));*/
+
 
                 graphicsView = new GraphicsView();
                 graphicsView->setFocus();

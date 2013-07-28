@@ -3,6 +3,7 @@
 #include <QtCore>
 #include <QSqlTableModel>
 #include <QSqlQuery>
+#include "graphicsheet.h"
 
 
 class ProjectSheet
@@ -18,7 +19,7 @@ public:
     QString dataSourceName;
     QMap<QString, QMap<QString,QPointF>*>* projectSheet;
     QSqlTableModel* projectLink;
-
+    GraphicsScene* scene;
 
 
 };

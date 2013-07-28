@@ -16,5 +16,8 @@
         <file>icons/osa_user_green.png</file>
         <file>icons/osa_user_large_group.png</file>
         <file>icons/osa_lightning.png</file>
+        <file>icons/utilities-terminal-6.png</file>
+        <file>icons/document-new-6.png</file>
+        <file>icons/document-open-7.png</file>
     </qresource>
 </RCC>

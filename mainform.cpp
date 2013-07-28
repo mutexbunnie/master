@@ -64,17 +64,15 @@ void MainForm::on_actionOpen_Project_triggered()
         projectStore->loadProject(filepath);
         projectStores->append(projectStore);
 
-
-
-        this->entityTypeButtons = new QVector<EntityTypeButton*>();
+      //  this->entityTypeButtons = new QVector<EntityTypeButton*>();
         //ui->entityBoxLayout_2->setAlignment(Qt::AlignTop);
 
 /*fix just one scene*/
-        for (int i=0; i<projectStore->projectSheets->size();i++)
-        {
-            GraphicSheet* gs = new GraphicSheet();
-            ui->tabWidget_2->addTab(gs->frame,(*(projectStore->projectSheets))[i]->sheetname);
-            projectSheetMap.insert(ui->tabWidget_2->count()-1,projectStore);
+      //  for (int i=0; i<projectStore->projectSheets->size();i++)
+       // {
+           // GraphicSheet* gs = new GraphicSheet();
+           // ui->tabWidget_2->addTab(gs->frame,(*(projectStore->projectSheets))[i]->sheetname);
+           // projectSheetMap.insert(ui->tabWidget_2->count()-1,projectStore);
              /*ui->tabWidget_2->addTab(frame2,"Tables 1");
              projectSheetMap.insert(ui->tabWidget_2->count()-1,projectStore);
 
@@ -94,7 +92,7 @@ void MainForm::on_actionOpen_Project_triggered()
             connect(actionRemove,SIGNAL(triggered()), scene, SLOT(removeSelected()));
             connect(actionAutoZoom,SIGNAL(triggered()), scene, SLOT(autoZoom()));
             //ui->actionSelection->setChecked(true);*/
-        }
+       //}
     }
 }
 
