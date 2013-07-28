@@ -48,12 +48,12 @@ private slots:
 
     void on_actionAutoZoom_triggered();
 
+    void on_actionTerminal_triggered(bool checked);
+
 private:
     Ui::MainForm *ui;
      QVector<ProjectStore*>* projectStores;
      QMap<int,ProjectStore*> projectSheetMap;
-     GraphicsScene* scene;
-
 
 };
 

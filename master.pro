@@ -29,7 +29,8 @@ SOURCES += main.cpp\
     projectsheet.cpp \
     datasource.cpp \
     autolink.cpp \
-    GVGraph.cpp
+    GVGraph.cpp \
+    graphicsheet.cpp
 
 HEADERS  +=mainform.h \
     entitytype.h \
@@ -43,7 +44,8 @@ HEADERS  +=mainform.h \
     projectsheet.h \
     datasource.h \
     autolink.h \
-    GVGraph.h
+    GVGraph.h \
+    graphicsheet.h
 
 FORMS += \
     mainform.ui
