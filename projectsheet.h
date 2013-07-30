@@ -5,11 +5,12 @@
 #include <QSqlQuery>
 #include "graphicsheet.h"
 
+class ProjectStore;
 
 class ProjectSheet
 {
 public:
-    ProjectSheet( QString _sheetName, QString _linkTableName, QString _mapTableName,QString _dataSourceName);
+    ProjectSheet(QString _sheetName, QString _linkTableName, QString _mapTableName, QString _dataSourceName, ProjectStore* projectStore) ;
     void loadSheet();
 
 
@@ -19,8 +20,8 @@ public:
     QString dataSourceName;
     QMap<QString, QMap<QString,QPointF>*>* projectSheet;
     QSqlTableModel* projectLink;
-    GraphicsScene* scene;
-
+    GraphicSheet* graphicSheet;
+    ProjectStore* projectStore;
 
 };
 

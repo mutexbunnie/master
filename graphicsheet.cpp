@@ -1,7 +1,10 @@
 #include "graphicsheet.h"
-
-GraphicSheet::GraphicSheet()
+#include "projectsheet.h"
+#include "projectstore.h"
+#include <QObject>
+GraphicSheet::GraphicSheet(ProjectSheet *projectSheet)
 {
+                //this->projectSheet=projectSheet;
                 frame = new QFrame();
                 layout = new QVBoxLayout();
                 frame->setLayout(layout);
@@ -69,14 +72,14 @@ GraphicSheet::GraphicSheet()
                 layout->addWidget(toolbar);
 
                 scene= new  GraphicsScene(0);
-               //* scene->addSheetMap(((*(projectStore->projectSheets))[i]->projectSheet));
-                /*scene->addSheetLink(((*(projectStore->projectSheets))[i]->projectLink));*/
+               scene->addSheetMap(projectSheet->projectSheet);
+                scene->addSheetLink(projectSheet->projectLink);
 
-              /*  for (int i=0;i<projectStore->entityTypes->size() ;i++)
+                ProjectStore * projectStore=projectSheet->projectStore;
+
+                for (int i=0;i<projectStore->entityTypes->size() ;i++)
                 {
-                  /*QAction* tmp_Action =new QAction(this);
-
-
+                  QAction* tmp_Action =new QAction(frame);
                   tmp_Action->setCheckable(true);
                   tmp_Action->setText(((*(projectStore->entityTypes))[i])->name);
                   tmp_Action->setIcon(((*(projectStore->entityTypes))[i])->normal);
@@ -93,16 +96,29 @@ GraphicSheet::GraphicSheet()
                   scene->addModel(((*(projectStore->entityTypes))[i])->entitySource->getModel(),projectStore->entityTypes->at(i));
                 }
 
-
                 graphicsView = new GraphicsView();
                 graphicsView->setFocus();
                 layout->addWidget(graphicsView);
                 graphicsView->setScene(scene);
-                 //scene->layoutItems();
-                 //scene->autoZoom();
+                graphicsView->setCenter(QPointF((graphicsView->sceneRect().width()/2)+512,(graphicsView->sceneRect().height()/2)+512));
 
-                //*/QFrame* frame2 = new QFrame();
+                QObject::connect(actionSelection, SIGNAL(toggled(bool)), graphicsView, SLOT(setSelectMode(bool)));
+                QObject::connect(actionLink, SIGNAL(toggled(bool)), scene, SLOT(setLinkMode(bool)));
+                QObject::connect(actionAutoLayout, SIGNAL(toggled(bool)), scene, SLOT(setAutoLayout(bool)));
+
+                QObject::connect(actionRemove,SIGNAL(triggered()), scene, SLOT(removeSelected()));
+                QObject::connect(actionAutoZoom,SIGNAL(triggered()), scene, SLOT(autoZoom()));
+                //QObject::connect(actionAutoLink,SIGNAL(triggered()), scene, SLOT((scene->)));
+
+
+              /* QSpacerItem* verticalSpacer1 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+                //ui->entityBoxLayout_2->addItem(verticalSpacer1);/*
+                actionSelection->setChecked(true);*/
+                //scene->layoutItems();
+                //scene->autoZoom();
+                //*QFrame* frame2 = new QFrame();
                 //QVBoxLayout* layout2 = new QVBoxLayout();
                 //frame2->setLayout(layout2);*/
-
+                // this->entityTypeButtons = new QVector<EntityTypeButton*>();
+                //ui->entityBoxLayout_2->setAlignment(Qt::AlignTop);
 }

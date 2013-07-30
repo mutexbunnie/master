@@ -29,7 +29,7 @@ class ProjectStore :public QXmlDefaultHandler
     QVector<EntityType*>* entityTypes;
     QVector<Datasource*>* dataSources;
     QVector<EntitySource*>* entitySources;
-   // QVector<ProjectSheet*>* projectSheets;
+    QVector<ProjectSheet*>* projectSheets;
 
 
 

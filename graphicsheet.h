@@ -7,14 +7,16 @@
 #include <QAction>
 #include <QVBoxLayout>
 #include <QApplication>
-#include "projectstore.h"
-#include "projectstore.h"
+
+class ProjectSheet;
 
 class GraphicSheet
 {
+
 public:
-    GraphicSheet();
+    GraphicSheet(ProjectSheet* projectSheet);
     GraphicsView* graphicsView;
+    GraphicsScene* scene;
     QFrame* frame;
     QVBoxLayout* layout;
     QToolBar* toolbar;
@@ -27,7 +29,8 @@ public:
     QAction *actionAutoZoom;
     QFrame* frame2;
     QVBoxLayout* layout2;
-    GraphicsScene* scene;
+    ProjectSheet* projectSheet;
+
 };
 
 #endif // GRAPHICSHEET_H

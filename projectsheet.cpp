@@ -1,12 +1,13 @@
 #include "projectsheet.h"
 
-ProjectSheet::ProjectSheet(QString _sheetName, QString _linkTableName, QString _mapTableName, QString _dataSourceName)
+ProjectSheet::ProjectSheet(QString _sheetName, QString _linkTableName, QString _mapTableName, QString _dataSourceName,ProjectStore* projectStore)
 {
    sheetname    = _sheetName;
    linkTableName= _linkTableName;
    mapTableName = _mapTableName;
    dataSourceName   = _dataSourceName;
    projectSheet = new QMap<QString, QMap<QString,QPointF>* >();
+   this->projectStore = projectStore;
 }
 
 void ProjectSheet::loadSheet()
@@ -31,5 +32,7 @@ void ProjectSheet::loadSheet()
         projectLink->setEditStrategy(QSqlTableModel::OnManualSubmit);
         projectLink->select();
         qDebug()  << "Load done";
+
+        graphicSheet = new GraphicSheet(this);
 }
 

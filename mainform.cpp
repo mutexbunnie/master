@@ -64,35 +64,13 @@ void MainForm::on_actionOpen_Project_triggered()
         projectStore->loadProject(filepath);
         projectStores->append(projectStore);
 
-      //  this->entityTypeButtons = new QVector<EntityTypeButton*>();
-        //ui->entityBoxLayout_2->setAlignment(Qt::AlignTop);
-
-/*fix just one scene*/
-      //  for (int i=0; i<projectStore->projectSheets->size();i++)
-       // {
-           // GraphicSheet* gs = new GraphicSheet();
-           // ui->tabWidget_2->addTab(gs->frame,(*(projectStore->projectSheets))[i]->sheetname);
-           // projectSheetMap.insert(ui->tabWidget_2->count()-1,projectStore);
-             /*ui->tabWidget_2->addTab(frame2,"Tables 1");
-             projectSheetMap.insert(ui->tabWidget_2->count()-1,projectStore);
-
-            QSpacerItem* verticalSpacer1 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
-            ui->entityBoxLayout_2->addItem(verticalSpacer1);
-            graphicsView->setCenter(QPointF((graphicsView->sceneRect().width()/2)+512,(graphicsView->sceneRect().height()/2)+512));
-
-
-
-
-
-            connect(actionSelection, SIGNAL(toggled(bool)), graphicsView, SLOT(setSelectMode(bool)));
-            connect(actionLink, SIGNAL(toggled(bool)), scene, SLOT(setLinkMode(bool)));
-            connect(actionAutoLayout, SIGNAL(toggled(bool)), scene, SLOT(setAutoLayout(bool)));
-
-
-            connect(actionRemove,SIGNAL(triggered()), scene, SLOT(removeSelected()));
-            connect(actionAutoZoom,SIGNAL(triggered()), scene, SLOT(autoZoom()));
-            //ui->actionSelection->setChecked(true);*/
-       //}
+        for (int i=0; i<projectStore->projectSheets->size();i++)
+        {
+          ui->tabWidget_2->addTab((*(projectStore->projectSheets))[i]->graphicSheet->frame,(*(projectStore->projectSheets))[i]->sheetname);
+          projectSheetMap.insert(ui->tabWidget_2->count()-1,projectStore);
+          //ui->tabWidget_2->addTab(frame2,"Tables 1");
+          //projectSheetMap.insert(ui->tabWidget_2->count()-1,projectStore);
+        }
     }
 }
 

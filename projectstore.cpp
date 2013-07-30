@@ -170,7 +170,7 @@ bool ProjectStore::startElement(const QString & namespaceURI, const QString & lo
               if (atts.localName(index)=="datasource")     datasource=atts.value(index);
         }
 
-        projectSheets->append(new ProjectSheet(sheetName,linkTableName,mapTableName,datasource));
+        projectSheets->append(new ProjectSheet(sheetName,linkTableName,mapTableName,datasource,this));
     }
 
 
