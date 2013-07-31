@@ -49,7 +49,7 @@ void GVGraph::layout(QString layoutAlgo)
 
   //qDebug()<< agget(graph, "dpi");
 
-   //gvLayout (gvc, graph, "dot");
+ //gvLayout (gvc, graph, "dot");
  // gvLayout (gvc, graph, "neato");
   gvLayout (gvc, graph, layoutAlgo.toStdString().c_str());
 

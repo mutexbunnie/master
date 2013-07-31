@@ -18,7 +18,7 @@
 	</projectsheets>
 	
 	<autolinks>
-		<autolink name="link1"  entitytype1="Host" entitytype2="Host" datasource="dbtrace" query="select traceroute1.ip as UID1,traceroute2.ip as UID2 from traceroute as traceroute1 join traceroute as traceroute2 on traceroute1.trace=traceroute2.trace and traceroute1.hop+1=traceroute2.hop"  > </autolink>
+		<autolink name="link1"  entitytype1="Host" entitytype2="Host" datasource="dbtrace" query="select distinctrow traceroute1.ip as UID1,traceroute2.ip as UID2 from traceroute as traceroute1 join traceroute as traceroute2 on traceroute1.trace=traceroute2.trace and traceroute1.hop+1=traceroute2.hop "  > </autolink>
 	</autolinks>
 
 </project> 

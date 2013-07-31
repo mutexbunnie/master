@@ -7,13 +7,26 @@
 #include <QAction>
 #include <QVBoxLayout>
 #include <QApplication>
+#include <QObject>
 
 class ProjectSheet;
 
-class GraphicSheet
+class GraphicSheet: public QObject
 {
+    Q_OBJECT
+
+public slots:
+  void autoLink();
+
+  void dotLayout();
+  void neatoLayout();
+  void fdpLayout();
+  void sfdpLayout();
+  void elasticLayout();
+
 
 public:
+
     GraphicSheet(ProjectSheet* projectSheet);
     GraphicsView* graphicsView;
     GraphicsScene* scene;
@@ -22,7 +35,13 @@ public:
     QToolBar* toolbar;
     QAction *actionLink;
     QAction *actionSelection;
-    QAction *actionAutoLayout;
+
+    QAction *actionDotLayout;
+    QAction *actionNeatoLayout;
+    QAction *actionfdpLayout;
+    QAction *actionsfdpLayout;
+    QAction *actionelasticLayout;
+
     QAction *actionSave;
     QAction *actionAutoLink;
     QAction *actionRemove;
@@ -30,7 +49,6 @@ public:
     QFrame* frame2;
     QVBoxLayout* layout2;
     ProjectSheet* projectSheet;
-
 };
 
 #endif // GRAPHICSHEET_H

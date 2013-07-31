@@ -11,6 +11,7 @@
 #include <QSqlRecord>
 #include <QSqlField>
 #include "GVGraph.h"
+#include "graphicsview.h"
 
 GraphicsScene::GraphicsScene(QObject *parent) :QGraphicsScene(parent)
 {
@@ -77,7 +78,7 @@ void GraphicsScene::autoZoom()
 
     //qDebug()<<xmin<<xmin<<xmax<<ymax;
     this->views().at(0)->fitInView(xmin,ymin,xmax-xmin,ymax-ymin,Qt::KeepAspectRatio);
-    this->views().at(0)->centerOn(xmin+((xmax-xmin)/2),ymin+((ymax-ymin)/2));
+    ((GraphicsView*)(this->views().at(0)))->setCenter(QPointF(xmin+((xmax-xmin)/2),ymin+((ymax-ymin)/2)));
     qDebug()<<(xmin+((xmax-xmin)/2))<<ymin+(((ymax-ymin)/2));
 }
 
@@ -196,7 +197,7 @@ void GraphicsScene::addEntityIcon(QGraphicsItem *parent, QGraphicsScene* scene, 
 
 }
 
-void GraphicsScene::layoutItems()
+void GraphicsScene::layoutItems(QString layout)
 {
 
     for( int i=0; i<entityIcons->size(); i++)
@@ -215,7 +216,7 @@ void GraphicsScene::layoutItems()
         }
     }
     //gvgraph->layout("dot");
-    gvgraph->layout("sfdp");
+    gvgraph->layout(layout);
     //failure to create cairo surface: out of memory
     autoZoom();
 
@@ -359,12 +360,12 @@ void GraphicsScene::addModel(QAbstractItemModel *model,EntityType*  tmpEntity)
 
 
 
-void GraphicsScene::setAutoLayout(bool autoLayout)
+void GraphicsScene::setAutoLayout(QString layout)
 {
   //  if (autoLayout) timer->start(100);
    // else      timer->stop();
 
-   layoutItems();
+   layoutItems(layout);
 
 }
 

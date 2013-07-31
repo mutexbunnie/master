@@ -36,10 +36,10 @@ public slots:
     void createEdge   ( EntityIcon* source, EntityIcon* dest);
     void storeEdge    ( EntityIcon* source, EntityIcon* dest);
     void createEdge( QString src_entitytype,QString src_uid,QString dest_entitytype,QString dest_uid );
-    void layoutItems();
+    void layoutItems(QString layout);
     void addModel(QAbstractItemModel *model,EntityType*  entityType);
 
-    void setAutoLayout(bool autoLayout);
+    void setAutoLayout(QString layout);
     void setLinkMode(bool linkEnabled);
 
     void addSheetLink(QSqlTableModel* projectLink);

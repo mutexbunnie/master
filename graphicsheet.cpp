@@ -4,7 +4,7 @@
 #include <QObject>
 GraphicSheet::GraphicSheet(ProjectSheet *projectSheet)
 {
-                //this->projectSheet=projectSheet;
+                this->projectSheet=projectSheet;
                 frame = new QFrame();
                 layout = new QVBoxLayout();
                 frame->setLayout(layout);
@@ -22,12 +22,54 @@ GraphicSheet::GraphicSheet(ProjectSheet *projectSheet)
                 QIcon icon1;
                 icon1.addFile(QString::fromUtf8(":/icons/insert-link-2.png"), QSize(), QIcon::Normal, QIcon::Off);
                 actionLink->setIcon(icon1);
-                actionAutoLayout = new QAction(frame);
-                actionAutoLayout->setObjectName(QString::fromUtf8("actionAutoLayout"));
-                actionAutoLayout->setCheckable(true);
+
+                actionDotLayout = new QAction(frame);
+                actionDotLayout->setObjectName(QString::fromUtf8("actionDotLayout"));
+                //actionDotLayout->setCheckable(true);
                 QIcon icon2;
                 icon2.addFile(QString::fromUtf8(":/icons/osa_lifecycle.png"), QSize(), QIcon::Normal, QIcon::Off);
-                actionAutoLayout->setIcon(icon2);
+                actionDotLayout->setIcon(icon2);
+                actionDotLayout->setText(QApplication::translate("MainForm", "DotLayout", 0, QApplication::UnicodeUTF8));
+                QObject::connect(actionDotLayout, SIGNAL(triggered()), this, SLOT(dotLayout()));
+
+
+                actionNeatoLayout = new QAction(frame);
+                actionNeatoLayout->setObjectName(QString::fromUtf8("actionNeatoLayout"));
+              //  actionNeatoLayout->setCheckable(true);
+                QIcon icon7;
+                icon7.addFile(QString::fromUtf8(":/icons/osa_lifecycle.png"), QSize(), QIcon::Normal, QIcon::Off);
+                actionNeatoLayout->setIcon(icon2);
+                actionNeatoLayout->setText(QApplication::translate("MainForm", "NeatoLayout", 0, QApplication::UnicodeUTF8));
+                QObject::connect(actionNeatoLayout, SIGNAL(triggered()), this, SLOT(neatoLayout()));
+
+                actionfdpLayout = new QAction(frame);
+                actionfdpLayout->setObjectName(QString::fromUtf8("actionfdpLayout"));
+               // actionfdpLayout->setCheckable(true);
+                QIcon icon8;
+                icon8.addFile(QString::fromUtf8(":/icons/osa_lifecycle.png"), QSize(), QIcon::Normal, QIcon::Off);
+                actionfdpLayout->setIcon(icon2);
+                actionfdpLayout->setText(QApplication::translate("MainForm", "FDPLayout", 0, QApplication::UnicodeUTF8));
+                QObject::connect(actionfdpLayout, SIGNAL(triggered()), this, SLOT(fdpLayout()));
+
+
+                actionsfdpLayout = new QAction(frame);
+                actionsfdpLayout->setObjectName(QString::fromUtf8("actionsfdpLayout"));
+                //actionsfdpLayout->setCheckable(true);
+                QIcon icon9;
+                icon9.addFile(QString::fromUtf8(":/icons/osa_lifecycle.png"), QSize(), QIcon::Normal, QIcon::Off);
+                actionsfdpLayout->setIcon(icon2);
+                actionsfdpLayout->setText(QApplication::translate("MainForm", "SFDPLayout", 0, QApplication::UnicodeUTF8));
+                QObject::connect(actionsfdpLayout, SIGNAL(triggered()), this, SLOT(sfdpLayout()));
+
+                actionelasticLayout = new QAction(frame);
+                actionelasticLayout->setObjectName(QString::fromUtf8("actionelasticLayout"));
+                //actionelasticLayout->setCheckable(true);
+                QIcon icon10;
+                icon10.addFile(QString::fromUtf8(":/icons/osa_lifecycle.png"), QSize(), QIcon::Normal, QIcon::Off);
+                actionelasticLayout->setIcon(icon2);
+                actionelasticLayout->setText(QApplication::translate("MainForm", "ElasticLayout", 0, QApplication::UnicodeUTF8));
+                QObject::connect(actionelasticLayout, SIGNAL(triggered()), this, SLOT(elasticLayout()));
+
                 actionSave = new QAction(frame);
                 actionSave->setObjectName(QString::fromUtf8("actionSave"));
                 QIcon icon3;
@@ -51,7 +93,7 @@ GraphicSheet::GraphicSheet(ProjectSheet *projectSheet)
 
                 actionSelection->setText(QApplication::translate("MainForm", "Selection", 0, QApplication::UnicodeUTF8));
                 actionLink->setText(QApplication::translate("MainForm", "Link", 0, QApplication::UnicodeUTF8));
-                actionAutoLayout->setText(QApplication::translate("MainForm", "AutoLayout", 0, QApplication::UnicodeUTF8));
+
                 actionSave->setText(QApplication::translate("MainForm", "Save", 0, QApplication::UnicodeUTF8));
                 actionAutoLink->setText(QApplication::translate("MainForm", "AutoLink", 0, QApplication::UnicodeUTF8));
                 actionRemove->setText(QApplication::translate("MainForm", "Remove", 0, QApplication::UnicodeUTF8));
@@ -60,11 +102,17 @@ GraphicSheet::GraphicSheet(ProjectSheet *projectSheet)
                 toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
                 toolbar->addAction(actionSelection);
                 toolbar->addAction(actionLink);
-                toolbar->addAction(actionAutoLayout);
+
                 toolbar->addAction(actionSave);
                 toolbar->addAction(actionAutoLink);
                 toolbar->addAction(actionRemove);
                 toolbar->addAction(actionAutoZoom);
+
+                toolbar->addAction(actionDotLayout);
+                toolbar->addAction(actionNeatoLayout);
+                toolbar->addAction(actionfdpLayout);
+                toolbar->addAction(actionsfdpLayout);
+                toolbar->addAction(actionelasticLayout);
 
 
                 toolbar->setMovable(true);
@@ -74,6 +122,8 @@ GraphicSheet::GraphicSheet(ProjectSheet *projectSheet)
                 scene= new  GraphicsScene(0);
                scene->addSheetMap(projectSheet->projectSheet);
                 scene->addSheetLink(projectSheet->projectLink);
+
+
 
                 ProjectStore * projectStore=projectSheet->projectStore;
 
@@ -104,11 +154,11 @@ GraphicSheet::GraphicSheet(ProjectSheet *projectSheet)
 
                 QObject::connect(actionSelection, SIGNAL(toggled(bool)), graphicsView, SLOT(setSelectMode(bool)));
                 QObject::connect(actionLink, SIGNAL(toggled(bool)), scene, SLOT(setLinkMode(bool)));
-                QObject::connect(actionAutoLayout, SIGNAL(toggled(bool)), scene, SLOT(setAutoLayout(bool)));
+
 
                 QObject::connect(actionRemove,SIGNAL(triggered()), scene, SLOT(removeSelected()));
                 QObject::connect(actionAutoZoom,SIGNAL(triggered()), scene, SLOT(autoZoom()));
-                //QObject::connect(actionAutoLink,SIGNAL(triggered()), scene, SLOT((scene->)));
+                QObject::connect(actionAutoLink,SIGNAL(triggered()), this, SLOT(autoLink()));
 
 
               /* QSpacerItem* verticalSpacer1 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
@@ -122,3 +172,51 @@ GraphicSheet::GraphicSheet(ProjectSheet *projectSheet)
                 // this->entityTypeButtons = new QVector<EntityTypeButton*>();
                 //ui->entityBoxLayout_2->setAlignment(Qt::AlignTop);
 }
+
+
+void GraphicSheet::dotLayout()
+{
+
+    scene->setAutoLayout("dot");
+
+}
+
+void GraphicSheet::neatoLayout()
+{
+    scene->setAutoLayout("neato");
+}
+
+void GraphicSheet::fdpLayout()
+{
+    scene->setAutoLayout("fdp");
+}
+
+void GraphicSheet::sfdpLayout()
+{
+    scene->setAutoLayout("sfdp");
+}
+
+void GraphicSheet::elasticLayout()
+{
+
+}
+
+void GraphicSheet::autoLink()
+{
+
+    if (projectSheet->projectStore)
+    {
+
+
+       for(int i=0; i< projectSheet->projectStore->autoLinks->size();i++)
+        {
+             scene->addJoin(projectSheet->projectStore->autoLinks->at(i)->entityType1,
+                            projectSheet->projectStore->autoLinks->at(i)->entityType2,
+                            projectSheet->projectStore->autoLinks->at(i)->getModel());
+        }
+        scene->hideOrphan();
+    }
+   // scene->hideOrphan();
+}
+
+
