@@ -33,6 +33,7 @@ public:
     QFrame* frame;
     QVBoxLayout* layout;
     QToolBar* toolbar;
+    QToolBar* toolbar2;
     QAction *actionLink;
     QAction *actionSelection;
 
@@ -42,13 +43,15 @@ public:
     QAction *actionsfdpLayout;
     QAction *actionelasticLayout;
 
-    QAction *actionSave;
+  //  QAction *actionSave;
     QAction *actionAutoLink;
     QAction *actionRemove;
     QAction *actionAutoZoom;
     QFrame* frame2;
     QVBoxLayout* layout2;
     ProjectSheet* projectSheet;
+
+    void addEntityToolButtons(QToolBar* ui_toolbar);
 };
 
 #endif // GRAPHICSHEET_H

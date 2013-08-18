@@ -8,7 +8,11 @@ GraphicSheet::GraphicSheet(ProjectSheet *projectSheet)
                 frame = new QFrame();
                 layout = new QVBoxLayout();
                 frame->setLayout(layout);
+
                 toolbar = new  QToolBar(frame);
+
+//                toolbar2= new  QToolBar(frame);
+
 
                 actionSelection = new QAction(frame);
                 actionSelection->setObjectName(QString::fromUtf8("actionSelection"));
@@ -70,11 +74,12 @@ GraphicSheet::GraphicSheet(ProjectSheet *projectSheet)
                 actionelasticLayout->setText(QApplication::translate("MainForm", "ElasticLayout", 0, QApplication::UnicodeUTF8));
                 QObject::connect(actionelasticLayout, SIGNAL(triggered()), this, SLOT(elasticLayout()));
 
-                actionSave = new QAction(frame);
+               /* actionSave = new QAction(frame);
                 actionSave->setObjectName(QString::fromUtf8("actionSave"));
                 QIcon icon3;
                 icon3.addFile(QString::fromUtf8(":/icons/document-save-as-4.png"), QSize(), QIcon::Normal, QIcon::Off);
-                actionSave->setIcon(icon3);
+                actionSave->setIcon(icon3);*/
+
                 actionAutoLink = new QAction(frame);
                 actionAutoLink->setObjectName(QString::fromUtf8("actionAutoLink"));
                 QIcon icon4;
@@ -94,7 +99,7 @@ GraphicSheet::GraphicSheet(ProjectSheet *projectSheet)
                 actionSelection->setText(QApplication::translate("MainForm", "Selection", 0, QApplication::UnicodeUTF8));
                 actionLink->setText(QApplication::translate("MainForm", "Link", 0, QApplication::UnicodeUTF8));
 
-                actionSave->setText(QApplication::translate("MainForm", "Save", 0, QApplication::UnicodeUTF8));
+                //actionSave->setText(QApplication::translate("MainForm", "Save", 0, QApplication::UnicodeUTF8));
                 actionAutoLink->setText(QApplication::translate("MainForm", "AutoLink", 0, QApplication::UnicodeUTF8));
                 actionRemove->setText(QApplication::translate("MainForm", "Remove", 0, QApplication::UnicodeUTF8));
                 actionAutoZoom->setText(QApplication::translate("MainForm", "AutoZoom", 0, QApplication::UnicodeUTF8));
@@ -103,7 +108,7 @@ GraphicSheet::GraphicSheet(ProjectSheet *projectSheet)
                 toolbar->addAction(actionSelection);
                 toolbar->addAction(actionLink);
 
-                toolbar->addAction(actionSave);
+               // toolbar->addAction(actionSave);
                 toolbar->addAction(actionAutoLink);
                 toolbar->addAction(actionRemove);
                 toolbar->addAction(actionAutoZoom);
@@ -129,11 +134,9 @@ GraphicSheet::GraphicSheet(ProjectSheet *projectSheet)
 
                 for (int i=0;i<projectStore->entityTypes->size() ;i++)
                 {
-                  QAction* tmp_Action =new QAction(frame);
-                  tmp_Action->setCheckable(true);
-                  tmp_Action->setText(((*(projectStore->entityTypes))[i])->name);
-                  tmp_Action->setIcon(((*(projectStore->entityTypes))[i])->normal);
-                  toolbar->addAction(tmp_Action);
+
+
+
 
                  // EntityTypeButton* tmp_entityButton =new EntityTypeButton(ui->entityBoxContent_2,(*(projectStore->entityTypes))[i]);
                   //ui->entityBoxLayout_2->addWidget(tmp_entityButton);
@@ -173,6 +176,11 @@ GraphicSheet::GraphicSheet(ProjectSheet *projectSheet)
                 //ui->entityBoxLayout_2->setAlignment(Qt::AlignTop);
 }
 
+void GraphicSheet::addEntityToolButtons(QToolBar* ui_toolbar)
+{
+
+}
+
 
 void GraphicSheet::dotLayout()
 {
@@ -198,7 +206,7 @@ void GraphicSheet::sfdpLayout()
 
 void GraphicSheet::elasticLayout()
 {
-
+  scene->setAutoLayout("elastic");
 }
 
 void GraphicSheet::autoLink()

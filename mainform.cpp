@@ -61,15 +61,27 @@ void MainForm::on_actionOpen_Project_triggered()
     if (filepath !="")
     {
         ProjectStore* projectStore= new ProjectStore();
-        projectStore->loadProject(filepath);
+         projectStore->loadProject(filepath);
         projectStores->append(projectStore);
 
-        for (int i=0; i<projectStore->projectSheets->size();i++)
+       for (int i=0; i<projectStore->projectSheets->size();i++)
         {
           ui->tabWidget_2->addTab((*(projectStore->projectSheets))[i]->graphicSheet->frame,(*(projectStore->projectSheets))[i]->sheetname);
+
+          //(*(projectStore->projectSheets))[i]->graphicSheet->addEntityToolButtons(ui->toolBar_2);
           projectSheetMap.insert(ui->tabWidget_2->count()-1,projectStore);
           //ui->tabWidget_2->addTab(frame2,"Tables 1");
           //projectSheetMap.insert(ui->tabWidget_2->count()-1,projectStore);
+        }
+
+       for (int i=0;i<projectStore->entityTypes->size() ;i++)
+        {
+
+            QAction* tmp_Action =new QAction(this);
+            tmp_Action->setCheckable(true);
+            tmp_Action->setText(((*(projectStore->entityTypes))[i])->name);
+            tmp_Action->setIcon(((*(projectStore->entityTypes))[i])->normal);
+            ui->toolBar_2->addAction(tmp_Action);
         }
     }
 }

@@ -86,8 +86,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>1172</width>
-             <height>547</height>
+             <width>1166</width>
+             <height>546</height>
             </rect>
            </property>
            <property name="documentMode">
@@ -127,7 +127,7 @@
      <x>0</x>
      <y>0</y>
      <width>1194</width>
-     <height>19</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -166,6 +166,7 @@
    </attribute>
    <addaction name="actionNew_Project"/>
    <addaction name="actionOpen_Project"/>
+   <addaction name="actionSave"/>
   </widget>
   <widget class="QToolBar" name="toolBar_3">
    <property name="windowTitle">
@@ -196,6 +197,29 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionTerminal"/>
+  </widget>
+  <widget class="QToolBar" name="toolBar_2">
+   <property name="windowTitle">
+    <string>toolBar_2</string>
+   </property>
+   <property name="movable">
+    <bool>false</bool>
+   </property>
+   <property name="allowedAreas">
+    <set>Qt::LeftToolBarArea</set>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonTextUnderIcon</enum>
+   </property>
+   <property name="floatable">
+    <bool>false</bool>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>LeftToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
   </widget>
   <action name="actionNew_Project">
    <property name="icon">
@@ -233,6 +257,15 @@
    </property>
    <property name="text">
     <string>Terminal</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/document-save-as-4.png</normaloff>:/icons/document-save-as-4.png</iconset>
+   </property>
+   <property name="text">
+    <string>Save Project</string>
    </property>
   </action>
  </widget>

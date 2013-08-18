@@ -53,6 +53,9 @@ public slots:
 
     void removeSelected();
 
+
+
+
 private :
        QVector<QAbstractItemModel*>* models;
        QVector<EntityIcon*>* entityIcons;
@@ -60,6 +63,7 @@ private :
        QTimer* timer;
        bool linkMode;
        GVGraph*  gvgraph;
+
 
        QMap<QString, QMap<QString,QPointF>*   >* sheetMap;
        QSqlTableModel* projectLink;

@@ -25,18 +25,18 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 {
 
 
-    QLineF debugline(destIcon->pos(), sourceIcon->pos());
+   // QLineF debugline(destIcon->pos(), sourceIcon->pos());
     //qDebug() << debugline.length();
 
-     float iconsize=150;
 
-     QPointF startPoint(sourceIcon->pos().x()+iconsize/2 ,sourceIcon->pos().y()+iconsize/2);
-     QPointF endPoint  (destIcon->pos().x()+iconsize/2, destIcon->pos().y()+iconsize/2);
+
+     QPointF startPoint(sourceIcon->pos().x()+EntityIcon::totalWidth/2 ,sourceIcon->pos().y()+EntityIcon::totalHeight/2);
+     QPointF endPoint  (destIcon->pos().x()+EntityIcon::totalWidth/2, destIcon->pos().y()+EntityIcon::totalHeight/2);
 
      QLineF line(startPoint,endPoint);
 
-     QPointF startPoint2(startPoint.x()+(line.unitVector().dx()*iconsize/2), startPoint.y()+(line.unitVector().dy()*iconsize/2));
-     QPointF endPoint2  (endPoint.x()-(line.unitVector().dx()*iconsize/2), endPoint.y()-(line.unitVector().dy()*iconsize/2));
+     QPointF startPoint2(startPoint.x()+(line.unitVector().dx()*EntityIcon::totalWidth/2), startPoint.y()+(line.unitVector().dy()*EntityIcon::totalHeight/2));
+     QPointF endPoint2  (endPoint.x()-(line.unitVector().dx()*EntityIcon::totalWidth/2), endPoint.y()-(line.unitVector().dy()*EntityIcon::totalHeight/2));
 
      QLineF line2(startPoint2,endPoint2);
 

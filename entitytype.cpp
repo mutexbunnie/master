@@ -15,8 +15,10 @@ EntityType::EntityType()
 void EntityType::addIcon(QString iconPath)
 {
 
+
+
     this->iconPath=iconPath;
-    normal= QPixmap(QSize(150,150));
+    normal= QPixmap(QSize(EntityIcon::totalWidth,EntityIcon::totalHeight));
 
     normal.fill(QColor(255, 255, 255,0));
 
@@ -28,13 +30,13 @@ void EntityType::addIcon(QString iconPath)
     QPen pen(brush,4);
     painterNormal.setPen(pen);
     //painterNormal.drawRect(normal.rect());
-    painterNormal.drawPixmap(11,0,128,128, QPixmap(iconPath));
+    painterNormal.drawPixmap(EntityIcon::horizMargin,EntityIcon::verticalMargin,EntityIcon::iconSize,EntityIcon::iconSize, QPixmap(iconPath));
     painterNormal.end();
 
     //normal=normal.scaled(50,50, Qt::KeepAspectRatio);
 
 
-    selected= QPixmap(QSize(150,150));
+    selected= QPixmap(QSize(EntityIcon::totalWidth,EntityIcon::totalHeight));
     selected.fill(QColor(0, 0, 255, 50));
     QPainter painter(&selected);
 
@@ -43,7 +45,7 @@ void EntityType::addIcon(QString iconPath)
 
     painter.setPen(pen);
     painter.drawRect(selected.rect());
-    painter.drawPixmap(11,0,128,128, QPixmap(iconPath));
+    painter.drawPixmap(EntityIcon::horizMargin,EntityIcon::verticalMargin,EntityIcon::iconSize,EntityIcon::iconSize, QPixmap(iconPath));
     painter.end();
 }
 

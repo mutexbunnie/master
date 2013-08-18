@@ -27,7 +27,7 @@ GraphicsScene::GraphicsScene(QObject *parent) :QGraphicsScene(parent)
      //connect (timer, SIGNAL(timeout()), this, SLOT(layoutItems()));
      entityLookup =   new  QMap <QString, QMap<QString, EntityIcon*>* >();
      edges=new QVector<Edge*>();
-     setSceneRect(0,0,100000,100000);
+     setSceneRect(0,0,1000000,1000000);
      gvgraph = new GVGraph();
 
 }
@@ -66,20 +66,36 @@ void GraphicsScene::autoZoom()
     qreal  xmax=((*entityIcons)[0])->boundingRect().width()+((*entityIcons)[0])->x();
     qreal  ymax=((*entityIcons)[0])->boundingRect().height()+((*entityIcons)[0])->y();
 
+    EntityIcon* smallestX=(*entityIcons)[0];
+    EntityIcon* smallestY=(*entityIcons)[0];
+
     for( int i =1; i<entityIcons->size() ;i++)
     {
 
         EntityIcon * tmpIcon =(*entityIcons)[i];
         xmin= qMin(tmpIcon->pos().x(), xmin);
-        ymin= qMin(  tmpIcon->pos().y(), ymin);
+        ymin= qMin( tmpIcon->pos().y(), ymin);
         xmax= qMax( tmpIcon->boundingRect().width()+tmpIcon->x(), xmax);
         ymax= qMax( tmpIcon->boundingRect().height()+tmpIcon->y(), ymax);
+
+        if (xmin==tmpIcon->pos().x() ) smallestX=tmpIcon;
+        if (ymin==tmpIcon->pos().y()) smallestY=tmpIcon;
     }
 
-    //qDebug()<<xmin<<xmin<<xmax<<ymax;
-    this->views().at(0)->fitInView(xmin,ymin,xmax-xmin,ymax-ymin,Qt::KeepAspectRatio);
-    ((GraphicsView*)(this->views().at(0)))->setCenter(QPointF(xmin+((xmax-xmin)/2),ymin+((ymax-ymin)/2)));
-    qDebug()<<(xmin+((xmax-xmin)/2))<<ymin+(((ymax-ymin)/2));
+    qDebug()<<xmin<<xmax<<ymin<<ymax;
+    qDebug()<<this->sceneRect();
+    //qDebug()<<"Smalest X"<<smallestX->pos();
+   // qDebug()<<"Smalest Y"<<smallestY->pos();
+   // qDebug()<<QPointF(xmin+((xmax-xmin)/2),ymin+((ymax-ymin)/2));
+
+
+   this->views().at(0)->fitInView(xmin,ymin,xmax-xmin,ymax-ymin,Qt::KeepAspectRatio);
+   ((GraphicsView*)(this->views().at(0)))->setCenter(QPointF(xmin+((xmax-xmin)/2),ymin+((ymax-ymin)/2)));
+   this->addRect(QRectF(xmin,ymin,xmax-xmin,ymax-ymin));
+
+
+
+
 }
 
 void GraphicsScene::setFontSize(int fontsize)
@@ -199,91 +215,98 @@ void GraphicsScene::addEntityIcon(QGraphicsItem *parent, QGraphicsScene* scene, 
 
 void GraphicsScene::layoutItems(QString layout)
 {
-
-    for( int i=0; i<entityIcons->size(); i++)
+    if (layout!="elastic")
     {
-        if  (!((*entityIcons)[i])->isVisible()) continue;
-        gvgraph->addNode(((*entityIcons)[i]));
+        gvgraph->openGraph();
+
+        for( int i=0; i<entityIcons->size(); i++)
+        {
+            if  (!((*entityIcons)[i])->isVisible()) continue;
+            gvgraph->addNode(((*entityIcons)[i]));
+        }
+
+        for( int i=0; i<entityIcons->size(); i++)
+        {
+            for (int k=0; k< ((*entityIcons)[i])->connectionList->size();k++)
+            {
+                 EntityIcon* tmpIcon=(*((*entityIcons)[i])->connectionList)[k];
+                 if  (!tmpIcon->isVisible()) continue;
+                 gvgraph->addEdge(((*entityIcons)[i]),tmpIcon);
+            }
+        }
+        //gvgraph->layout("dot");
+
+        gvgraph->layout(layout);
+        gvgraph->closeGraph();
+        //failure to create cairo surface: out of memory
+        autoZoom();
+    }
+    else
+    {
+        for (int w=0; w<100; w++)
+        {
+            for( int i=0; i<entityIcons->size(); i++)
+            {
+                float forceX=0;
+                float forceY=0;
+                //push -> sqrt(push*pull)=min distance between 2 objects.
+                float pull=2;
+                float push=(((150)*(150))/pull);
+                if  (!((*entityIcons)[i])->isVisible()) continue;
+
+                for (int k=0; k<entityIcons->size(); k++)
+                {
+                   if (k==i) continue;
+                   if  (!((*entityIcons)[k])->isVisible()) continue;
+                                      //collect force
+                   qreal distanceX=  ((*entityIcons)[i])->x()-((*entityIcons)[k])->x();
+                   qreal distanceY=  ((*entityIcons)[i])->y()-((*entityIcons)[k])->y();
+                   float distance=2*((distanceX*distanceX)+(distanceY*distanceY));
+                   if (distance>0)
+                   {
+                      forceX+= ( push*distanceX)/distance;
+                      forceY+=  (push*distanceY)/distance;
+                   }
+                }
+
+                double activeConnections =0;
+                for (int k=0; k< ((*entityIcons)[i])->connectionList->size();k++)
+                {
+                    EntityIcon* tmpIcon=(*((*entityIcons)[i])->connectionList)[k];
+                    if  (!tmpIcon->isVisible()) continue;
+                    activeConnections+=1;
+
+                }
+
+                double  weight = ( activeConnections+ 1) * pull ;
+                //qDebug()<<weight;
+                for (int k=0; k< ((*entityIcons)[i])->connectionList->size();k++)
+                {
+
+                    EntityIcon* tmpIcon=(*((*entityIcons)[i])->connectionList)[k];
+                    if  (!tmpIcon->isVisible()) continue;
+
+                    float distanceX=  ((*entityIcons)[i])->x()-tmpIcon->x();
+                    float distanceY=  ((*entityIcons)[i])->y()-tmpIcon->y();
+                    forceX-= distanceX/weight;
+                    forceY-= distanceY/weight;
+                }
+
+                if (qAbs(forceX) < 5 && qAbs(forceY) < 5) forceX = forceY = 0;
+                (*entityIcons)[i]->newPos = (*entityIcons)[i]->pos() + QPointF(forceX, forceY);
+                //(*entityIcons)[i]->moveBy(forceX,forceY);
+               // if ((forceX!=0) && (forceY!=0)) qDebug()<<forceX<<":"<<forceY <<":"<< ((*entityIcons)[i])->getUidValue();
+            }
+
+
+            for( int i=0; i<entityIcons->size(); i++) (*entityIcons)[i]->advance();
+        }
+        autoZoom();
     }
 
-    for( int i=0; i<entityIcons->size(); i++)
-    {
-        for (int k=0; k< ((*entityIcons)[i])->connectionList->size();k++)
-        {
-             EntityIcon* tmpIcon=(*((*entityIcons)[i])->connectionList)[k];
-             if  (!tmpIcon->isVisible()) continue;
-             gvgraph->addEdge(((*entityIcons)[i]),tmpIcon);
-        }
-    }
-    //gvgraph->layout("dot");
-    gvgraph->layout(layout);
-    //failure to create cairo surface: out of memory
-    autoZoom();
-
-    //gv
-
-
-/*
-
-    for( int i=0; i<entityIcons->size(); i++)
-    {
-        float forceX=0;
-        float forceY=0;
-        //push -> sqrt(push*pull)=min distance between 2 objects.
-        float pull=2;
-        float push=(((150)*(150))/pull);
-        if  (!((*entityIcons)[i])->isVisible()) continue;
-
-        for (int k=0; k<entityIcons->size(); k++)
-        {
-           if (k==i) continue;
-           if  (!((*entityIcons)[k])->isVisible()) continue;
-                              //collect force
-           qreal distanceX=  ((*entityIcons)[i])->x()-((*entityIcons)[k])->x();
-           qreal distanceY=  ((*entityIcons)[i])->y()-((*entityIcons)[k])->y();
-           float distance=2*((distanceX*distanceX)+(distanceY*distanceY));
-           if (distance>0)
-           {
-              forceX+= ( push*distanceX)/distance;
-              forceY+=  (push*distanceY)/distance;
-           }
-        }
-
-        double activeConnections =0;
-        for (int k=0; k< ((*entityIcons)[i])->connectionList->size();k++)
-        {
-            EntityIcon* tmpIcon=(*((*entityIcons)[i])->connectionList)[k];
-            if  (!tmpIcon->isVisible()) continue;
-            activeConnections+=1;
-
-        }
-
-        double  weight = ( activeConnections+ 1) * pull ;
-        //qDebug()<<weight;
-        for (int k=0; k< ((*entityIcons)[i])->connectionList->size();k++)
-        {
-
-            EntityIcon* tmpIcon=(*((*entityIcons)[i])->connectionList)[k];
-            if  (!tmpIcon->isVisible()) continue;
-
-            float distanceX=  ((*entityIcons)[i])->x()-tmpIcon->x();
-            float distanceY=  ((*entityIcons)[i])->y()-tmpIcon->y();
-            forceX-= distanceX/weight;
-            forceY-= distanceY/weight;
-        }
-
-        if (qAbs(forceX) < 5 && qAbs(forceY) < 5) forceX = forceY = 0;
-        (*entityIcons)[i]->newPos = (*entityIcons)[i]->pos() + QPointF(forceX, forceY);
-        //(*entityIcons)[i]->moveBy(forceX,forceY);
-       // if ((forceX!=0) && (forceY!=0)) qDebug()<<forceX<<":"<<forceY <<":"<< ((*entityIcons)[i])->getUidValue();
-    }
-
-
-    for( int i=0; i<entityIcons->size(); i++) (*entityIcons)[i]->advance();
-
-    //qDebug()<<"=====Mark======";
-    */
 }
+    //qDebug()<<"=====Mark======";
+
 
    /* QVector< QList<QString>*>* lists= new QVector< QList<QString>* >();
 

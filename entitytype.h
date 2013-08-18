@@ -4,6 +4,7 @@
 #include <QString>
 #include <QPixmap>
 #include "entitysource.h"
+#include "entityicon.h"
 
 class EntityType
 {
@@ -13,6 +14,8 @@ public:
     QString iconPath;
     QPixmap selected;
     QPixmap normal;
+
+
 
     QString name;
     EntitySource* entitySource;

@@ -10,7 +10,7 @@
 EntityIcon::EntityIcon (QGraphicsItem * parent,  QGraphicsScene* scene, QModelIndex  index, EntityType*  entityType , QPointF pos) : QGraphicsItem(parent)
 {
     this->setZValue(-1);
-    this->fontsize=20;
+    this->fontsize=10;
     this->entityType=entityType;
     this->setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
     this->index=index;
@@ -64,15 +64,15 @@ void EntityIcon::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
 
     {
         painter->setBrush(QBrush(QColor(255,0,0,150)));
-        painter->drawEllipse(0,0,150,150);
+        painter->drawEllipse(0,0,96,96);
     }
     else
     {
         //painter->setPen(Qt::NoPen);
 
-        painter->drawPixmap(0,0,150,150,currentPixmap);
+        painter->drawPixmap(0,0,EntityIcon::totalWidth,EntityIcon::totalHeight,currentPixmap);
 
-        QRectF textRect=QRectF(0,128,150,150);
+        QRectF textRect=QRectF(EntityIcon::horizMargin/2,EntityIcon::verticalMargin+EntityIcon::iconSize,EntityIcon::iconSize+EntityIcon::horizMargin,fontsize*2);
         QFont f = painter->font();
         f.setPointSizeF(fontsize);
         painter->setFont(f);
@@ -81,7 +81,7 @@ void EntityIcon::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
         painter->drawText(textRect,Qt::AlignHCenter+Qt::TextWrapAnywhere+Qt::TextDontClip,index.data().toString() );
         else
         {
-          QString text= painter->fontMetrics().elidedText( index.data().toString() ,Qt::ElideRight ,150);
+          QString text= painter->fontMetrics().elidedText( index.data().toString() ,Qt::ElideRight ,textRect.width());
           painter->drawText(textRect,Qt::AlignHCenter+Qt::TextWrapAnywhere,text );
         }
     }
@@ -121,7 +121,7 @@ void EntityIcon::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 QRectF EntityIcon::boundingRect() const
 {
-    return QRectF(QPoint(0,0),QSize(150,150));
+    return QRectF(QPoint(0,0),QSize(EntityIcon::totalWidth,EntityIcon::totalHeight));
 }
 
 void EntityIcon::addConnection(EntityIcon *dest)

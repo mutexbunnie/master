@@ -20,6 +20,9 @@ GVC_t *gvc;
 public:
 GVGraph();
 
+
+void openGraph();
+void closeGraph();
 void layout(QString layoutAlgo);
 Agnode_t* addNode(EntityIcon* node);
 Agedge_t* addEdge(EntityIcon* n1 ,EntityIcon* n2);

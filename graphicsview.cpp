@@ -15,9 +15,9 @@ GraphicsView::GraphicsView(QWidget *parent) :  QGraphicsView(parent)
       setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
       setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
       setMinimumSize(400, 400);
-      scale(0.5,0.5);
+      //scale(0.5,0.5);
 
-      //scale(1.0,1.0);
+      scale(1.0,1.0);
 
 
    connect(this->horizontalScrollBar(), SIGNAL(actionTriggered(int)), this,   SLOT(sliderMoved(int)));

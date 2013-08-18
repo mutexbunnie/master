@@ -10,6 +10,7 @@
 #include "entitytype.h"
 
 class Edge ;
+class EntityType;
 
 
 class EntityIcon : public QGraphicsItem
@@ -30,6 +31,13 @@ public:
     QVector<EntityIcon*>* connectionList;
     EntityType* entityType;
     QPointF newPos;
+
+    static const int  iconSize=64;
+   static const int   horizMargin=40;
+    static const int   verticalMargin=10;
+    static const int   fontSize=12;
+    static const int   totalWidth=horizMargin+iconSize+horizMargin;
+    static const int   totalHeight=verticalMargin+iconSize+fontSize+verticalMargin;
 
 
 signals:
