@@ -57,6 +57,7 @@ MainForm::~MainForm()
 
 void MainForm::on_actionOpen_Project_triggered()
 {
+
     QString filepath=QFileDialog::getOpenFileName(this, "Open Project File","","Files (*.xml)");
     if (filepath !="")
     {
@@ -66,7 +67,7 @@ void MainForm::on_actionOpen_Project_triggered()
 
        for (int i=0; i<projectStore->projectSheets->size();i++)
         {
-          ui->tabWidget_2->addTab((*(projectStore->projectSheets))[i]->graphicSheet->frame,(*(projectStore->projectSheets))[i]->sheetname);
+          ui->tabWidget_2->addTab((*(projectStore->projectSheets))[i]->graphicSheet->mainFrame,(*(projectStore->projectSheets))[i]->sheetname);
 
           //(*(projectStore->projectSheets))[i]->graphicSheet->addEntityToolButtons(ui->toolBar_2);
           projectSheetMap.insert(ui->tabWidget_2->count()-1,projectStore);
@@ -80,7 +81,7 @@ void MainForm::on_actionOpen_Project_triggered()
             QAction* tmp_Action =new QAction(this);
             tmp_Action->setCheckable(true);
             tmp_Action->setText(((*(projectStore->entityTypes))[i])->name);
-            tmp_Action->setIcon(((*(projectStore->entityTypes))[i])->normal);
+            tmp_Action->setIcon(((*(projectStore->entityTypes))[i])->plain);
             ui->toolBar_2->addAction(tmp_Action);
         }
     }

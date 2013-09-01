@@ -1,11 +1,13 @@
 #include "edge.h"
 #include <QDebug>
+#include <QGraphicsView>
 
 
 Edge::Edge(EntityIcon *_sourceIcon, EntityIcon *_destIcon)
 {
     sourceIcon=_sourceIcon;
     destIcon=_destIcon;
+    this->setZValue(-1);
 }
 
 
@@ -44,7 +46,16 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
  /*   if (qFuzzyCompare(line.length(), qreal(0.)))
         return;*/
 
-     painter->setPen(QPen(QColor(127, 127, 127,200), 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+     if (this->scene()->views().at(0)->transform().m11() < 0.2)
+      {
+     painter->setPen(QPen(QColor(127, 127, 127,200), 1/this->scene()->views().at(0)->transform().m11(), Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+      }
+     else
+     {
+         painter->setPen(QPen(QColor(127, 127, 127,200), 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+     }
+
+
      //painter->setPen(QPen(QColor(127, 127, 127,200), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
      painter->drawLine(line2);
 

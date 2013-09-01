@@ -9,7 +9,7 @@
 
 EntityIcon::EntityIcon (QGraphicsItem * parent,  QGraphicsScene* scene, QModelIndex  index, EntityType*  entityType , QPointF pos) : QGraphicsItem(parent)
 {
-    this->setZValue(-1);
+    this->setZValue(1);
     this->fontsize=10;
     this->entityType=entityType;
     this->setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
@@ -61,10 +61,9 @@ void EntityIcon::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
     style->state &= ~( QStyle::State_Selected | QStyle::State_HasFocus );
 
     if (this->scene()->views().at(0)->transform().m11() < 0.2)
-
     {
-        painter->setBrush(QBrush(QColor(255,0,0,150)));
-        painter->drawEllipse(0,0,96,96);
+        painter->setBrush(QBrush(QColor(255,0,0,150+1/this->scene()->views().at(0)->transform().m11())));
+        painter->drawEllipse(EntityIcon::horizMargin,EntityIcon::verticalMargin,EntityIcon::iconSize,EntityIcon::iconSize);
     }
     else
     {

@@ -48,57 +48,42 @@
          <height>16777215</height>
         </size>
        </property>
-       <layout class="QHBoxLayout" name="horizontalLayout">
+       <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
-         <widget class="QScrollArea" name="scrollArea_4">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="mouseTracking">
-           <bool>true</bool>
-          </property>
+         <widget class="QScrollArea" name="scrollArea">
           <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
+           <enum>QFrame::NoFrame</enum>
           </property>
           <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-          <property name="lineWidth">
-           <number>5</number>
-          </property>
-          <property name="verticalScrollBarPolicy">
-           <enum>Qt::ScrollBarAsNeeded</enum>
+           <enum>QFrame::Plain</enum>
           </property>
           <property name="widgetResizable">
            <bool>true</bool>
           </property>
-          <widget class="QTabWidget" name="tabWidget_2">
+          <widget class="QWidget" name="scrollAreaWidgetContents">
            <property name="geometry">
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>1166</width>
-             <height>546</height>
+             <width>1172</width>
+             <height>553</height>
             </rect>
            </property>
-           <property name="documentMode">
-            <bool>true</bool>
-           </property>
-           <property name="tabsClosable">
-            <bool>true</bool>
-           </property>
-           <property name="movable">
-            <bool>false</bool>
-           </property>
+           <layout class="QVBoxLayout" name="verticalLayout">
+            <item>
+             <widget class="QTabWidget" name="tabWidget_2">
+              <property name="tabPosition">
+               <enum>QTabWidget::North</enum>
+              </property>
+              <property name="tabShape">
+               <enum>QTabWidget::Rounded</enum>
+              </property>
+              <property name="currentIndex">
+               <number>-1</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </widget>
          </widget>
         </item>
@@ -127,7 +112,7 @@
      <x>0</x>
      <y>0</y>
      <width>1194</width>
-     <height>20</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -227,7 +212,7 @@
      <normaloff>:/icons/document-new-6.png</normaloff>:/icons/document-new-6.png</iconset>
    </property>
    <property name="text">
-    <string>New Project</string>
+    <string>New</string>
    </property>
   </action>
   <action name="actionNew_Entity_Type">
@@ -241,7 +226,7 @@
      <normaloff>:/icons/document-open-7.png</normaloff>:/icons/document-open-7.png</iconset>
    </property>
    <property name="text">
-    <string>Open Project</string>
+    <string>Open</string>
    </property>
   </action>
   <action name="actionTerminal">
@@ -265,7 +250,103 @@
      <normaloff>:/icons/document-save-as-4.png</normaloff>:/icons/document-save-as-4.png</iconset>
    </property>
    <property name="text">
-    <string>Save Project</string>
+    <string>Save</string>
+   </property>
+  </action>
+  <action name="actionSelection">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/mouse_pointer.png</normaloff>:/icons/mouse_pointer.png</iconset>
+   </property>
+   <property name="text">
+    <string>Selection</string>
+   </property>
+  </action>
+  <action name="actionLink">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/insert-link-2.png</normaloff>:/icons/insert-link-2.png</iconset>
+   </property>
+   <property name="text">
+    <string>Link</string>
+   </property>
+  </action>
+  <action name="actionAutoLink">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/insert-link.png</normaloff>:/icons/insert-link.png</iconset>
+   </property>
+   <property name="text">
+    <string>AutoLink</string>
+   </property>
+  </action>
+  <action name="actionRemove">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/osa_lightning.png</normaloff>:/icons/osa_lightning.png</iconset>
+   </property>
+   <property name="text">
+    <string>Remove</string>
+   </property>
+  </action>
+  <action name="actionAutoZoom">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/star.png</normaloff>:/icons/star.png</iconset>
+   </property>
+   <property name="text">
+    <string>AutoZoom</string>
+   </property>
+  </action>
+  <action name="actionDotLayout">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/dotlayout.png</normaloff>:/icons/dotlayout.png</iconset>
+   </property>
+   <property name="text">
+    <string>DotLayout</string>
+   </property>
+  </action>
+  <action name="actionNeatoLayout">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/osa_lifecycle.png</normaloff>:/icons/osa_lifecycle.png</iconset>
+   </property>
+   <property name="text">
+    <string>NeatoLayout</string>
+   </property>
+  </action>
+  <action name="actionFdpLayout">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/osa_lifecycle.png</normaloff>:/icons/osa_lifecycle.png</iconset>
+   </property>
+   <property name="text">
+    <string>FdpLayout</string>
+   </property>
+  </action>
+  <action name="actionSfdpLayout">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/osa_lifecycle.png</normaloff>:/icons/osa_lifecycle.png</iconset>
+   </property>
+   <property name="text">
+    <string>SfdpLayout</string>
+   </property>
+  </action>
+  <action name="actionElastic">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/osa_lifecycle.png</normaloff>:/icons/osa_lifecycle.png</iconset>
+   </property>
+   <property name="text">
+    <string>ElasticLayout</string>
    </property>
   </action>
  </widget>

@@ -5,9 +5,10 @@
 #include "graphicsview.h"
 #include <QToolBar>
 #include <QAction>
-#include <QVBoxLayout>
+#include <QHBoxLayout>
 #include <QApplication>
 #include <QObject>
+#include <QTabWidget>
 
 class ProjectSheet;
 
@@ -30,10 +31,14 @@ public:
     GraphicSheet(ProjectSheet* projectSheet);
     GraphicsView* graphicsView;
     GraphicsScene* scene;
-    QFrame* frame;
-    QVBoxLayout* layout;
+    QFrame* dataFrame;
+    QFrame* mainFrame;
+    QTabWidget* tableTabs;
+
+    QHBoxLayout* dataFrameLayout;
+    QVBoxLayout* mainFrameLayout;
     QToolBar* toolbar;
-    QToolBar* toolbar2;
+
     QAction *actionLink;
     QAction *actionSelection;
 
@@ -47,11 +52,13 @@ public:
     QAction *actionAutoLink;
     QAction *actionRemove;
     QAction *actionAutoZoom;
-    QFrame* frame2;
-    QVBoxLayout* layout2;
+
+
     ProjectSheet* projectSheet;
 
     void addEntityToolButtons(QToolBar* ui_toolbar);
+   private:
+    void constructToolbar();
 };
 
 #endif // GRAPHICSHEET_H

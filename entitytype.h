@@ -12,6 +12,7 @@ public:
     EntityType();
 
     QString iconPath;
+    QPixmap plain;
     QPixmap selected;
     QPixmap normal;
 

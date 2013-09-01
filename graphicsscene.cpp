@@ -381,8 +381,6 @@ void GraphicsScene::addModel(QAbstractItemModel *model,EntityType*  tmpEntity)
 }
 
 
-
-
 void GraphicsScene::setAutoLayout(QString layout)
 {
   //  if (autoLayout) timer->start(100);

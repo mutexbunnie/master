@@ -19,5 +19,6 @@
         <file>icons/utilities-terminal-6.png</file>
         <file>icons/document-new-6.png</file>
         <file>icons/document-open-7.png</file>
+        <file>icons/dotlayout.png</file>
     </qresource>
 </RCC>

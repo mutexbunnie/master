@@ -14,7 +14,7 @@
 
 
 	<entitysources>
-                <entitysource name="hostSource" entitytype="Host" datasource="dbtest" query='select distinct host from users'  > </entitysource>
+                <entitysource name="hostSource" entitytype="Host" datasource="dbtest" query='select distinct Host,user from users group by host'  > </entitysource>
 		<!--entitysource  name="appsource" entitytype="App" datasource="dbtest" query="select distinct app from app" > </entitysource-->  
 		<entitysource  name="UserSource" entitytype="User" datasource="dbtest" query="select distinct user from users where  users.user like '%\_%'" > </entitysource>  
 		<!--entitysource  name="groupSource" entitytype="Group" datasource="dbtest" query="select distinctrow groupname as UID2 from users join app on concat(app.host,'.mtn.co.za')=users.host join tmpClusterData on tmpClusterData.user=users.user where app like '%' and users.user like '%\_%'"  > </entitysource-->  
