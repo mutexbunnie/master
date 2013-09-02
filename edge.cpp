@@ -1,7 +1,4 @@
 #include "edge.h"
-#include <QDebug>
-#include <QGraphicsView>
-
 
 Edge::Edge(EntityIcon *_sourceIcon, EntityIcon *_destIcon)
 {
@@ -11,27 +8,16 @@ Edge::Edge(EntityIcon *_sourceIcon, EntityIcon *_destIcon)
 }
 
 
-void Edge::adjust()
-{
-}
 
 QRectF Edge::boundingRect() const
 {
     return QRectF(sourceIcon->pos(), QSizeF( destIcon->pos().x() - sourceIcon->pos().x(),
                                              destIcon->pos().y() - sourceIcon->pos().y()))
         .normalized();
-
 }
 
 void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-
-
-   // QLineF debugline(destIcon->pos(), sourceIcon->pos());
-    //qDebug() << debugline.length();
-
-
-
      QPointF startPoint(sourceIcon->pos().x()+EntityIcon::totalWidth/2 ,sourceIcon->pos().y()+EntityIcon::totalHeight/2);
      QPointF endPoint  (destIcon->pos().x()+EntityIcon::totalWidth/2, destIcon->pos().y()+EntityIcon::totalHeight/2);
 
@@ -42,10 +28,7 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 
      QLineF line2(startPoint2,endPoint2);
 
-
- /*   if (qFuzzyCompare(line.length(), qreal(0.)))
-        return;*/
-
+    //TODO:MOVE OUT of here
      if (this->scene()->views().at(0)->transform().m11() < 0.2)
       {
      painter->setPen(QPen(QColor(127, 127, 127,200), 1/this->scene()->views().at(0)->transform().m11(), Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
@@ -53,10 +36,7 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
      else
      {
          painter->setPen(QPen(QColor(127, 127, 127,200), 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-     }
-
-
-     //painter->setPen(QPen(QColor(127, 127, 127,200), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    }
      painter->drawLine(line2);
 
    /* double angle = ::acos(line.dx() / line.length());

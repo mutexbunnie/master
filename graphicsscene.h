@@ -2,13 +2,30 @@
 #define GRAPHICSSCENE_H
 
 #include <QGraphicsScene>
-#include <QAbstractItemModel>
-#include "entityicon.h"
-#include <QSqlTableModel>
 #include <QGraphicsSceneMouseEvent>
+#include <QGraphicsSceneMouseEvent>
+#include <QAbstractItemModel>
 #include <QVector>
 #include <QTimer>
-#include "GVGraph.h"
+#include <QGraphicsItem>
+#include <QGraphicsView>
+
+#include <QSqlTableModel>   //REMOVE
+#include <QSqlTableModel> //REMOVE
+#include <QSqlQuery> //REMOVE
+#include <QSqlRecord> //REMOVE
+#include <QSqlField> //REMOVE
+
+#include <QDebug>
+#include "entityicon.h"
+#include "gvgraph.h"
+#include "edge.h"
+#include "cmath"
+#include "math.h"
+#include "gvgraph.h"
+#include "graphicsview.h"
+
+
 
 class GraphicsScene : public QGraphicsScene
 {
@@ -31,30 +48,28 @@ public slots:
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
     void addEntityIcon(QGraphicsItem * parent  ,QGraphicsScene* scene,  QModelIndex  index, EntityType*  entityType ,QPointF pos);
 
-    void setFontSize(int fontsize);
+
+    void addSheetLink(QSqlTableModel* projectLink);
+    void addModel(QAbstractItemModel *model,EntityType*  entityType);
+    void addJoin(QString entityType1,QString entityType2,QAbstractItemModel *model);
+    void addSheetMap(QMap<QString, QMap<QString,QPointF>*   >* sheet);
+
     void hideOrphan();
     void createEdge   ( EntityIcon* source, EntityIcon* dest);
     void storeEdge    ( EntityIcon* source, EntityIcon* dest);
     void createEdge( QString src_entitytype,QString src_uid,QString dest_entitytype,QString dest_uid );
-    void layoutItems(QString layout);
-    void addModel(QAbstractItemModel *model,EntityType*  entityType);
 
+
+    void layoutItems(QString layout);
     void setAutoLayout(QString layout);
+
     void setLinkMode(bool linkEnabled);
 
-    void addSheetLink(QSqlTableModel* projectLink);
-
     void autoZoom();
-    void addJoin(QString entityType1,QString entityType2,QAbstractItemModel *model);
-    void addSheetMap(QMap<QString, QMap<QString,QPointF>*   >* sheet);
-
     void save();
-    QMap<QString, QMap<QString,QPointF>*   >*  getSheetMap();
-
     void removeSelected();
 
-
-
+    QMap<QString, QMap<QString,QPointF>*   >*  getSheetMap();
 
 private :
        QVector<QAbstractItemModel*>* models;
@@ -64,14 +79,9 @@ private :
        bool linkMode;
        GVGraph*  gvgraph;
 
-
        QMap<QString, QMap<QString,QPointF>*   >* sheetMap;
        QSqlTableModel* projectLink;
-
-
        QMap <QString, QMap<QString, EntityIcon*>* >* entityLookup;
-
-
 };
 
 #endif // GRAPHICSSCENE_H

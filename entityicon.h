@@ -1,17 +1,17 @@
 #ifndef ENTITYICON_H
 #define ENTITYICON_H
 
-
 #include <QGraphicsItem>
-
 #include <QStyleOptionGraphicsItem>
 #include <QPersistentModelIndex>
 #include <QGraphicsSceneMouseEvent>
-#include "entitytype.h"
+#include <QPainter>
+#include <QDebug>
+#include <QGraphicsView>
+
 
 class Edge ;
 class EntityType;
-
 
 class EntityIcon : public QGraphicsItem
 {
@@ -25,31 +25,24 @@ public:
     QRectF boundingRect() const;
     void addConnection(EntityIcon* dest);
     virtual void advance();
-   // void updateText();
+
     QString getUidValue();
-    void setFontSize(int fontsize);
+
+    static const int iconSize=64;
+    static const int horizMargin=40;
+    static const int verticalMargin=10;
+    static const int fontSize=12;
+    static const int totalWidth=horizMargin+iconSize+horizMargin;
+    static const int totalHeight=verticalMargin+iconSize+fontSize+verticalMargin;
+
+//TODO::Should be private
     QVector<EntityIcon*>* connectionList;
     EntityType* entityType;
     QPointF newPos;
 
-    static const int  iconSize=64;
-   static const int   horizMargin=40;
-    static const int   verticalMargin=10;
-    static const int   fontSize=12;
-    static const int   totalWidth=horizMargin+iconSize+horizMargin;
-    static const int   totalHeight=verticalMargin+iconSize+fontSize+verticalMargin;
-
-
-signals:
-
-
-public slots:
-
 private:
         QPersistentModelIndex  index;
         QPixmap currentPixmap;
-        int fontsize;
-
 
 };
 

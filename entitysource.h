@@ -17,9 +17,7 @@ private:
     QString query;
     QString dataSourceName;
     QString entityType;
-   QAbstractItemModel* model;
-
-
+    QAbstractItemModel* model;
 };
 
 #endif //ENTITYSOURCE_H

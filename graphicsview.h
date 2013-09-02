@@ -4,7 +4,11 @@
 #include <QWidget>
 #include <QGraphicsView>
 #include <QWheelEvent>
+#include <QGraphicsTextItem>
+#include <QDebug>
+#include <QScrollBar>
 #include <math.h>
+#include "graphicsscene.h"
 
 class GraphicsView : public QGraphicsView
 {

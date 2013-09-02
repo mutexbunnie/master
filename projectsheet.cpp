@@ -1,4 +1,5 @@
 #include "projectsheet.h"
+#include "projectstore.h"
 
 ProjectSheet::ProjectSheet(QString _sheetName, QString _linkTableName, QString _mapTableName, QString _dataSourceName,ProjectStore* projectStore)
 {
@@ -15,9 +16,11 @@ void ProjectSheet::loadSheet()
 
    QSqlDatabase projectdb= QSqlDatabase::database(dataSourceName);
    QSqlQuery entityQuery("SELECT distinct entityName FROM "+mapTableName+";",projectdb);
-   qDebug()  << "Loading";
-    while (entityQuery.next())
-    {
+   qDebug()  << "Loading sheet...";
+
+   //TODO::Does not follow model approch?
+   while (entityQuery.next())
+   {
        QString source = entityQuery.value(0).toString();
        QSqlQuery queryPos("SELECT uid,x,y FROM "+mapTableName+" where entityName='"+source+"';",projectdb);
        QMap<QString,QPointF>*  tmpMap = new   QMap<QString,QPointF> ();
@@ -27,12 +30,15 @@ void ProjectSheet::loadSheet()
        }
        projectSheet->insert(source,tmpMap);
     }
-        projectLink = new QSqlTableModel(0, projectdb );
-        projectLink->setTable(linkTableName);
-        projectLink->setEditStrategy(QSqlTableModel::OnManualSubmit);
-        projectLink->select();
-        qDebug()  << "Load done";
 
-        graphicSheet = new GraphicSheet(this);
+
+   projectLink = new QSqlTableModel(0, projectdb );
+   projectLink->setTable(linkTableName);
+   projectLink->setEditStrategy(QSqlTableModel::OnManualSubmit);
+   projectLink->select();
+
+   qDebug()  << "Load done";
+
+   graphicSheet = new GraphicSheet(this);
 }
 

@@ -1,29 +1,22 @@
 #ifndef PROJECTSTORE_H
 #define PROJECTSTORE_H
 
+#include <QDebug>
 #include <QtCore>
 #include <QtXml>
-#include <iostream>
+#include <QVector>
+
+#include "autolink.h"
+#include "datasource.h"
 #include "entitytype.h"
 #include "entitysource.h"
-#include <QVector>
-#include <QMap>
-#include <QSqlTableModel>
 #include "projectsheet.h"
-#include "datasource.h"
-#include <autolink.h>
-
 
 class ProjectStore :public QXmlDefaultHandler
 {
   public:
-    ProjectStore();
-    ~ProjectStore();
-    virtual bool startElement(const QString & namespaceURI, const QString & localName,const QString & qName, const QXmlAttributes & atts );
-    void loadProject(QString filenname);
-    //void saveProject(QString filenname); todo
 
-    void saveScene();
+    //TODO::Should be private
 
     QVector<AutoLink*>* autoLinks;
     QVector<EntityType*>* entityTypes;
@@ -32,13 +25,17 @@ class ProjectStore :public QXmlDefaultHandler
     QVector<ProjectSheet*>* projectSheets;
 
 
-
+    ProjectStore();
+    ~ProjectStore();
+    virtual bool startElement(const QString & namespaceURI, const QString & localName,const QString & qName, const QXmlAttributes & atts );
+    void loadProject(QString filenname);
     QString  getProjectName();
+    //TODO:void saveScene();
+    //TODO:void saveProject(QString filenname)
 
 private:
     QString projectname;
 
+
 };
-
-
 #endif // PROJECTSTORE_H

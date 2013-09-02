@@ -1,12 +1,9 @@
 #include "graphicsview.h"
-#include <QGraphicsTextItem>
-#include <QDebug>
-#include <QScrollBar>
-#include "graphicsscene.h"
+
 
 GraphicsView::GraphicsView(QWidget *parent) :  QGraphicsView(parent)
 {
-     setRenderHint(QPainter::Antialiasing);
+      setRenderHint(QPainter::Antialiasing);
       setDragMode(QGraphicsView::RubberBandDrag);
       setCacheMode(QGraphicsView::CacheNone);
       setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
@@ -15,13 +12,9 @@ GraphicsView::GraphicsView(QWidget *parent) :  QGraphicsView(parent)
       setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
       setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
       setMinimumSize(400, 400);
-      //scale(0.5,0.5);
-
       scale(1.0,1.0);
-
-
-   connect(this->horizontalScrollBar(), SIGNAL(actionTriggered(int)), this,   SLOT(sliderMoved(int)));
-   connect(this->verticalScrollBar(), SIGNAL(actionTriggered(int)),this,   SLOT(sliderMoved(int)));
+      connect(this->horizontalScrollBar(), SIGNAL(actionTriggered(int)), this,   SLOT(sliderMoved(int)));
+      connect(this->verticalScrollBar(), SIGNAL(actionTriggered(int)),this,   SLOT(sliderMoved(int)));
 
 }
 void GraphicsView::resizeEvent(QResizeEvent* event)
@@ -110,9 +103,6 @@ void GraphicsView::setSelectMode(bool selectMode )
 
 }
 
-/**
-  * Handles when the mouse button is pressed
-  */
 void GraphicsView::mousePressEvent(QMouseEvent* event)
 {
     if (!selectMode)
@@ -126,12 +116,8 @@ void GraphicsView::mousePressEvent(QMouseEvent* event)
         event->ignore();
         QGraphicsView::mousePressEvent(event);
      }
-
 }
 
-/**
-  * Handles when the mouse button is released
-  */
 void GraphicsView::mouseReleaseEvent(QMouseEvent* event)
 {
     if (!selectMode)
@@ -147,9 +133,6 @@ void GraphicsView::mouseReleaseEvent(QMouseEvent* event)
 
 }
 
-/**
-*Handles the mouse move event
-*/
 void GraphicsView::mouseMoveEvent(QMouseEvent* event)
 {
    if (!selectMode)
@@ -171,7 +154,6 @@ void GraphicsView::mouseMoveEvent(QMouseEvent* event)
    }
 
 }
-
 
 void GraphicsView::sliderMoved(int /*value*/)
 {
@@ -227,9 +209,7 @@ void GraphicsView::updateCenterPoint(const QPointF& centerPoint)
     }
 }
 
-/**
-  * Zoom the view in and out.
-  */
+
 void GraphicsView::wheelEvent(QWheelEvent* event)
 {
 
@@ -243,12 +223,12 @@ void GraphicsView::wheelEvent(QWheelEvent* event)
     double scaleFactor = 1.15; //How fast we zoom
     if(event->delta() > 0) {
         //Zoom in
-        ((GraphicsScene*)scene())->setFontSize(scaleFactor);
+      //  ((GraphicsScene*)scene())->setFontSize(scaleFactor);
         scale(scaleFactor, scaleFactor);
     } else {
         //Zooming out
         scale(1.0 / scaleFactor, 1.0 / scaleFactor);
-        ((GraphicsScene*)scene())->setFontSize(1.0 / scaleFactor);
+        //((GraphicsScene*)scene())->setFontSize(1.0 / scaleFactor);
     }
 
     //Get the position after scaling, in scene coords
@@ -260,11 +240,6 @@ void GraphicsView::wheelEvent(QWheelEvent* event)
     //Adjust to the new center for correct zooming
     QPointF newCenter = screenCenter + offset;
     setCenter(newCenter);
-
-
-
-
-
 }
 
 

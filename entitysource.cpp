@@ -9,3 +9,5 @@ EntitySource::EntitySource(QString _name, QString _entityType, QString _query, Q
     model = new  QSqlQueryModel();
     ((QSqlQueryModel*)(model))->setQuery(query,QSqlDatabase::database(dataSourceName));
 }
+
+

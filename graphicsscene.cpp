@@ -1,17 +1,7 @@
 #include "graphicsscene.h"
-#include <QDebug>
-#include <QSqlTableModel>
-#include <QSqlQuery>
-#include <QGraphicsSceneMouseEvent>
-#include "edge.h"
-#include "cmath"
-#include "math.h"
-#include <QGraphicsItem>
-#include <QGraphicsView>
-#include <QSqlRecord>
-#include <QSqlField>
-#include "GVGraph.h"
-#include "graphicsview.h"
+
+//TODO:Fix Foward declaration
+#include "entitytype.h"
 
 GraphicsScene::GraphicsScene(QObject *parent) :QGraphicsScene(parent)
 {
@@ -21,7 +11,6 @@ GraphicsScene::GraphicsScene(QObject *parent) :QGraphicsScene(parent)
 
     entityIcons=new QVector<EntityIcon*>();
     this->linkMode=false;
-
 
     // timer = new QTimer(this);
      //connect (timer, SIGNAL(timeout()), this, SLOT(layoutItems()));
@@ -33,9 +22,10 @@ GraphicsScene::GraphicsScene(QObject *parent) :QGraphicsScene(parent)
 }
 
 
+
 void GraphicsScene::addSheetLink( QSqlTableModel* projectLink )
 {
-    /*model display, not copy and load*/
+    //TODO:: model display, not copy and load
     this->projectLink=projectLink;
 
     for ( int i = 0; i <projectLink->rowCount(); ++i )
@@ -92,34 +82,17 @@ void GraphicsScene::autoZoom()
    this->views().at(0)->fitInView(xmin,ymin,xmax-xmin,ymax-ymin,Qt::KeepAspectRatio);
    ((GraphicsView*)(this->views().at(0)))->setCenter(QPointF(xmin+((xmax-xmin)/2),ymin+((ymax-ymin)/2)));
    this->addRect(QRectF(xmin,ymin,xmax-xmin,ymax-ymin));
-
-
-
-
 }
 
-void GraphicsScene::setFontSize(int fontsize)
-{
-    for( int i =0; i<entityIcons->size() ;i++)
-    {
-
-         ((*entityIcons)[i])->setFontSize(fontsize);
-
-    }
-}
-
-// scene()->setFontSize(15);
 
 void GraphicsScene::addJoin(QString entityType1,QString entityType2,QAbstractItemModel *model)
 {
     //connects for model?
     for ( int i = 0; i <model->rowCount(); ++i )
     {
-
-        createEdge(entityType1,model->index( i, 0).data().toString(),entityType2,model->index( i, 1).data().toString());
-        createEdge(entityType2,model->index( i, 1).data().toString(),entityType1,model->index( i, 0).data().toString());
+       createEdge(entityType1,model->index( i, 0).data().toString(),entityType2,model->index( i, 1).data().toString());
+       createEdge(entityType2,model->index( i, 1).data().toString(),entityType1,model->index( i, 0).data().toString());
     }
-
 
 
  /*  //EntityIcon* icon, QVector<EntityIcon* >* iconVector)
@@ -406,7 +379,7 @@ void GraphicsScene::addSheetMap(QMap<QString, QMap<QString, QPointF> *> * sheet)
 
 void GraphicsScene::save()
 {
-    //memleak here,fix
+    //TODO::memleak here,fix
    sheetMap = new  QMap<QString, QMap<QString,QPointF>* >();
    for( int i=0; i<entityIcons->size(); i++)
    {

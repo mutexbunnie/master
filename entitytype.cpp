@@ -1,9 +1,5 @@
 #include "entitytype.h"
-#include <QIcon>
-#include <QPainter>
-#include <QBrush>
-#include <QPen>
-#include <QDebug>
+
 
 EntityType::EntityType()
 {
@@ -11,11 +7,8 @@ EntityType::EntityType()
    selected=0;
 }
 
-
 void EntityType::addIcon(QString iconPath)
 {
-
-
     plain= QPixmap(iconPath);
     this->iconPath=iconPath;
     normal= QPixmap(QSize(EntityIcon::totalWidth,EntityIcon::totalHeight));
@@ -29,12 +22,8 @@ void EntityType::addIcon(QString iconPath)
     QBrush brush(QColor(0, 0, 0,100));
     QPen pen(brush,4);
     painterNormal.setPen(pen);
-    //painterNormal.drawRect(normal.rect());
     painterNormal.drawPixmap(EntityIcon::horizMargin,EntityIcon::verticalMargin,EntityIcon::iconSize,EntityIcon::iconSize,plain);
     painterNormal.end();
-
-    //normal=normal.scaled(50,50, Qt::KeepAspectRatio);
-
 
     selected= QPixmap(QSize(EntityIcon::totalWidth,EntityIcon::totalHeight));
     selected.fill(QColor(0, 0, 255, 50));

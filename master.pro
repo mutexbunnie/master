@@ -19,7 +19,6 @@ TEMPLATE = app
 SOURCES += main.cpp\
          mainform.cpp \
     entitytype.cpp \
-    entitytypebutton.cpp \
     projectstore.cpp \
     graphicsscene.cpp \
     entityicon.cpp \
@@ -29,12 +28,12 @@ SOURCES += main.cpp\
     projectsheet.cpp \
     datasource.cpp \
     autolink.cpp \
-    GVGraph.cpp \
-    graphicsheet.cpp
+    graphicsheet.cpp \
+    gvgraph.cpp \
+    scenetoolbar.cpp
 
 HEADERS  +=mainform.h \
     entitytype.h \
-    entitytypebutton.h \
     projectstore.h \
     graphicsscene.h \
     entityicon.h \
@@ -44,8 +43,9 @@ HEADERS  +=mainform.h \
     projectsheet.h \
     datasource.h \
     autolink.h \
-    GVGraph.h \
-    graphicsheet.h
+    graphicsheet.h \
+    gvgraph.h \
+    scenetoolbar.h
 
 FORMS += \
     mainform.ui

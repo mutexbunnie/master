@@ -1,11 +1,8 @@
 #include "projectstore.h"
 
-#include <QDebug>
-
 
 void ProjectStore::loadProject(QString filenname)
 {
-
     entityTypes   = new QVector<EntityType*>();
     entitySources = new QVector<EntitySource*>();
     projectSheets = new QVector<ProjectSheet*>();
@@ -15,18 +12,16 @@ void ProjectStore::loadProject(QString filenname)
     QXmlSimpleReader* parser  = new QXmlSimpleReader();
     parser->setContentHandler(this);
 
-    if(parser->parse(new QXmlInputSource(new QFile(filenname))))
-        qDebug()<<"Parsed Successfully!";
-    else
-        qDebug()<<"Parsing Failed...";
+    if (parser->parse(new QXmlInputSource(new QFile(filenname))))     qDebug()<<"Parsed Successfully!";
+    else qDebug()<<"Parsing Failed...";
 
+    //TODO:Multiple Entity Sources for one types
     for (int i=0; i<entityTypes->size(); i++)
     {
         for (int k=0; k<entitySources->size(); k++)
         {
             if ((*entityTypes)[i]->name == ((*entitySources)[k]->getEntityType()))
             {
-                qDebug()<<(*entityTypes)[i]->name;
                (*entityTypes)[i]->entitySource=(*entitySources)[k];
                break;
             }
@@ -40,12 +35,11 @@ void ProjectStore::loadProject(QString filenname)
 
 }
 
-void ProjectStore::saveScene()
+ /* void ProjectStore::saveScene()
 {
 
-  /*  QSqlDatabase dbConnection =  QSqlDatabase::database("projectdb");
-    dbConnection.exec("truncate entityMap;");
-
+  QSqlDatabase dbConnection =  QSqlDatabase::database("projectdb");
+     dbConnection.exec("truncate entityMap;");
 
     QMapIterator<QString, QMap<QString,QPointF>*  > i(*projectSheet);
     while (i.hasNext())
@@ -56,37 +50,21 @@ void ProjectStore::saveScene()
         while (k.hasNext())
         {
             k.next();
-
-
             dbConnection.exec("insert into entityMap (EntityName,uid,x,y) values('"+i.key()+"','"+k.key()+"',"+QString::number(k.value().x()) +","+QString::number(k.value().y())+")");
             //qDebug() <<       "insert into entityMap (EntityName,uid,x,y) values('"+i.key()+"','"+k.key()+"',"+QString::number(k.value().x()) +","+QString::number(k.value().y())+")";
             //qDebug() << i.key()<<k.key() << ": " << k.value().x() <<":"<<k.value().y() ;
        }
     }
 
+  // dbConnection.exec("truncate link;");
 
+}*/
 
-   // dbConnection.exec("truncate link;");
+QString ProjectStore::getProjectName() {  return projectname;}
 
+ProjectStore::ProjectStore():QXmlDefaultHandler(){}
 
-*/
-}
-
-QString ProjectStore::getProjectName()
-{
-    return projectname;
-}
-
-
-ProjectStore::ProjectStore():QXmlDefaultHandler()
-{
-
-}
-
-ProjectStore::~ProjectStore()
-{
-
-}
+ProjectStore::~ProjectStore(){}
 
 bool ProjectStore::startElement(const QString & namespaceURI, const QString & localName,const QString & qName, const QXmlAttributes & atts )
 {
